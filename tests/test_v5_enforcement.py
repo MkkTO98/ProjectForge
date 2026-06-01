@@ -11,17 +11,18 @@ def test_no_redundant_hardware_profile_or_legacy_summary_tool():
     assert not (ROOT/'templates/_shared_project/tools/update_folder_summaries.py').exists()
 
 
-def test_dry_run_requires_context_fields():
+def test_dry_run_requires_context_fields(tmp_path):
     script = ROOT/'tools'/'dry_run.py'
     result = subprocess.run([
-        sys.executable, str(script), '--project', str(ROOT), '--proposal', 'small documentation change',
+        sys.executable, str(script), '--project', str(tmp_path), '--proposal', 'small documentation change',
         '--files', 'README.md', '--context-used', 'CONSTITUTION.md,state/project_state.md',
         '--decisions-checked', 'artifacts/decisions/D-20260530-projectforge-default-philosophy.md'
     ], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     p = Path(result.stdout.strip())
     assert p.exists()
-    assert 'context_used' in p.read_text(encoding='utf-8')
+    text = p.read_text(encoding='utf-8')
+    assert 'context_used' in text
 
 
 def test_validate_dry_run_blocks_missing_fields(tmp_path):
@@ -40,7 +41,7 @@ def test_coherence_checker_passes_projectforge():
 
 def test_generated_project_uses_workspace_config_not_workspace_tree(tmp_path):
     script = ROOT/'tools'/'new_project.py'
-    result = subprocess.run([sys.executable, str(script), '--name', 'Workspace Test', '--template', 'default_project', '--output', str(tmp_path), '--noninteractive'], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, str(script), '--name', 'Workspace Test', '--template', 'default_project', '--output', str(tmp_path), '--noninteractive', '--allow-deferred-required'], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     project = tmp_path/'workspace_test'
     assert (project/'workspace_config.yaml').exists()

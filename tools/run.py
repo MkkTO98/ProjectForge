@@ -5,7 +5,7 @@ This is intentionally conservative. It is not a sandbox. It is a policy gate.
 Use OS-level sandboxing for stronger isolation.
 """
 from __future__ import annotations
-import argparse, json, os, shlex, subprocess, sys, time
+import argparse, json, os, shlex, shutil, subprocess, sys, time
 from pathlib import Path
 
 try:
@@ -18,7 +18,6 @@ def load_yaml(path: Path):
     text = path.read_text(encoding="utf-8")
     if yaml:
         return yaml.safe_load(text) or {}
-    # minimal fallback for this scaffold: not a full YAML parser
     raise RuntimeError("PyYAML is required for tools/run.py. Install with: python3 -m pip install pyyaml")
 
 
@@ -38,10 +37,7 @@ def allowed(cmd_args: list[str], level: str, allow_cfg: dict) -> bool:
     cmd = command_string(cmd_args)
     levels = allow_cfg.get("levels", {})
     allowed_cmds = levels.get(level, {}).get("commands", [])
-    for allowed_prefix in allowed_cmds:
-        if cmd.startswith(allowed_prefix):
-            return True
-    return False
+    return any(cmd.startswith(allowed_prefix) for allowed_prefix in allowed_cmds)
 
 
 def main() -> int:
@@ -80,13 +76,21 @@ def main() -> int:
         print(f"DENIED: command not allowlisted for level {ns.level}: {cmd}", file=sys.stderr)
         return 12
 
+    if shutil.which(ns.cmd[0]) is None:
+        print(f"DENIED: executable not found: {ns.cmd[0]}", file=sys.stderr)
+        return 13
+
     log_dir = project / "logs" / "agents"
     log_dir.mkdir(parents=True, exist_ok=True)
     record = {"ts": time.time(), "level": ns.level, "cmd": ns.cmd, "cwd": str(project)}
     with (log_dir / "commands.jsonl").open("a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
 
-    return subprocess.call(ns.cmd, cwd=project)
+    try:
+        return subprocess.call(ns.cmd, cwd=project)
+    except FileNotFoundError as exc:
+        print(f"DENIED: executable not found: {exc.filename or ns.cmd[0]}", file=sys.stderr)
+        return 13
 
 if __name__ == "__main__":
     raise SystemExit(main())

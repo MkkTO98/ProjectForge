@@ -107,7 +107,7 @@ models/selection_policy.yaml
 Manual check:
 
 ```bash
-python tools/select_model.py --project . --agent coder --task implementation
+python3 tools/select_model.py --project . --agent coder --task implementation
 ```
 
 Why: different work requires different models. A small summarizer should not handle architecture. A large coder should not waste resources on folder summaries.
@@ -128,19 +128,19 @@ Normally the orchestrator should run this. Manual use is for debugging or audit.
 After a task:
 
 ```bash
-python tools/orchestrator_hygiene.py --project . --phase after_task
+python3 tools/orchestrator_hygiene.py --project . --phase after_task
 ```
 
 Before commit:
 
 ```bash
-python tools/orchestrator_hygiene.py --project . --phase before_commit
+python3 tools/orchestrator_hygiene.py --project . --phase before_commit
 ```
 
 Periodic review:
 
 ```bash
-python tools/orchestrator_hygiene.py --project . --phase periodic
+python3 tools/orchestrator_hygiene.py --project . --phase periodic
 ```
 
 Why: this bundles context-summary refresh, coherence checking, metrics review, and deferred-specification review.
@@ -168,7 +168,7 @@ If blocks appear, fix them before continuing. Warnings can be reviewed but do no
 Use:
 
 ```bash
-python tools/validate_dry_run.py simulation/dry_runs/<report>.md
+python3 tools/validate_dry_run.py simulation/dry_runs/<report>.md
 ```
 
 Why: prevents vague dry-runs from becoming execution permission.
@@ -192,7 +192,7 @@ approval_required
 Use:
 
 ```bash
-python tools/update_context_summaries.py --project .
+python3 tools/update_context_summaries.py --project .
 ```
 
 Why: `_SUMMARY.md` files are folder-local navigation aids used by the context system. They should be refreshed after folder changes or before important context builds.
@@ -208,7 +208,7 @@ artifacts/decisions/
 Use:
 
 ```bash
-python tools/build_context.py --project . --task "implement ingestion pipeline"
+python3 tools/build_context.py --project . --task "implement ingestion pipeline"
 ```
 
 Why: agents should not read the whole repo blindly. Context budgeting selects the relevant constitution, state, decisions, summaries, and target files.
@@ -218,7 +218,7 @@ Why: agents should not read the whole repo blindly. Context budgeting selects th
 Use:
 
 ```bash
-python tools/review_metrics.py --project .
+python3 tools/review_metrics.py --project .
 ```
 
 Why: metrics convert repeated failures into improvement proposals, such as model-routing changes, skill refinements, or specialized-agent requests.
@@ -230,7 +230,7 @@ Metrics are derived evidence. Raw command output belongs in `logs/`, not `metric
 Use:
 
 ```bash
-python tools/resolve_deferred_specs.py --project .
+python3 tools/resolve_deferred_specs.py --project .
 ```
 
 Why: deferred specifications are allowed, but not forever. If the same deferred issue blocks work twice, it should become an L3 blocking question.
@@ -293,7 +293,7 @@ force push forbidden by default
 Before committing, run:
 
 ```bash
-python tools/orchestrator_hygiene.py --project . --phase before_commit
+python3 tools/orchestrator_hygiene.py --project . --phase before_commit
 ```
 
 Why: local commits are useful checkpoints. Remote pushes expose changes outside the local environment and should remain deliberate.
@@ -309,7 +309,7 @@ workspace/projects_registry.yaml
 Manual registration:
 
 ```bash
-python tools/register_project.py \
+python3 tools/register_project.py \
   --workspace /home/mkkto/srv/projectforge/workspace \
   --project /home/mkkto/srv/projectforge/workspace/projects/my_project \
   --name "My Project"

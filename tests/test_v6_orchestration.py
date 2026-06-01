@@ -32,25 +32,41 @@ def test_orchestration_schedule_exists_and_automates_hygiene():
         assert needle in text
 
 
-def test_new_project_default_output_mentions_canonical_workspace_path():
+def test_new_project_default_output_is_derived_from_projectforge_root():
     text = read('tools/new_project.py')
-    assert "/home/mkkto/srv/projectforge/workspace/projects" in text
+    assert "canonical_output = base/'workspace'/'projects'" in text
     assert 'register_project.py' in text
 
 
-def test_workspace_config_default_path():
+def test_workspace_config_uses_rendered_projectforge_paths():
     text = read('templates/_shared_project/workspace_config.yaml')
-    assert '/home/mkkto/srv/projectforge/workspace' in text
-    assert '/home/mkkto/srv/projectforge/workspace/projects' in text
+    assert '{projectforge_root}' in text
+    assert '{workspace_root}' in text
+    assert '{projects_root}' in text
 
 
 def test_orchestrator_hygiene_after_task(tmp_path):
-    # Minimal copied skeleton needed for after_task checks to run through tooling from ROOT.
-    for rel in ['logs/derived', 'simulation/dry_runs']:
-        (tmp_path / rel).mkdir(parents=True, exist_ok=True)
-    result = subprocess.run([sys.executable, str(ROOT/'tools'/'orchestrator_hygiene.py'), '--project', str(ROOT), '--phase', 'after_task'], capture_output=True, text=True)
+    answers = {
+        'purpose': 'Hygiene smoke project',
+        'success': 'orchestrator hygiene runs on an isolated generated project',
+        'project_type': 'general',
+        'autonomy': 'balanced',
+        'command_policy': 'layered default',
+        'secrets': 'No secrets in v1.',
+        'logging': 'ProjectForge default logging.',
+        'folder_summaries': 'yes',
+    }
+    answers_path = tmp_path / 'answers.json'
+    answers_path.write_text(json.dumps(answers), encoding='utf-8')
+    generated = subprocess.run([
+        sys.executable, str(ROOT/'tools'/'new_project.py'), '--name', 'Hygiene Test', '--template', 'default_project',
+        '--output', str(tmp_path), '--answers-json', str(answers_path)
+    ], capture_output=True, text=True)
+    assert generated.returncode == 0, generated.stderr
+    project = tmp_path / 'hygiene_test'
+    result = subprocess.run([sys.executable, str(ROOT/'tools'/'orchestrator_hygiene.py'), '--project', str(project), '--phase', 'after_task'], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
-    assert (ROOT/'logs'/'derived'/'orchestrator_hygiene.log').exists()
+    assert (project/'logs'/'derived'/'orchestrator_hygiene.log').exists()
 
 
 def test_resolve_deferred_specs_creates_L3_question(tmp_path):

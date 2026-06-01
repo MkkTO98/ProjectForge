@@ -21,7 +21,7 @@ def test_required_files_exist():
 
 def test_noninteractive_project_generation(tmp_path):
     script = ROOT/'tools'/'new_project.py'
-    result = subprocess.run([sys.executable, str(script), '--name', 'Example Project', '--template', 'default_project', '--output', str(tmp_path), '--noninteractive'], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, str(script), '--name', 'Example Project', '--template', 'default_project', '--output', str(tmp_path), '--noninteractive', '--allow-deferred-required'], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     project = tmp_path/'example_project'
     assert (project/'state'/'active_goal.md').exists()

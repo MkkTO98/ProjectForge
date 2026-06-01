@@ -1,17 +1,20 @@
 # Skill: Project Bootstrap
 
-Use this skill when creating a new project.
+Use this when creating or revising a ProjectForge-managed project.
 
 ## Procedure
-1. Conduct the extensive questionnaire or consume a completed config.
-2. Classify unanswered items as `Accepted`, `Deferred`, or `Project-specific`.
-3. Generate the project scaffold.
-4. Write setup decisions into `artifacts/decisions/`.
-5. Write unresolved items into deferred decision artifacts.
-6. Initialize state files.
-7. Initialize logging directories.
-8. Initialize permissions.
-9. Prepare git if requested.
+1. Let Hermes lead an adaptive setup conversation. Do not dump a full questionnaire.
+2. Treat `config/setup_questionnaire.yaml` as a coverage map for topics that should be resolved, inferred, or explicitly deferred.
+3. Stop asking once `config/sufficiency_policy.yaml` says bootstrap is operationally sufficient and no must-pause item is unresolved.
+4. Save accepted and deferred answers as file-backed artifacts.
+5. Generate the scaffold noninteractively with `tools/new_project.py --answers-json ...`.
+6. Run generated-project coherence and any template-specific smoke checks.
 
-## Rule
-Never hide setup assumptions in the prompt. File-backed state is mandatory.
+## Required outputs
+- Project path.
+- Accepted decisions.
+- Deferred decisions and why they are nonblocking.
+- Verification commands and real output.
+
+## Safety
+Secrets, production access, billing risk, destructive operations, and command-policy uncertainty are must-pause topics unless the operator explicitly allows a deferred bootstrap.

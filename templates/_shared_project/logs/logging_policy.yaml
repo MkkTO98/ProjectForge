@@ -1,27 +1,25 @@
 logging_policy:
-  default_level: standard
+  purpose: raw_operational_record
   levels:
     minimal:
-      record:
+      records:
         - run_summary
-        - decisions
         - errors
+        - decisions_created
     standard:
-      record:
+      default: true
+      records:
         - run_summary
-        - agent_actions
-        - file_changes
-        - test_results
-        - decisions
-        - deferred_specifications
-        - metrics_events
+        - commands_executed
+        - files_changed
+        - tests_run
+        - escalations
     forensic:
-      record:
-        - tool_calls
-        - full_command_outputs
+      records:
+        - full_tool_outputs
         - model_routing_decisions
         - intermediate_plans
         - failure_traces
-  sqlite_index:
-    enabled_by_default: false
-    note: "SQLite indexing is project-specific; MacroForge may enable it, but ProjectForge templates do not require it."
+  separation_rule: >
+    logs contain raw events and operational records. Derived performance analysis,
+    success-rate calculations, and recommendations belong in metrics/.

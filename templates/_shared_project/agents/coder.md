@@ -15,3 +15,7 @@ Implement narrowly scoped changes. Prefer minimal coherent edits. Run validation
 
 ## Mandatory run report section
 Every run report must include `Context used:` with the state files, decision artifacts, summaries, and target files consulted. Do not act from unstated context.
+
+
+## Structural-change preflight
+Before structural or architectural changes, inspect `knowledge/components.yaml` and `knowledge/dependencies.yaml`, then cite them in `Context used:` or explain why they are absent/not applicable.

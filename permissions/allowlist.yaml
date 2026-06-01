@@ -32,12 +32,12 @@ levels:
       - python3 -m pytest
 
       # ProjectForge safe operations
-      - python tools/check_coherence.py
-      - python tools/build_context.py
-      - python tools/validate_dry_run.py
-      - python tools/update_context_summaries.py
-      - python tools/review_metrics.py
-      - python tools/select_model.py
+      - python3 tools/check_coherence.py
+      - python3 tools/build_context.py
+      - python3 tools/validate_dry_run.py
+      - python3 tools/update_context_summaries.py
+      - python3 tools/review_metrics.py
+      - python3 tools/select_model.py
 
   review:
     description: "Commands that modify project-local files or create commits."
@@ -59,8 +59,8 @@ levels:
       - git commit
 
       # ProjectForge operational mutation
-      - python tools/orchestrator_hygiene.py
-      - python tools/escalate.py
+      - python3 tools/orchestrator_hygiene.py
+      - python3 tools/escalate.py
 
   dangerous:
     description: "Commands that may affect network, dependencies, external systems, services, or irreversible project state."

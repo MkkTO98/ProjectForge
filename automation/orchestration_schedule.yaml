@@ -14,42 +14,42 @@ orchestration_schedule:
 
   before_agent_assignment:
     - name: select_model
-      command: python tools/select_model.py --project {project} --agent {agent} --task {task}
+      command: python3 tools/select_model.py --project {project} --agent {agent} --task {task}
       required: true
       reason: Route work to the smallest sufficient model before spending compute or Codex tokens.
 
   before_execution:
     - name: validate_dry_run
-      command: python tools/validate_dry_run.py {dry_run_report}
+      command: python3 tools/validate_dry_run.py {dry_run_report}
       required_when: dry_run_required
       reason: Prevent vague or incomplete dry-runs from becoming execution permission.
 
   after_folder_change:
     - name: update_context_summaries
-      command: python tools/update_context_summaries.py --project {project}
+      command: python3 tools/update_context_summaries.py --project {project}
       required: true
       reason: Keep folder summaries usable as context-budget inputs.
 
   after_task:
     - name: update_context_summaries_if_changed
-      command: python tools/update_context_summaries.py --project {project}
+      command: python3 tools/update_context_summaries.py --project {project}
       required: true
     - name: check_coherence
-      command: python tools/check_coherence.py --project {project}
+      command: python3 tools/check_coherence.py --project {project}
       required: true
 
   before_commit:
     - name: check_coherence
-      command: python tools/check_coherence.py --project {project}
+      command: python3 tools/check_coherence.py --project {project}
       required: true
 
   periodic:
     - name: review_metrics
-      command: python tools/review_metrics.py --project {project}
+      command: python3 tools/review_metrics.py --project {project}
       cadence: every_10_runs_or_on_failure_cluster
       reason: Convert repeated failures into routing, skill, template, or agent-improvement proposals.
     - name: resolve_deferred_specs
-      command: python tools/resolve_deferred_specs.py --project {project}
+      command: python3 tools/resolve_deferred_specs.py --project {project}
       cadence: every_10_runs_or_when_deferred_spec_blocks_work
       reason: Turn repeated deferred-specification blocks into L3 questions.
 
