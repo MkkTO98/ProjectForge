@@ -1,0 +1,62 @@
+machine_name: mkkto-HP-Desktop
+
+os:
+  name: Ubuntu
+  version: "24.04.4 LTS"
+  kernel: "Linux 6.17.0-35-generic"
+  windowing: Wayland
+
+hardware:
+
+  cpu:
+    model: "Intel Core i5-10400"
+    threads: 12
+
+  ram:
+    total_gb: 32
+
+  gpu:
+    vendor: Intel
+    model: "Intel UHD Graphics 630"
+    vram_gb: 0
+    acceleration: limited
+
+  disk:
+    total_gb: 512
+
+llm_runtime:
+
+  primary:
+    - ollama
+
+limits:
+
+  max_parallel_large_models: 1
+  max_parallel_medium_models: 2
+  max_parallel_small_models: 4
+
+  prefer_quantized_models: true
+
+  heavy_reasoning_parallelism: false
+
+notes:
+  - No dedicated GPU.
+  - Large models should generally run one at a time.
+  - Prefer smaller models for summaries/background tasks.hardware_profile:
+  machine_name: ASK_LATER
+  os: ASK_LATER
+  ram_gb: ASK_LATER
+  cpu_threads: ASK_LATER
+  gpu:
+    vendor: ASK_LATER
+    model: ASK_LATER
+    vram_gb: ASK_LATER
+  local_model_runtimes:
+    - ollama
+  limits:
+    max_parallel_large_models: 1
+    max_parallel_small_models: 3
+    prefer_smallest_sufficient_model: true
+    escalate_to_codex_when_local_capability_fails: true
+  note: >
+    This is the canonical hardware profile. Do not duplicate it under models/.

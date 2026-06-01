@@ -1,0 +1,44 @@
+workspace_policy:
+  inheritance_model: hybrid
+  description: >
+    ProjectForge keeps cross-project resources centralized where that reduces drift,
+    while generated projects keep project-specific governance local.
+
+  centralized_by_default:
+    - shared_models
+    - shared_skills
+    - shared_notifications
+    - shared_context_patterns
+    - cross_project_registry
+
+  copied_to_project_by_default:
+    - permissions
+    - state
+    - project_specific_agents
+    - project_specific_instructions
+    - decision_artifacts
+    - dry_run_policy
+    - logging_policy
+
+  override_rule: >
+    Project-local decisions override workspace defaults only when recorded in
+    artifacts/decisions/ with scope and reason.
+
+  generated_project_rule: >
+    Generated projects should contain workspace_config.yaml, not a full global
+    workspace tree, unless the generated project is itself a meta-project.
+
+  feedback_rule: >
+    Generated projects may propose improvements back to ProjectForge templates,
+    but must not modify ProjectForge automatically.
+
+
+  canonical_paths:
+    projectforge_root: /home/mkkto/srv/projectforge
+    workspace_root: /home/mkkto/srv/projectforge/workspace
+    generated_projects_root: /home/mkkto/srv/projectforge/workspace/projects
+
+  generated_project_creation_rule: >
+    Unless explicitly overridden, new projects are created under
+    /home/mkkto/srv/projectforge/workspace/projects/<project_slug> and registered
+    in workspace/projects_registry.yaml.

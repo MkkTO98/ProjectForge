@@ -1,0 +1,22 @@
+# Folder Summary: templates/default_project
+
+Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+
+## Contains
+- `.gitignore`
+- `.gitkeep`
+- `README.md`
+- `artifacts/`
+- `logs/`
+- `permissions/`
+- `project.yaml`
+- `question_queue/`
+- `state/`
+
+## Active Work
+- Not specified.
+
+## Needs Attention
+- Keep this summary current when changing this folder.
+
+Last refreshed: 2026-06-01T17:41:21

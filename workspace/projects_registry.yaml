@@ -1,0 +1,20 @@
+raw: "{\n  \"raw\": \"workspace:\\n  name: default_projectforge_workspace\\n  description:\
+  \ Shared registry for projects that may reuse ProjectForge conventions.\\nprojects:\\\
+  n- name: Example Project\\n  path: /tmp/pytest-of-root/pytest-11/test_noninteractive_project_ge0/example_project\\\
+  n  mode: hybrid_inheritance\\n- name: Workspace Test\\n  path: /tmp/pytest-of-root/pytest-11/test_generated_project_uses_wo0/workspace_test\\\
+  n  mode: hybrid_inheritance\\nshared_defaults:\\n  models: ../models/registry.yaml\\\
+  n  model_routing: ../models/routing.yaml\\n  skills: ../skills/\\n  instructions:\
+  \ ../instructions/\\n  logging_policy: ../logs/logging_policy.yaml\\n  permission_policy:\
+  \ ../permissions/\\nrules:\\n- Cross-project dependencies must be declared in cross_project_dependencies.yaml.\\\
+  n- Shared assets must not silently override project-local policies.\\n- Project-local\
+  \ decisions override workspace defaults only when recorded in artifacts/decisions/.\\\
+  n- Secrets must never be stored in the workspace registry.\\n\",\n  \"projects\"\
+  : [\n    {\n      \"name\": \"Example Project\",\n      \"path\": \"/tmp/pytest-of-mkkto/pytest-0/test_noninteractive_project_ge0/example_project\"\
+  ,\n      \"mode\": \"hybrid_inheritance\"\n    }\n  ]\n}"
+projects:
+- name: Example Project
+  path: /tmp/pytest-of-mkkto/pytest-5/test_noninteractive_project_ge0/example_project
+  mode: hybrid_inheritance
+- name: Workspace Test
+  path: /tmp/pytest-of-mkkto/pytest-5/test_generated_project_uses_wo0/workspace_test
+  mode: hybrid_inheritance

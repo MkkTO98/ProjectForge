@@ -1,0 +1,39 @@
+projectforge:
+  version: v6
+  purpose: reusable_project_initializer_for_agent_supported_projects
+  philosophy: boring_reliable_infrastructure
+  defaults:
+    sqlite_index_default: false
+    logging_level: standard
+    git_push: manual
+    dry_run_mode: balanced
+    workspace_inheritance: hybrid
+    enforcement_mode: soft_block
+    skills_style: small_composable_first
+    specialized_agent_creation: request_then_auto_generate_after_user_approval
+    codex_escalation: controlled_before_human_for_capability_failures
+    workspace_projects_root: /home/mkkto/srv/projectforge/workspace/projects
+    orchestrator_hygiene: scheduled_and_event_driven
+    primary_operator: hermes_agent
+    project_creation_ux: hermes_led_adaptive_interview_then_noninteractive_render
+  required_separation:
+    state: current_project_truth
+    decisions: durable_choices_and_deferred_specifications
+    summaries: folder_local_context_map
+    context: selected_input_bundle
+    logs: raw_operational_records
+    metrics: derived_performance_evidence
+    workspace: cross_project_coordination
+
+  orchestrator_automation:
+    before_agent_assignment:
+      - select_model
+    before_execution:
+      - validate_dry_run_when_required
+    after_task:
+      - update_context_summaries_if_changed
+      - check_coherence
+    periodic:
+      - review_metrics
+    visibility: compact_log_summary
+    auto_fix_safe_violations: true

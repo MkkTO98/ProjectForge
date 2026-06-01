@@ -1,0 +1,19 @@
+metrics_policy:
+  purpose: derived_performance_evidence
+  storage_default: jsonl
+  sqlite_default: false
+  raw_event_source: logs/
+  derived_outputs:
+    - metrics/reports/
+    - metrics/recommendations/
+  separation_rule: >
+    metrics contain derived evidence, rollups, failure patterns, and recommendations.
+    Raw command transcripts and raw execution traces belong in logs/.
+  review_triggers:
+    - every_10_runs
+    - repeated_failure_cluster
+    - before_specialized_agent_request
+    - routing_instability
+  specialized_agent_policy: >
+    Metrics may recommend a specialized agent. The user must approve creation.
+    After approval, ProjectForge may generate the agent automatically.

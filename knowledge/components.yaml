@@ -1,0 +1,16 @@
+components:
+  projectforge_core:
+    description: Project initializer, policies, tools, templates, and operator documentation.
+    kind: meta_project
+  workspace:
+    description: Cross-project registry and shared resources above generated projects.
+    kind: coordination_layer
+  generated_project:
+    description: A ProjectForge-created project with local state, decisions, agents, permissions, context, logs, and metrics.
+    kind: project_instance
+  context_system:
+    description: Builds task-specific context bundles using state, decisions, summaries, and knowledge maps.
+    kind: support_system
+  automation_schedule:
+    description: Defines routine hygiene tasks the brain/orchestrator should run automatically.
+    kind: support_system

@@ -1,0 +1,27 @@
+logging_policy:
+  default_level: standard
+  levels:
+    minimal:
+      record:
+        - run_summary
+        - decisions
+        - errors
+    standard:
+      record:
+        - run_summary
+        - agent_actions
+        - file_changes
+        - test_results
+        - decisions
+        - deferred_specifications
+        - metrics_events
+    forensic:
+      record:
+        - tool_calls
+        - full_command_outputs
+        - model_routing_decisions
+        - intermediate_plans
+        - failure_traces
+  sqlite_index:
+    enabled_by_default: false
+    note: "SQLite indexing is project-specific; MacroForge may enable it, but ProjectForge templates do not require it."

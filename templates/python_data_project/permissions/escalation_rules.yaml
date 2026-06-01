@@ -1,0 +1,41 @@
+default_policy:
+  unanswered_blocking_question: "pause_indefinitely"
+  push_requires_approval: true
+  sudo_requires_approval: true
+  destructive_requires_approval: true
+  dependency_install_requires_approval: true
+
+clarification_levels:
+  L1:
+    name: "silent_autonomy"
+    action: "continue"
+    examples:
+      - "rename local variable"
+      - "add small helper function"
+      - "format markdown"
+  L2:
+    name: "batched_clarification"
+    action: "record_question_continue_if_safe"
+    examples:
+      - "documentation style preference"
+      - "non-blocking naming convention"
+  L3:
+    name: "blocking_clarification"
+    action: "pause_and_notify"
+    examples:
+      - "schema design choice"
+      - "database library choice"
+      - "network credential handling"
+  L4:
+    name: "emergency_stop"
+    action: "stop_execution"
+    examples:
+      - "destructive file operation"
+      - "force push"
+      - "secret exposure"
+      - "production deletion"
+
+failure_boundaries:
+  max_iterations_per_goal: 8
+  max_test_failures_before_escalation: 3
+  max_repeated_diff_attempts: 2

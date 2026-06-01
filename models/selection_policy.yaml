@@ -1,0 +1,25 @@
+selection_policy:
+  principle: smallest_sufficient_model
+  prefer_local: true
+  avoid_largest_by_default: true
+  escalation:
+    capability_failure_chain:
+      - current_model
+      - stronger_local_model
+      - openai_codex_or_premium_model
+      - human
+    human_first_for:
+      - permission_required
+      - credential_handling
+      - destructive_command
+      - git_push
+      - money_or_billing_risk
+      - production_data_change
+      - unresolved_specification
+  task_size_policy:
+    summarization: small_summarizer
+    folder_summary_update: small_summarizer
+    routine_coding: coder_default
+    debugging: coder_or_reviewer
+    architecture_review: planner_or_premium
+    repeated_failure: escalate

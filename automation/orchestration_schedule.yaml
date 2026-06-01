@@ -1,0 +1,82 @@
+orchestration_schedule:
+  purpose: >
+    Defines hygiene and control tasks the brain/orchestrator should run automatically.
+    Manual invocation remains available for debugging and audit, but routine operation
+    should not depend on the user remembering these commands.
+
+  visibility:
+    mode: compact_log_summary
+    summary_target: logs/derived/orchestrator_hygiene.log
+    notify_user_only_on:
+      - block
+      - L3_blocking_clarification
+      - L4_emergency_stop
+
+  before_agent_assignment:
+    - name: select_model
+      command: python tools/select_model.py --project {project} --agent {agent} --task {task}
+      required: true
+      reason: Route work to the smallest sufficient model before spending compute or Codex tokens.
+
+  before_execution:
+    - name: validate_dry_run
+      command: python tools/validate_dry_run.py {dry_run_report}
+      required_when: dry_run_required
+      reason: Prevent vague or incomplete dry-runs from becoming execution permission.
+
+  after_folder_change:
+    - name: update_context_summaries
+      command: python tools/update_context_summaries.py --project {project}
+      required: true
+      reason: Keep folder summaries usable as context-budget inputs.
+
+  after_task:
+    - name: update_context_summaries_if_changed
+      command: python tools/update_context_summaries.py --project {project}
+      required: true
+    - name: check_coherence
+      command: python tools/check_coherence.py --project {project}
+      required: true
+
+  before_commit:
+    - name: check_coherence
+      command: python tools/check_coherence.py --project {project}
+      required: true
+
+  periodic:
+    - name: review_metrics
+      command: python tools/review_metrics.py --project {project}
+      cadence: every_10_runs_or_on_failure_cluster
+      reason: Convert repeated failures into routing, skill, template, or agent-improvement proposals.
+    - name: resolve_deferred_specs
+      command: python tools/resolve_deferred_specs.py --project {project}
+      cadence: every_10_runs_or_when_deferred_spec_blocks_work
+      reason: Turn repeated deferred-specification blocks into L3 questions.
+
+  event_driven:
+    repeated_failure:
+      threshold: 3
+      actions:
+        - review_metrics
+        - escalate_capability_if_needed
+    deferred_specification_blocks_twice:
+      actions:
+        - resolve_deferred_specs
+        - create_L3_question
+        - require_decision_artifact_after_answer
+    routing_instability:
+      actions:
+        - review_metrics
+        - propose_model_routing_change
+
+  auto_fix_policy:
+    safe_auto_fix_allowed:
+      - refresh_context_summaries
+      - regenerate_missing_nonpolicy_summary
+      - move raw execution notes from metrics to logs when unambiguous
+      - move derived metric analysis from logs to metrics when unambiguous
+    human_or_codex_required:
+      - permission_policy_change
+      - model_routing_policy_change
+      - architecture_change
+      - deletion_or_destructive_action

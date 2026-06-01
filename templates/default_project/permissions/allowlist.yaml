@@ -1,0 +1,47 @@
+levels:
+  safe:
+    description: "Read-only or low-risk project-local commands."
+    commands:
+      - pwd
+      - ls
+      - tree
+      - find
+      - rg
+      - grep
+      - cat
+      - sed
+      - awk
+      - head
+      - tail
+      - wc
+      - git status
+      - git diff
+      - git log
+      - python3 --version
+      - pytest
+      - python3 -m pytest
+  review:
+    description: "Commands that modify project-local files or create commits."
+    commands:
+      - mkdir
+      - touch
+      - cp
+      - mv
+      - rm
+      - python3
+      - git add
+      - git commit
+  dangerous:
+    description: "Commands that may affect network, dependencies, external systems, or history."
+    commands:
+      - pip install
+      - npm install
+      - git push
+      - git pull
+      - git merge
+      - git rebase
+      - docker
+      - systemctl
+      - crontab
+      - curl
+      - wget

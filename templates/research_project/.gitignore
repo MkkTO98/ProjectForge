@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+
+# Logs and runtime outputs
+logs/raw/*
+logs/derived/*
+logs/index/*
+logs/agents/*
+!logs/raw/.gitkeep
+!logs/derived/.gitkeep
+!logs/index/.gitkeep
+!logs/agents/.gitkeep
+
+# Agent queues
+question_queue/pending/*
+question_queue/answered/*
+question_queue/archive/*
+!question_queue/pending/.gitkeep
+!question_queue/answered/.gitkeep
+!question_queue/archive/.gitkeep
+
+# Generated projects
+/generated/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

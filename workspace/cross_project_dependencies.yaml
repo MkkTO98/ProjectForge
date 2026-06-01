@@ -1,0 +1,10 @@
+# Declare dependencies between ProjectForge-managed projects.
+# Keep this sparse. It is a coordination map, not a full graph database.
+dependencies: []
+
+example:
+  from_project: portfolio_site
+  to_project: macroforge
+  relationship: consumes_generated_research_outputs
+  risk: medium
+  required_contract: documented_export_format

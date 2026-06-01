@@ -1,0 +1,8 @@
+project:
+  name: "{project_name}"
+  template: "web_project"
+  kind: "web"
+  created_by: "ProjectForge"
+  logging: "always_on"
+  decisions: "mandatory"
+  deferred_specification: "enabled"

@@ -1,0 +1,38 @@
+routing:
+  default_policy: hermes_recommends_smallest_sufficient_model
+
+  by_agent:
+    planner:
+      preferred: [hermes_default, codex_supervisor]
+      escalation_after_failures: 2
+    coder:
+      preferred: [qwen_coder, hermes_default, codex_supervisor]
+      escalation_after_failures: 3
+    reviewer:
+      preferred: [hermes_default, qwen_coder, codex_supervisor]
+      escalation_after_failures: 2
+    auditor:
+      preferred: [hermes_default, codex_supervisor]
+      escalation_after_failures: 2
+    summarizer:
+      preferred: [small_summarizer, hermes_default]
+      escalation_after_failures: 4
+    bootstrapper:
+      preferred: [hermes_default, codex_supervisor]
+      escalation_after_failures: 2
+
+  by_task:
+    project_creation_interview:
+      preferred: [hermes_default, codex_supervisor]
+    scaffold_rendering:
+      preferred: [hermes_default]
+    folder_summary_update:
+      preferred: [small_summarizer, hermes_default]
+    simple_code_edit:
+      preferred: [qwen_coder, hermes_default]
+    architecture_decision:
+      preferred: [hermes_default, codex_supervisor]
+    repeated_failure_debugging:
+      preferred: [codex_supervisor, hermes_default]
+    security_or_secret_handling:
+      preferred: [codex_supervisor, hermes_default]

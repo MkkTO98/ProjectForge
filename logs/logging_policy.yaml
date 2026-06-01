@@ -1,0 +1,25 @@
+logging_policy:
+  purpose: raw_operational_record
+  levels:
+    minimal:
+      records:
+        - run_summary
+        - errors
+        - decisions_created
+    standard:
+      default: true
+      records:
+        - run_summary
+        - commands_executed
+        - files_changed
+        - tests_run
+        - escalations
+    forensic:
+      records:
+        - full_tool_outputs
+        - model_routing_decisions
+        - intermediate_plans
+        - failure_traces
+  separation_rule: >
+    logs contain raw events and operational records. Derived performance analysis,
+    success-rate calculations, and recommendations belong in metrics/.

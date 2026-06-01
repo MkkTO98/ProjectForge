@@ -1,0 +1,15 @@
+{
+  "purpose": "Build a reusable AI-assisted project scaffold.",
+  "success": "A generated project can be initialized, logged, permissioned, and version-controlled.",
+  "users": "Mikkel and local agents.",
+  "language": "Python by default.",
+  "storage": "Project-specific; defer unless required.",
+  "deployment": "Local first.",
+  "autonomy": "Balanced-to-aggressive with escalation rules.",
+  "git_remote": "Defer remote setup unless provided.",
+  "secrets": "No secrets committed; use environment variables.",
+  "testing": "At least smoke tests for v1.",
+  "logging": "MacroForge-like logging.",
+  "notifications": "Telegram later.",
+  "specialized_agents": "Generate if useful."
+}

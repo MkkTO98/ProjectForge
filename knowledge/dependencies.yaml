@@ -1,0 +1,46 @@
+dependencies:
+  new_project:
+    depends_on:
+      - templates
+      - config/setup_questionnaire.yaml
+      - config/sufficiency_policy.yaml
+      - workspace/workspace_policy.yaml
+    impacts:
+      - workspace/projects_registry.yaml
+      - artifacts/decisions/
+      - state/
+  context_system:
+    depends_on:
+      - state/
+      - artifacts/decisions/
+      - _SUMMARY.md files
+      - knowledge/
+    impacts:
+      - context/active_context.md
+      - context/compressed_context.md
+  dry_run_execution:
+    depends_on:
+      - simulation/dry_run_policy.yaml
+      - simulation/dry_run_schema.yaml
+      - permissions/
+      - confidence/
+    impacts:
+      - logs/
+      - metrics/
+      - recovery/
+  model_routing:
+    depends_on:
+      - models/registry.yaml
+      - models/routing.yaml
+      - models/selection_policy.yaml
+      - hardware/profile.yaml
+      - metrics/reports/
+    impacts:
+      - agent_assignment
+      - codex_escalation
+  workspace_registration:
+    depends_on:
+      - workspace/projects_registry.yaml
+      - tools/register_project.py
+    impacts:
+      - cross_project_coordination
