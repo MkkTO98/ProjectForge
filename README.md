@@ -23,8 +23,9 @@ Hermes should lead project creation. The static questionnaire in `config/setup_q
 - JSONL metrics, no SQLite default.
 - Specialized agents require user approval, then ProjectForge may generate them automatically.
 - Capability failures escalate current Hermes session -> stronger local model if configured -> Codex/premium after context audit -> human.
-- Context is summary-first. Raw logs and previous full conversations are audit/debug artifacts only and are excluded from normal task context.
-- Cloud/Codex context defaults to a small configurable target (`context/context_policy.yaml`, normally 8k tokens) and requires `context/context_audit.md` / `.json` before escalation.
+- ProjectForge is local-execution / cloud-governance: local models/tools handle implementation, refactoring, tests, debugging, summarization, retrieval, and routine docs; cloud models handle high-leverage governance such as architecture review, strategic planning, project audits, gap analysis, redesign, and consistency review.
+- Context is summary-first and expands incrementally. Raw logs and previous full conversations are audit/debug artifacts only and are excluded from normal task context.
+- Cloud/Codex context defaults to a compact governance target (`context/context_policy.yaml`, normally 8k-10k tokens), but justified project-wide reviews may use the larger configured project-wide review budget.
 
 ## Context and token policy
 
@@ -54,14 +55,21 @@ The builder writes:
 - `context/context_audit.json`: machine-readable audit.
 - `context/context_audit.md`: human-readable audit with included/excluded files and reasons.
 
-If cloud context exceeds the configured cloud budget, the build fails. Reduce context, summarize locally, or create an explicit decision artifact changing the budget.
+If compact cloud context exceeds the governance budget, first reduce context or summarize locally. If the work is a legitimate project-wide audit, redesign, strategic review, gap analysis, or consistency review, use project-wide review mode with an explicit justification rather than treating the larger context as an error:
 
-## Local-first routing
+```bash
+python3 tools/build_context.py --project . --task "quarterly architecture audit" --task-type project_audit --context-mode project_wide_review --review-justification "Need folder-level coverage across the project before a redesign decision" --model-target cloud --model-selected codex_supervisor --model-reason project_audit
+```
 
-Use local tools/models for summaries, log compression, code search, routine implementation, and tests. Codex/OpenAI/cloud models are reserved for architecture decisions, two failed local attempts, high ambiguity, explicit user request, or safety-critical destructive operations. `tools/select_model.py` enforces cloud escalation reasons and requires a valid context audit before returning a cloud model:
+Project-wide review mode still starts from summaries, excludes raw logs by default, records included/excluded evidence, and enforces the larger configurable project-wide budget.
+
+## Local-execution / cloud-governance routing
+
+Use local tools/models for implementation, refactoring, tests, debugging, summaries, log compression, code search, retrieval/indexing, and routine documentation. Use cloud models for architecture decisions, project audits, strategic planning, gap analysis, redesign, consistency review, two failed local attempts, high ambiguity, explicit user request, or safety-critical destructive operations. `tools/select_model.py` enforces cloud escalation reasons and requires a valid context audit before returning a cloud model:
 
 ```bash
 python3 tools/select_model.py --project . --agent planner --task architecture_decision --architecture-decision --context-audit context/context_audit.json --json
+python3 tools/select_model.py --project . --agent planner --task project_audit --governance --context-audit context/context_audit.json --json
 ```
 
 ## Debugging token overuse

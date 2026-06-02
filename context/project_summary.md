@@ -1,8 +1,8 @@
 # Project Summary
 
 ## Latest recorded run
-- Time: 2026-06-02T19:47:56.018331+00:00
+- Time: 2026-06-02T20:02:22.481463+00:00
 - Agent: hermes
 - Status: completed
-- Goal: Implement strict ProjectForge context/token architecture
-- Run ID: 4ebf51ed-cdd3-4d61-9eab-73c85d0c48d1
+- Goal: Transform ProjectForge into local-execution/cloud-governance system
+- Run ID: 6855d9fb-667f-4022-a7e4-37db09f6c51c

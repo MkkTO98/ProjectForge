@@ -21,6 +21,7 @@ def make_project(tmp_path: Path) -> Path:
         "context/latest_handoff.md": "# Latest Handoff\nShort handoff only.\n",
         "src/_SUMMARY.md": "# Folder Summary: src\n\n## Purpose\nSource code.\n",
         "tests/_SUMMARY.md": "# Folder Summary: tests\n\n## Purpose\nTests.\n",
+        "docs/_SUMMARY.md": "# Folder Summary: docs\n\n## Purpose\nDocumentation.\n",
         "src/app.py": "def main():\n    return 'ok'\n",
         "artifacts/tasks/TASK-001-demo.md": "# TASK-001 Demo\nAcceptance criteria.\n",
         "artifacts/decisions/DEC-001-demo.md": "# Decision\nUse compact context.\n",

@@ -15,7 +15,7 @@ ProjectForge exists to create and maintain boring, legible, reusable project env
 9. Metrics must be used to improve agents, tools, model routing, templates, and task workflows, but not to justify opaque automation.
 10. The system must remain understandable from ordinary files: Markdown, YAML, JSON, and JSONL.
 11. Raw logs are audit/debug artifacts only and must not be loaded into normal task context.
-12. Cloud/Codex model calls require a compact context audit under the configured cloud token budget unless a decision artifact explicitly authorizes an exception.
+12. Cloud/Codex model calls require a context audit. Compact governance calls use the configured governance budget; justified project-wide reviews, redesigns, strategic reviews, gap analyses, and architecture audits may use the larger configured project-wide review budget.
 
 ## Default operating posture
 

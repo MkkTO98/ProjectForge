@@ -31,6 +31,11 @@ ROUTINE_LOCAL_TASKS = {
 }
 CLOUD_ESCALATION_REASONS = {
     "architecture_decision",
+    "project_audit",
+    "strategic_planning",
+    "gap_analysis",
+    "redesign",
+    "consistency_review",
     "local_failed_twice",
     "high_ambiguity",
     "explicit_user_request",
@@ -69,12 +74,13 @@ def context_policy(project: Path) -> dict[str, int]:
     data = load_yaml(project / "context" / "context_policy.yaml").get("context_policy", {}) if (project / "context" / "context_policy.yaml").exists() else {}
     budgets = data.get("budgets", {})
     return {
-        "cloud_budget": int(budgets.get("cloud_model_tokens", min(int(data.get("default_budget_tokens", 24000)), 8000))),
+        "cloud_budget": int(budgets.get("cloud_governance_tokens", budgets.get("cloud_model_tokens", min(int(data.get("default_budget_tokens", 24000)), 10000)))),
+        "project_wide_budget": int(budgets.get("project_wide_review_tokens", 64000)),
         "local_budget": int(budgets.get("local_model_tokens", int(data.get("default_budget_tokens", 24000)))),
     }
 
 
-def validate_cloud_audit(project: Path, audit_arg: str, cloud_budget: int) -> tuple[bool, str]:
+def validate_cloud_audit(project: Path, audit_arg: str, cloud_budget: int, project_wide_budget: int) -> tuple[bool, str]:
     if not audit_arg:
         return False, "cloud model requires context audit report via --context-audit pointing to context/context_audit.json"
     path = Path(audit_arg)
@@ -89,10 +95,17 @@ def validate_cloud_audit(project: Path, audit_arg: str, cloud_budget: int) -> tu
         return False, "context audit does not confirm summaries were used"
     tokens = int(audit.get("estimated_tokens", 0))
     budget = int(audit.get("budget_tokens", cloud_budget))
-    effective_budget = min(budget, cloud_budget)
+    context_mode = str(audit.get("context_mode", "normal"))
+    review_justification = str(audit.get("review_justification", "")).strip()
+    if context_mode == "project_wide_review":
+        if not review_justification:
+            return False, "project-wide cloud review requires an audit review_justification"
+        effective_budget = min(budget, project_wide_budget)
+    else:
+        effective_budget = min(budget, cloud_budget)
     if tokens > effective_budget:
-        return False, f"audited context has {tokens} tokens, above cloud budget {effective_budget}"
-    return True, f"context audit passed ({tokens}/{effective_budget} tokens)"
+        return False, f"audited context has {tokens} tokens, above {context_mode} budget {effective_budget}"
+    return True, f"context audit passed ({tokens}/{effective_budget} tokens, mode={context_mode})"
 
 
 def main() -> int:
@@ -105,6 +118,7 @@ def main() -> int:
     p.add_argument("--escalation-reason", default="", help="Required for cloud/Codex selection")
     p.add_argument("--explicit-cloud", action="store_true")
     p.add_argument("--architecture-decision", action="store_true")
+    p.add_argument("--governance", action="store_true", help="Cloud governance task: audit, strategy, gap analysis, consistency review, redesign")
     p.add_argument("--destructive-safety", action="store_true")
     p.add_argument("--context-audit", default="")
     p.add_argument("--json", action="store_true")
@@ -123,6 +137,8 @@ def main() -> int:
     reasons: list[str] = []
     if ns.architecture_decision or ns.task == "architecture_decision":
         reasons.append("architecture_decision")
+    if ns.governance or ns.task in {"project_audit", "strategic_planning", "gap_analysis", "redesign", "consistency_review"}:
+        reasons.append(ns.task if ns.task else "project_audit")
     if ns.failure_count >= 2:
         reasons.append("local_failed_twice")
     if ns.ambiguity == "high":
@@ -144,7 +160,7 @@ def main() -> int:
         why = f"routine task `{ns.task}` uses local-first policy"
     elif cloud_allowed:
         threshold = agent_route.get("escalation_after_failures")
-        if threshold is not None and ns.failure_count < int(threshold) and not (ns.explicit_cloud or ns.architecture_decision or ns.ambiguity == "high" or ns.destructive_safety):
+        if threshold is not None and ns.failure_count < int(threshold) and not (ns.explicit_cloud or ns.architecture_decision or ns.governance or ns.ambiguity == "high" or ns.destructive_safety):
             local_candidates = [c for c in candidates if c in registry and is_local(registry, c)]
             choice = local_candidates[0] if local_candidates else next((c for c in candidates if c in registry), candidates[0] if candidates else "unknown")
             why = f"below failure threshold {threshold}; stayed local"
@@ -160,16 +176,16 @@ def main() -> int:
     audit_status = "not_required"
     audit_ok = True
     if choice in registry and is_cloud(registry, choice):
-        audit_ok, audit_status = validate_cloud_audit(project, ns.context_audit, budgets["cloud_budget"])
+        audit_ok, audit_status = validate_cloud_audit(project, ns.context_audit, budgets["cloud_budget"], budgets["project_wide_budget"])
         if not audit_ok:
-            result = {"model": choice, "allowed": False, "reason": why, "audit_status": audit_status, "cloud_budget_tokens": budgets["cloud_budget"]}
+            result = {"model": choice, "allowed": False, "reason": why, "audit_status": audit_status, "cloud_budget_tokens": budgets["cloud_budget"], "project_wide_budget_tokens": budgets["project_wide_budget"]}
             if ns.json:
                 print(json.dumps(result, indent=2))
             else:
                 print(f"ERROR: {audit_status}")
             return 2
 
-    result = {"model": choice, "allowed": True, "reason": why, "audit_status": audit_status, "cloud_budget_tokens": budgets["cloud_budget"]}
+    result = {"model": choice, "allowed": True, "reason": why, "audit_status": audit_status, "cloud_budget_tokens": budgets["cloud_budget"], "project_wide_budget_tokens": budgets["project_wide_budget"]}
     if ns.json:
         print(json.dumps(result, indent=2))
     else:

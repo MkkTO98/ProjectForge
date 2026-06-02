@@ -14,11 +14,13 @@ Before changing files, inspect the smallest sufficient set of authoritative proj
 
 Do not rely on hidden chat memory when a file-backed artifact exists.
 
-## Strict context/token policy
+## Context and model architecture
 
-ProjectForge is summary-first. Normal task context may include only project summaries, the active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short recent handoff. Normal context must not include raw logs, full session JSONL files, entire previous conversations, whole-project file dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+ProjectForge is local-execution / cloud-governance. Local tools and local models should do implementation, refactoring, testing, debugging, summarization, indexing, retrieval, documentation updates, and routine development whenever reasonably possible. Cloud models are reserved for high-leverage governance: architecture review, strategic planning, project audits, gap analysis, redesign, consistency review, high ambiguity, repeated local failure, explicit user request, or safety-critical reasoning.
 
-Use `tools/build_context.py` for explicit context bundles. It writes `context/context_audit.json` and `context/context_audit.md` with estimated tokens, included/excluded files and reasons, raw-log exclusion status, summary usage, and model selection reason. Cloud/Codex use requires this audit and must fit the configured cloud budget unless a new decision explicitly changes that budget.
+Context is summary-first and expands incrementally. Normal task context may include only project summaries, the active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short recent handoff. Normal context must not include raw logs, full session JSONL files, entire previous conversations, whole-project file dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+
+Use `tools/build_context.py` for explicit context bundles. It writes `context/context_audit.json` and `context/context_audit.md` with estimated tokens, included/excluded files and reasons, raw-log exclusion status, summary usage, context mode, review justification, and model selection reason. Cloud/Codex use requires this audit. Project-wide reviews are allowed and expected when justified; use `--context-mode project_wide_review --review-justification ...` instead of forcing every cloud task into the compact governance budget.
 
 Raw logs remain saved for audit/debugging, but agents may read them only for failure investigation, forensic, or incident work when summaries are insufficient.
 

@@ -13,11 +13,13 @@ Before changing files, inspect the smallest sufficient set of project files:
 5. Folder `_SUMMARY.md` files before exploring large directories.
 6. `context/latest_handoff.md` when present.
 
-## Strict context/token policy
+## Context and model architecture
 
-This project is summary-first. Normal task context may include only project summaries/current state, the active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short recent handoff. Normal context must not include raw logs, full session JSONL files, previous full conversations, whole-project dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+This project is local-execution / cloud-governance. Local tools and local models should do implementation, refactoring, testing, debugging, summarization, indexing, retrieval, documentation updates, and routine development whenever reasonably possible. Cloud models are reserved for high-leverage governance: architecture review, strategic planning, project audits, gap analysis, redesign, consistency review, high ambiguity, repeated local failure, explicit user request, or safety-critical reasoning.
 
-Use `tools/build_context.py` for explicit bundles and inspect `context/context_audit.md` before any cloud/Codex escalation. Raw logs remain saved for audit/debugging, but agents may read them only for failure investigation, forensic, or incident work when summaries are insufficient.
+Context is summary-first and expands incrementally. Normal task context may include only project summaries/current state, the active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short recent handoff. Normal context must not include raw logs, full session JSONL files, previous full conversations, whole-project dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+
+Use `tools/build_context.py` for explicit bundles and inspect `context/context_audit.md` before any cloud/Codex escalation. Project-wide reviews are allowed when justified; use `--context-mode project_wide_review --review-justification ...`. Raw logs remain saved for audit/debugging, but agents may read them only for failure investigation, forensic, or incident work when summaries are insufficient.
 
 ## Hermes operating model
 

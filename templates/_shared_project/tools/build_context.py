@@ -81,17 +81,21 @@ def policy_for(project: Path) -> dict[str, Any]:
     if "default_budget_tokens" in data and not budgets:
         budgets = {
             "local_model_tokens": int(data.get("default_budget_tokens", 24000)),
-            "cloud_model_tokens": min(int(data.get("default_budget_tokens", 24000)), 10000),
+            "cloud_governance_tokens": min(int(data.get("default_budget_tokens", 24000)), 10000),
         }
     return {
         "local_budget": int(budgets.get("local_model_tokens", 24000)),
-        "cloud_budget": int(budgets.get("cloud_model_tokens", 8000)),
-        "cloud_target": int(budgets.get("cloud_target_tokens", 8000)),
+        "cloud_budget": int(budgets.get("cloud_governance_tokens", budgets.get("cloud_model_tokens", 10000))),
+        "cloud_target": int(budgets.get("cloud_governance_target_tokens", budgets.get("cloud_target_tokens", 8000))),
+        "project_wide_budget": int(budgets.get("project_wide_review_tokens", 64000)),
+        "project_wide_target": int(budgets.get("project_wide_review_target_tokens", 32000)),
         "per_file_chars": int(data.get("limits", {}).get("explicit_source_file_chars", 20000)),
+        "project_wide_per_file_chars": int(data.get("limits", {}).get("project_wide_source_file_chars", data.get("limits", {}).get("explicit_source_file_chars", 20000))),
         "summary_chars": int(data.get("limits", {}).get("summary_file_chars", 4000)),
         "handoff_chars": int(data.get("limits", {}).get("handoff_chars", 3000)),
         "decision_chars": int(data.get("limits", {}).get("decision_record_chars", 6000)),
         "task_chars": int(data.get("limits", {}).get("active_task_chars", 8000)),
+        "project_wide_summary_limit": int(data.get("limits", {}).get("project_wide_folder_summary_count", 200)),
     }
 
 
@@ -154,8 +158,11 @@ def split_csv(value: str) -> list[str]:
     return [x.strip() for x in value.split(",") if x.strip()]
 
 
-def relevant_folder_summaries(project: Path, folders: list[str], files: list[str], task: str) -> list[tuple[str, str]]:
+def relevant_folder_summaries(project: Path, folders: list[str], files: list[str], task: str, context_mode: str = "normal", max_project_wide: int = 200) -> list[tuple[str, str]]:
     candidates: dict[str, str] = {}
+    if context_mode == "project_wide_review":
+        for summary in sorted(project.glob("**/_SUMMARY.md"))[:max_project_wide]:
+            candidates[rel_for(project, summary)] = "project-wide governance review folder map"
     for folder in folders:
         rel = folder.strip("/")
         if rel:
@@ -201,6 +208,8 @@ def write_markdown_audit(audit_path: Path, audit: dict[str, Any]) -> None:
         "",
         f"Task: {audit['task']}",
         f"Task type: {audit['task_type']}",
+        f"Context mode: {audit['context_mode']}",
+        f"Review justification: {audit['review_justification'] or 'not required'}",
         f"Model target: {audit['model_target']}",
         f"Model selected: {audit['model_selected']}",
         f"Model reason: {audit['model_reason']}",
@@ -224,7 +233,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Build ProjectForge strict summary-first context")
     ap.add_argument("--project", default=".")
     ap.add_argument("--task", default="general")
-    ap.add_argument("--task-type", default="normal", choices=["normal", "implementation", "architecture_decision", "failure_investigation", "forensic", "incident"])
+    ap.add_argument("--task-type", default="normal", choices=["normal", "implementation", "architecture_decision", "project_audit", "strategic_planning", "gap_analysis", "redesign", "failure_investigation", "forensic", "incident"])
+    ap.add_argument("--context-mode", default="normal", choices=["normal", "governance", "project_wide_review"], help="normal is compact; governance is cloud reasoning over selected context; project_wide_review allows larger justified audit context")
+    ap.add_argument("--review-justification", default="", help="Required for project_wide_review; explains why broader cloud context is worth the tokens")
     ap.add_argument("--task-file", default="", help="Active task artifact to include")
     ap.add_argument("--files", default="", help="Comma-separated explicit source files to include")
     ap.add_argument("--folders", default="", help="Comma-separated relevant folders whose _SUMMARY.md files should be included")
@@ -244,7 +255,10 @@ def main() -> int:
             subprocess.run([sys.executable, str(updater), "--project", str(project), "--core-only"], check=False)
 
     policy = policy_for(project)
-    budget = policy["cloud_budget"] if ns.model_target == "cloud" else policy["local_budget"]
+    if ns.context_mode == "project_wide_review":
+        budget = policy["project_wide_budget"]
+    else:
+        budget = policy["cloud_budget"] if ns.model_target == "cloud" else policy["local_budget"]
     explicit_files = split_csv(ns.files)
     folders = split_csv(ns.folders)
     explicit_decisions = split_csv(ns.decisions)
@@ -258,15 +272,18 @@ def main() -> int:
         add_if_exists(items, project, rel, "short recent handoff summary", "handoff", policy["handoff_chars"])
     if ns.task_file:
         add_if_exists(items, project, ns.task_file, "active task file", "active_task", policy["task_chars"])
-    for rel, reason in relevant_folder_summaries(project, folders, explicit_files, ns.task):
+    for rel, reason in relevant_folder_summaries(project, folders, explicit_files, ns.task, ns.context_mode, policy["project_wide_summary_limit"]):
         add_if_exists(items, project, rel, reason, "folder_summary", policy["summary_chars"])
     for rel, reason in relevant_decisions(project, explicit_decisions, ns.task):
         add_if_exists(items, project, rel, reason, "decision_record", policy["decision_chars"])
+    source_file_chars = policy["project_wide_per_file_chars"] if ns.context_mode == "project_wide_review" else policy["per_file_chars"]
     for rel in explicit_files:
-        add_if_exists(items, project, rel, "explicitly retrieved source file", "source_file", policy["per_file_chars"])
+        add_if_exists(items, project, rel, "explicitly retrieved source file", "source_file", source_file_chars)
 
     seen: set[str] = set()
-    sections = ["# Active Context Bundle", "", f"Task: {ns.task}", f"Task type: {ns.task_type}", ""]
+    sections = ["# Active Context Bundle", "", f"Task: {ns.task}", f"Task type: {ns.task_type}", f"Context mode: {ns.context_mode}", ""]
+    if ns.review_justification:
+        sections.extend(["Review justification:", ns.review_justification, ""])
     included: list[dict[str, Any]] = []
     raw_logs_excluded = True
     summaries_used = False
@@ -302,6 +319,8 @@ def main() -> int:
     audit = {
         "task": ns.task,
         "task_type": ns.task_type,
+        "context_mode": ns.context_mode,
+        "review_justification": ns.review_justification,
         "model_target": ns.model_target,
         "model_selected": ns.model_selected,
         "model_reason": ns.model_reason,
@@ -327,9 +346,12 @@ def main() -> int:
         audit_json.write_text(json.dumps(audit, indent=2), encoding="utf-8")
         write_markdown_audit(audit_md, audit)
 
-    print(json.dumps({"context": str(out), "audit": str(audit_json), "estimated_tokens": total_tokens, "budget_tokens": budget, "within_budget": within_budget}, indent=2))
+    print(json.dumps({"context": str(out), "audit": str(audit_json), "estimated_tokens": total_tokens, "budget_tokens": budget, "within_budget": within_budget, "context_mode": ns.context_mode}, indent=2))
+    if ns.context_mode == "project_wide_review" and not ns.review_justification:
+        print("ERROR: project_wide_review requires --review-justification so broad cloud context is intentional and auditable", file=sys.stderr)
+        return 2
     if ns.model_target == "cloud" and not within_budget:
-        print("ERROR: context exceeds configured cloud budget; summarize/retrieve less or explicitly escalate with a new budget decision", file=sys.stderr)
+        print("ERROR: context exceeds configured budget for this mode; narrow retrieval, summarize locally, or use justified project_wide_review", file=sys.stderr)
         return 2
     return 0
 
