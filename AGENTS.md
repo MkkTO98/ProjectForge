@@ -9,9 +9,18 @@ Before changing files, inspect the smallest sufficient set of authoritative proj
 1. `CONSTITUTION.md` — non-negotiable project rules.
 2. `state/active_goal.md` and `state/project_state.md` — current truth and active direction.
 3. Relevant `artifacts/decisions/` and `artifacts/tasks/` — durable choices and work contracts.
-4. `context/context_policy.yaml` and folder `_SUMMARY.md` files when context is large.
+4. `context/context_policy.yaml` and folder `_SUMMARY.md` files before exploring large directories.
+5. `context/latest_handoff.md` when present.
 
 Do not rely on hidden chat memory when a file-backed artifact exists.
+
+## Strict context/token policy
+
+ProjectForge is summary-first. Normal task context may include only project summaries, the active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short recent handoff. Normal context must not include raw logs, full session JSONL files, entire previous conversations, whole-project file dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+
+Use `tools/build_context.py` for explicit context bundles. It writes `context/context_audit.json` and `context/context_audit.md` with estimated tokens, included/excluded files and reasons, raw-log exclusion status, summary usage, and model selection reason. Cloud/Codex use requires this audit and must fit the configured cloud budget unless a new decision explicitly changes that budget.
+
+Raw logs remain saved for audit/debugging, but agents may read them only for failure investigation, forensic, or incident work when summaries are insufficient.
 
 ## Hermes-native operating model
 

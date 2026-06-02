@@ -1,12 +1,33 @@
 selection_policy:
-  principle: smallest_sufficient_model
+  principle: local_first_smallest_sufficient_model
   prefer_local: true
   avoid_largest_by_default: true
+
+  context_budgets:
+    local_model_tokens: 24000
+    cloud_model_tokens: 8000
+    cloud_target_tokens: 8000
+    cloud_requires_context_audit: true
+
+  local_first_tasks:
+    summaries: small_summarizer
+    log_compression: small_summarizer
+    code_search: local_tools_or_local_model
+    routine_implementation: local_coding_model_if_available
+    tests: local_tools
+
+  cloud_escalation_only_if:
+    - architecture_decision_needed
+    - local_model_fails_twice
+    - ambiguity_level_high
+    - user_explicitly_requests_cloud_model
+    - safety_critical_destructive_operation_requires_higher_reasoning
+
   escalation:
     capability_failure_chain:
       - current_model
       - stronger_local_model
-      - openai_codex_or_premium_model
+      - openai_codex_or_premium_model_after_audit
       - human
     human_first_for:
       - permission_required
@@ -16,10 +37,12 @@ selection_policy:
       - money_or_billing_risk
       - production_data_change
       - unresolved_specification
+
   task_size_policy:
     summarization: small_summarizer
     folder_summary_update: small_summarizer
+    log_compression: small_summarizer
     routine_coding: coder_default
     debugging: coder_or_reviewer
-    architecture_review: planner_or_premium
-    repeated_failure: escalate
+    architecture_review: planner_or_premium_after_audit
+    repeated_failure: escalate_after_local_failures_and_context_audit

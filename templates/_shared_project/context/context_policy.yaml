@@ -1,23 +1,74 @@
 context_policy:
-  default_budget_tokens: 24000
-  max_budget_tokens: 64000
-  mode: smallest_sufficient
-  include_order:
-    - CONSTITUTION.md
-    - instructions/GENERAL_INSTRUCTIONS.md
-    - state/active_goal.md
-    - state/project_state.md
-    - state/architecture.md
-    - artifacts/decisions/relevant
-    - folder_summaries/relevant
-    - source_files/relevant
-    - logs/recent_if_needed
-    - metrics/relevant_if_needed
+  mode: summary_first_smallest_sufficient
+
+  budgets:
+    local_model_tokens: 24000
+    cloud_model_tokens: 8000
+    cloud_target_tokens: 8000
+    max_cloud_model_tokens_without_decision: 10000
+
+  normal_context_may_include:
+    - project_summary
+    - active_task_file
+    - relevant_folder_summaries
+    - relevant_decision_records
+    - explicitly_retrieved_source_files
+    - short_recent_handoff_summary
+
+  normal_context_must_not_include:
+    - raw_logs
+    - entire_previous_conversations
+    - full_session_jsonl_files
+    - whole_project_file_dumps
+    - unrelated_folders
+    - large_tool_outputs
+    - generated_artifacts_unless_explicitly_relevant
+
+  retrieval_order:
+    - read_project_summary
+    - identify_relevant_folders
+    - read_relevant_folder_summaries
+    - read_relevant_decision_records
+    - retrieve_only_relevant_files
+    - read_raw_logs_only_for_failure_investigation_or_summary_gap
+
   folder_summaries:
     enabled: true
     filename: _SUMMARY.md
     maintained_by: context_manager
+    use_before_deep_file_reads: true
+
+  limits:
+    summary_file_chars: 4000
+    handoff_chars: 3000
+    active_task_chars: 8000
+    decision_record_chars: 6000
+    explicit_source_file_chars: 20000
+
+  raw_logs:
+    stored_for: audit_debugging_only
+    include_in_normal_context: false
+    allowed_contexts:
+      - failure_investigation
+      - forensic
+      - incident
+    rule: Raw logs are never included in normal context bundles.
+
+  cloud_audit:
+    required_before_cloud_model: true
+    report_paths:
+      json: context/context_audit.json
+      markdown: context/context_audit.md
+    required_fields:
+      - total_estimated_tokens
+      - included_files_with_reasons
+      - excluded_files_with_reasons
+      - raw_logs_excluded
+      - summaries_used
+      - model_selected_and_reason
+
   compression:
     summarize_large_files: true
     large_file_line_threshold: 250
     prefer_summaries_for_non_target_folders: true
+    summaries_and_log_compression_use_local_model: true

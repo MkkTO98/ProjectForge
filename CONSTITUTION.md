@@ -9,11 +9,13 @@ ProjectForge exists to create and maintain boring, legible, reusable project env
 3. Agents must not silently invent project-wide policy. If a decision is absent, ambiguous, or conflicting, use deferred specification and clarification severity rules.
 4. GitHub pushes require human approval by default. Auto-commit is allowed only after validation passes and policy permits it.
 5. Dry-run/preflight is mandatory according to the risk-scaled dry-run policy in `simulation/dry_run_policy.yaml`.
-6. Capability failures escalate to stronger models before humans. Permission, safety, credential, destructive, monetary, or strategic decisions escalate to humans.
+6. Capability failures escalate to stronger local models before cloud models and before humans. Permission, safety, credential, destructive, monetary, or strategic decisions escalate to humans.
 7. Specialized agents are never created silently. ProjectForge may request one with a short explanation; after approval, it may generate the agent automatically.
 8. Skills should be small and composable by default. Large playbooks are allowed only for complex domains.
 9. Metrics must be used to improve agents, tools, model routing, templates, and task workflows, but not to justify opaque automation.
 10. The system must remain understandable from ordinary files: Markdown, YAML, JSON, and JSONL.
+11. Raw logs are audit/debug artifacts only and must not be loaded into normal task context.
+12. Cloud/Codex model calls require a compact context audit under the configured cloud token budget unless a decision artifact explicitly authorizes an exception.
 
 ## Default operating posture
 

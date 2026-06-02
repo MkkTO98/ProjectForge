@@ -14,6 +14,12 @@ ProjectForge is a reusable, Hermes-native project initializer for agent-assisted
 - Context budgeting uses auto-maintained folder summaries as inputs.
 - Capability failures escalate current Hermes session -> stronger local model if configured -> Codex/premium model -> human.
 
+## Current context-control hardening
+- `tools/build_context.py` now builds strict summary-first bundles, estimates tokens, excludes raw logs/session transcripts from normal context, writes `context/context_audit.json` and `context/context_audit.md`, and hard-fails cloud-target context above the configured budget.
+- `tools/select_model.py` now enforces local-first routing and requires an allowed escalation reason plus a passing context audit before returning a cloud/Codex model.
+- `tools/log_run.py` preserves raw JSONL audit records while also maintaining compact derived session summaries, `context/latest_handoff.md`, and `context/project_summary.md`.
+- `context/context_policy.yaml`, model routing/selection policies, logging policy, AGENTS/CONSTITUTION/README/instructions, and generated-project templates now state the raw-log exclusion and cloud audit requirements.
+
 ## Current v6 additions
 - Root ProjectForge `AGENTS.md` for Hermes/local agent startup instructions.
 - Generated-project `AGENTS.md` in `templates/_shared_project/`.

@@ -11,6 +11,13 @@ Before changing files, inspect the smallest sufficient set of project files:
 3. Relevant `artifacts/decisions/` and `artifacts/tasks/` — durable choices and active work.
 4. `instructions/GENERAL_INSTRUCTIONS.md` and `context/context_policy.yaml` when work is nontrivial.
 5. Folder `_SUMMARY.md` files before exploring large directories.
+6. `context/latest_handoff.md` when present.
+
+## Strict context/token policy
+
+This project is summary-first. Normal task context may include only project summaries/current state, the active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short recent handoff. Normal context must not include raw logs, full session JSONL files, previous full conversations, whole-project dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+
+Use `tools/build_context.py` for explicit bundles and inspect `context/context_audit.md` before any cloud/Codex escalation. Raw logs remain saved for audit/debugging, but agents may read them only for failure investigation, forensic, or incident work when summaries are insufficient.
 
 ## Hermes operating model
 
