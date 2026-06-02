@@ -1,7 +1,10 @@
 workspace:
   name: default_projectforge_workspace
   description: Shared registry for projects that may reuse ProjectForge conventions.
-projects: []
+projects:
+- name: MacroForge
+  path: /home/mkkto/srv/projectforge/workspace/projects/macroforge
+  mode: hybrid_inheritance
 shared_defaults:
   models: ../models/registry.yaml
   model_routing: ../models/routing.yaml

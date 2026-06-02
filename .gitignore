@@ -24,9 +24,10 @@ question_queue/archive/*
 !question_queue/answered/.gitkeep
 !question_queue/archive/.gitkeep
 
-# Generated projects and workspace checkouts
+# Generated projects, workspace checkouts, and workspace-local backups
 /generated/
 workspace/projects/*
+workspace/backups/
 !workspace/projects/_SUMMARY.md
 !workspace/projects/.gitkeep
 
