@@ -1,8 +1,10 @@
 # Folder Summary: agents
 
-Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `agents`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `auditor.md`
 - `bootstrapper.md`
@@ -13,9 +15,10 @@ Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. A
 - `researcher.md`
 - `reviewer.md`
 - `summarizer.md`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.

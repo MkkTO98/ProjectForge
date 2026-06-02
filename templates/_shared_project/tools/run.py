@@ -18,7 +18,7 @@ def load_yaml(path: Path):
     text = path.read_text(encoding="utf-8")
     if yaml:
         return yaml.safe_load(text) or {}
-    raise RuntimeError("PyYAML is required for tools/run.py. Install with: python3 -m pip install pyyaml")
+    raise RuntimeError("PyYAML is required for tools/run.py. Use `uvx --with pyyaml python tools/run.py ...` for one-shot execution, or run `uv venv && uv pip install pyyaml`.")
 
 
 def command_string(args: list[str]) -> str:

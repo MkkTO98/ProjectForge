@@ -1,8 +1,10 @@
 # Folder Summary: skills
 
-Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `skills`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `clarification-queue.md`
 - `command-permissions.md`
@@ -17,9 +19,10 @@ Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. A
 - `project-bootstrap.md`
 - `state-update.md`
 - `structured-questionnaire.md`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.

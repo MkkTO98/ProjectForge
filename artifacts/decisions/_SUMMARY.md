@@ -1,8 +1,10 @@
 # Folder Summary: artifacts/decisions
 
-Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `artifacts/decisions`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `D-20260530-clarification-severity-levels.md`
 - `D-20260530-deferred-specification-policy.md`
@@ -13,10 +15,12 @@ Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. A
 - `D-20260530-structured-questionnaire-and-sufficiency.md`
 - `D-20260531-v4-workspace-confidence-and-simplification.md`
 - `D-20260601-hermes-native-project-creation.md`
+- `D-20260601-projectforge-batch2-generated-ux.md`
 - `D-20260601-projectforge-hardening.md`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.

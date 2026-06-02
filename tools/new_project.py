@@ -18,6 +18,9 @@ except Exception:
     yaml = None
 
 UNDECIDED_DEFAULT = {"", "?", "unsure", "undecided", "ask later", "project specific", "project-specific", "later"}
+SKIP_DIRS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "htmlcov", "dist", "build"}
+SKIP_SUFFIXES = (".pyc", ".pyo", ".pyd")
+SKIP_NAMES = {".coverage"}
 FALLBACK_QUESTIONS = [
     {"id":"purpose", "text":"What is the project's primary purpose?", "severity":"L3", "required_for_bootstrap": True, "section": "identity"},
     {"id":"success", "text":"What counts as success for v1?", "severity":"L3", "required_for_bootstrap": True, "section": "identity"},
@@ -69,10 +72,17 @@ def validate_answers(answers: dict, questions: list[dict], undecided_values: set
     return []
 
 
+def should_skip_template_artifact(path: Path) -> bool:
+    parts = set(path.parts)
+    return bool(parts & SKIP_DIRS) or path.name in SKIP_NAMES or path.name.endswith(SKIP_SUFFIXES) or path.name.endswith(".egg-info")
+
+
 def copy_tree_render(src: Path, dst: Path, mapping: dict[str,str]):
     if not src.exists(): return
     for p in src.rglob('*'):
         rel = p.relative_to(src)
+        if should_skip_template_artifact(rel):
+            continue
         rel_s = str(rel)
         for k,v in mapping.items(): rel_s = rel_s.replace('{'+k+'}', v)
         target = dst/rel_s

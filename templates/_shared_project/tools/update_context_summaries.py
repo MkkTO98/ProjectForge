@@ -5,28 +5,78 @@ Refresh policy: triggered by folder changes, completed tasks, or context build.
 This tool is the canonical summary maintainer; do not maintain a second summary tool.
 Tracked summaries are deterministic: volatile refresh timestamps belong in logs, not
 in `_SUMMARY.md` files.
+
+Only the `## Contains` inventory is generated. Curated `## Purpose`,
+`## Active Work`, and `## Needs Attention` sections are preserved so routine
+hygiene does not erase useful agent context.
 """
 from __future__ import annotations
-import argparse, os
+import argparse, os, re
 from pathlib import Path
 
-IGNORE = {'.git','__pycache__','.venv','node_modules','.pytest_cache','generated'}
+IGNORE = {'.git','__pycache__','.venv','node_modules','.pytest_cache','generated','.mypy_cache','.ruff_cache','htmlcov','dist','build'}
 DYNAMIC_SUFFIXES = ('-dry-run.md',)
 CORE_DIRS = {
     Path('.'), Path('state'), Path('artifacts'), Path('artifacts/decisions'), Path('artifacts/tasks'),
     Path('docs'), Path('instructions'), Path('context'), Path('tools'), Path('permissions'),
     Path('logs'), Path('metrics'), Path('simulation'), Path('question_queue'), Path('knowledge'), Path('recovery')
 }
+GENERATED_BEGIN = '<!-- PROJECTFORGE:BEGIN-CONTAINS -->'
+GENERATED_END = '<!-- PROJECTFORGE:END-CONTAINS -->'
+
+
+def entries_for(d: Path) -> list[str]:
+    return [
+        p.name + ('/' if p.is_dir() else '')
+        for p in sorted(d.iterdir())
+        if p.name not in IGNORE
+        and p.name != '_SUMMARY.md'
+        and not any(p.name.endswith(suffix) for suffix in DYNAMIC_SUFFIXES)
+    ]
+
+
+def section(text: str, heading: str, default: str) -> str:
+    pattern = rf'(?ms)^## {re.escape(heading)}\n(.*?)(?=^## |\Z)'
+    match = re.search(pattern, text)
+    if not match:
+        return default.strip()
+    content = match.group(1).strip()
+    # Old generated summaries used generic boilerplate. Replace that with durable defaults.
+    generic = {
+        'Purpose': ['Auto-maintained context-map summary', 'TODO: Maintain a concise description'],
+        'Active Work': ['Not specified.'],
+        'Needs Attention': ['Keep this summary current when changing this folder.'],
+    }
+    if any(token in content for token in generic.get(heading, [])):
+        return default.strip()
+    return content or default.strip()
+
+
+def legacy_purpose(text: str) -> str | None:
+    match = re.search(r'(?m)^Purpose:\s*(.*)$', text)
+    if not match:
+        return None
+    value = match.group(1).strip()
+    if 'Auto-maintained context-map summary' in value:
+        return None
+    return value or None
 
 
 def summarize_content(d: Path, root: Path) -> str:
-    entries = [p.name + ('/' if p.is_dir() else '') for p in sorted(d.iterdir()) if p.name not in IGNORE and p.name != '_SUMMARY.md' and not any(p.name.endswith(suffix) for suffix in DYNAMIC_SUFFIXES)]
     rel = '.' if d == root else str(d.relative_to(root))
-    content = f"# Folder Summary: {rel}\n\n"
-    content += "Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.\n\n"
-    content += "## Contains\n" + ''.join(f"- `{e}`\n" for e in entries[:120])
-    content += "\n## Active Work\n- Not specified.\n\n## Needs Attention\n- Keep this summary current when changing this folder.\n"
-    return content
+    existing = (d / '_SUMMARY.md').read_text(encoding='utf-8') if (d / '_SUMMARY.md').exists() else ''
+    purpose_default = f'This folder is part of the ProjectForge file-backed operating system for `{rel}`.'
+    purpose = section(existing, 'Purpose', legacy_purpose(existing) or purpose_default)
+    active = section(existing, 'Active Work', '- No folder-specific active work recorded.')
+    needs = section(existing, 'Needs Attention', '- No folder-specific issues recorded.')
+    contains = ''.join(f'- `{e}`\n' for e in entries_for(d)[:120]) or '- Empty or placeholder-only folder.\n'
+    return (
+        f'# Folder Summary: {rel}\n\n'
+        f'## Purpose\n{purpose}\n\n'
+        f'## Contains\n{GENERATED_BEGIN}\n{contains}{GENERATED_END}\n\n'
+        f'## Active Work\n{active}\n\n'
+        f'## Needs Attention\n{needs}\n'
+    )
 
 
 def should_include(p: Path, root: Path, max_depth: int, core_only: bool) -> bool:

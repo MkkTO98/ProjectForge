@@ -1,13 +1,16 @@
 # Folder Summary: artifacts/tasks
 
-Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `artifacts/tasks`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `T-001-verify-hermes-local-integration.md`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.

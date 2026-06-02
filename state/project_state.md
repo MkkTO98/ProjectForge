@@ -27,8 +27,10 @@ ProjectForge is a reusable, Hermes-native project initializer for agent-assisted
 - Project scaffolding validates must-pause sufficiency items, derives paths from the active ProjectForge root, and avoids registering noncanonical temp outputs by default.
 - Generated projects receive setup-answer-derived state files and no longer receive the factory-only `tools/new_project.py`.
 - Workspace registry schema is clean YAML with no `raw` fallback or pytest temp entries.
-- Context summary refreshes are deterministic and avoid volatile timestamps/ignored dry-run report listings.
-- Tests now exercise registry side effects, generated coherence, runner behavior, stale questionnaire language, and non-mutating verification behavior.
+- Context summary refreshes are deterministic, preserve curated Purpose/Active Work/Needs Attention sections, and avoid volatile timestamps/ignored dry-run report listings.
+- Tests now exercise registry side effects, generated coherence, generated wrapper behavior across all templates, runtime-cache filtering, stale questionnaire language, uv-first install guidance, and non-mutating verification behavior.
+- Generated templates use uv/venv-first setup guidance on this PEP 668/no-pip host.
+- Generated agent prompts now tell Hermes sessions to use Hermes tools directly and reserve `tools/run.py` for manual or explicitly audited wrapper use.
 
 ## Earlier additions preserved
 - Workspace layer for multi-project coordination.

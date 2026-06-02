@@ -23,7 +23,6 @@ levels:
       - git status
       - git diff
       - git log
-      - git branch
 
       # versions / testing
       - python3 --version
@@ -31,12 +30,9 @@ levels:
       - pytest
       - python3 -m pytest
 
-      # ProjectForge safe operations
+      # ProjectForge read-only safe operations
       - python3 tools/check_coherence.py
-      - python3 tools/build_context.py
       - python3 tools/validate_dry_run.py
-      - python3 tools/update_context_summaries.py
-      - python3 tools/review_metrics.py
       - python3 tools/select_model.py
 
   review:
@@ -54,11 +50,15 @@ levels:
       # interpreter execution
       - python3
 
-      # git local mutation
+      # git local inspection/mutation with possible state changes
+      - git branch
       - git add
       - git commit
 
       # ProjectForge operational mutation
+      - python3 tools/build_context.py
+      - python3 tools/update_context_summaries.py
+      - python3 tools/review_metrics.py
       - python3 tools/orchestrator_hygiene.py
       - python3 tools/escalate.py
 

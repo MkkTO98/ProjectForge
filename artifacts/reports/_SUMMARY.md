@@ -1,14 +1,17 @@
 # Folder Summary: artifacts/reports
 
-Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `artifacts/reports`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `R-20260530-v2-gap-audit.md`
 - `R-20260531-v5-coherence-report.md`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.

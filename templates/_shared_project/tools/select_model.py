@@ -9,7 +9,7 @@ except Exception:
 
 def load_yaml(path: Path):
     if yaml is None:
-        raise RuntimeError("PyYAML required: python3 -m pip install pyyaml")
+        raise RuntimeError("PyYAML required. Use `uvx --with pyyaml python tools/select_model.py ...` for one-shot execution, or run `uv venv && uv pip install pyyaml`.")
     return yaml.safe_load(path.read_text(encoding='utf-8')) or {}
 
 def main() -> int:

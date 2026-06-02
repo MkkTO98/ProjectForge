@@ -1,8 +1,10 @@
 # Folder Summary: workspace
 
-Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. Agents may refine Purpose/Active Work/Needs, but must preserve the basic sections.
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `workspace`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `cross_project_dependencies.yaml`
 - `projects/`
 - `projects_registry.yaml`
@@ -13,9 +15,10 @@ Purpose: Auto-maintained context-map summary used by `tools/build_context.py`. A
 - `shared_notifications/`
 - `shared_skills/`
 - `workspace_policy.yaml`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.
