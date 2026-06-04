@@ -63,5 +63,7 @@ Before reporting done:
 
 1. Run the narrowest meaningful tests/checks.
 2. Run `python3 tools/check_coherence.py --project . --json` for ProjectForge-level changes when possible.
-3. Update state, task, handoff, and summaries when the change affects future agents.
-4. Report what changed, why, where, and the exact verification output.
+3. Update state, task, handoff, and affected folder summaries when the change affects future agents.
+4. Prefer affected-only summary refresh. After refreshing, inspect affected `_SUMMARY.md` files for stale curated sections such as `Active Work`, `Needs Attention`, or task status notes; patch them manually when the summary tool only updated generated inventory blocks.
+5. Run final verification after governance/summary edits, not only before them.
+6. Report what changed, why, where, and the exact verification output.

@@ -1,7 +1,10 @@
 # Active Goal
 
 Current objective:
-- Maintain ProjectForge v1 as the reusable bootstrap scaffold for future AI-assisted projects.
+- Rebuild MacroForge as a fresh ProjectForge-managed project from the completed reconstruction report, using current ProjectForge templates and compact curated context before any major implementation.
+
+Immediate next action:
+- Start a fresh Hermes session from `/home/mkkto/srv/projectforge`, read `context/latest_handoff.md` and `workspace/macroforge-reconstruction-report-20260602.md`, then initialize MacroForge at `workspace/projects/macroforge` with the `python_data_project` template.
 
 Definition of done for ProjectForge v1:
 - Can initialize a new project from templates.

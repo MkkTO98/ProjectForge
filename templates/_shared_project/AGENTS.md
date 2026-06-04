@@ -45,6 +45,13 @@ Project-local tools are helpers, not a replacement for Hermes:
 
 Before summarizing changes, run relevant verification. For code changes, run the applicable tests. For structural ProjectForge changes, run coherence checks when available.
 
+When completing a task, follow the project `context/context_policy.yaml` task-completion policy:
+
+- Update the task artifact outcome/status, state files, and latest handoff when the change affects future agents.
+- Refresh only affected folder `_SUMMARY.md` files when possible, not the whole project by default.
+- Inspect refreshed summaries for stale curated sections such as `Active Work`, `Needs Attention`, and task status notes; patch them manually if needed.
+- Run final verification after task/state/handoff/summary edits.
+
 Every substantive handoff should include:
 
 - Context used

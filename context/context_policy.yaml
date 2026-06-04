@@ -64,6 +64,18 @@ context_policy:
     maintained_by: context_manager
     use_before_deep_file_reads: true
 
+  task_completion:
+    update_summaries: true
+    summary_mode: affected_only
+    require_summary_inspection: true
+    require_final_verification_after_summary_updates: true
+    rule: >-
+      When a task is completed, update task outcome/status, state, handoff,
+      and affected folder summaries. Prefer affected-only summary refresh;
+      inspect refreshed summaries for stale curated Active Work, Needs
+      Attention, or task status sections; patch manually if needed; then run
+      final verification after governance and summary edits.
+
   limits:
     summary_file_chars: 4000
     handoff_chars: 3000
