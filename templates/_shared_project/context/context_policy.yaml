@@ -218,7 +218,7 @@ context_policy:
       - retired
     feedback_loop:
       adoption_outcomes_recorded_in_project: architecture/architectureharvest/
-      broadly_useful_outcomes_mirrored_to: MetaHarvest/adoption_log/
+      broadly_useful_outcomes_mirrored_to: external_metaharvest_provider/adoption_log/
     negative_rules:
       - never_force_implementation
       - never_bypass_project_governance

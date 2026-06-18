@@ -10,7 +10,7 @@ Completed relocation outcome:
 - ProjectForge operates at `/home/mkkto/srv/EIP/projects/ProjectForge`.
 - MacroForge operates at `/home/mkkto/srv/EIP/projects/MacroForge`.
 - MetaHarvest operates at `/home/mkkto/srv/EIP/projects/MetaHarvest`.
-- Obsolete nested MacroForge copy was archived under ProjectForge archive.
+- Obsolete nested MacroForge copy was removed from ProjectForge after relocation cleanup.
 - Stale generated ProjectForge `context/active_context.md` was archived under ProjectForge context archive.
 - Durable retrospective created at `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
 

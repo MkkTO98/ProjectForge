@@ -26,7 +26,7 @@ ProjectForge defines reusable task artifact, state, handoff, summary, and verifi
 Temporary task context is stored in `state/active_goal.md`, `artifacts/tasks/`, and run logs. MetaHarvest is not consulted for ordinary implementation tasks that do not alter architecture.
 
 ## 6. Reusable Knowledge Intelligence Layer
-`MetaHarvest/` is currently hosted within ProjectForge as a file-backed librarian, reference system, evidence repository, and advisory subsystem. Its conceptual long-term name is MetaHarvest because its durable purpose now covers reusable non-domain knowledge, not architecture patterns alone. It is conceptually separable and potentially capable of future independent operation, but it is not split into a separate project in the current architecture and the physical directory remains `MetaHarvest/`.
+MetaHarvest is an autonomous sibling EIP project at `/home/mkkto/srv/EIP/projects/MetaHarvest` and ProjectForge consumes it through an external provider interface. ProjectForge must not host a full MetaHarvest project tree. The generated-project path `architecture/architectureharvest/` remains a compatibility path for historical ArchitectureHarvest lineage and generated-project artifacts.
 
 MetaHarvest discovers, preserves, analyzes, organizes, and recommends reusable non-domain knowledge: architecture patterns, interface patterns, shared concepts, shared vocabulary, shared methodologies, decision patterns, governance patterns, heuristics, anti-patterns, and failure patterns. It stores problem-first retrieval indexes, synthesized pattern records, contradiction records, outcome models, relevance maps, advisory recommendations, rejection/retirement records, adoption outcomes, audits, and reports.
 

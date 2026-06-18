@@ -15,8 +15,8 @@ This folder is part of the ProjectForge file-backed operating system for `state`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- `active_goal.md` and `project_state.md` now point to the bounded ecosystem-autonomy doctrine/schema alignment and record explicit non-actions.
+- Active state now records the EIP sibling-project boundary: ProjectForge uses the external MetaHarvest provider, no embedded MetaHarvest fallback, and no obsolete nested MacroForge archive.
 
 ## Needs Attention
 - The stale generated `context/active_context.md` warning remains non-blocking; regenerate a task-specific context bundle before future context/model-routing work.
-- Broad uncommitted ProjectForge/MetaHarvest/Continuity changes remain in the working tree; use hunk-level staging and preserve commit boundaries.
+- Broad uncommitted ProjectForge recovery changes may remain in the working tree; use hunk-level staging and preserve commit boundaries.

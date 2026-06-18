@@ -30,7 +30,6 @@ projectforge:
     provider: external
     status: active
     path: /home/mkkto/srv/EIP/projects/MetaHarvest
-    transition_fallback_path: MetaHarvest
     interface_version: 1
     compatibility:
       historical_name: ArchitectureHarvest

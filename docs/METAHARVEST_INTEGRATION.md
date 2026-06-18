@@ -16,7 +16,7 @@ Current implementation state:
 copy-first extraction executed to neutral EIP project location
 ```
 
-ProjectForge may be configured for an external MetaHarvest provider. After copy-first extraction, ProjectForge tooling uses `/home/mkkto/srv/EIP/projects/MetaHarvest` as the active provider and keeps the in-tree `MetaHarvest/` directory only as a transition fallback/reference until later cleanup is explicitly approved.
+ProjectForge may be configured for an external MetaHarvest provider. ProjectForge tooling uses `/home/mkkto/srv/EIP/projects/MetaHarvest` as the active provider and does not silently fall back to an embedded MetaHarvest copy while provider status is active.
 
 ## ProjectForge-owned responsibilities
 
@@ -68,7 +68,7 @@ retrieval/retrieval_index.yaml
 retrieval/recommendation_rules.yaml
 ```
 
-ProjectForge root coherence validates that the active external provider path exists and exposes the required provider interface. The in-tree `MetaHarvest/` directory is a transition fallback/reference only; normal active-provider validation should resolve through `/home/mkkto/srv/EIP/projects/MetaHarvest`.
+ProjectForge root coherence validates that the active external provider path exists and exposes the required provider interface. When provider status is active, validation must resolve through `/home/mkkto/srv/EIP/projects/MetaHarvest` and must not silently fall back to an embedded ProjectForge copy.
 
 ProjectForge tests should validate the interface contract, not assume ownership of all MetaHarvest internals.
 

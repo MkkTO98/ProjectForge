@@ -24,10 +24,10 @@ MetaHarvest `source_registry.yaml` points analyzed source `local_path` entries a
 
 ## Cleanup completed
 
-- Archived obsolete nested MacroForge copy from:
-  - `/home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/macroforge`
-- Archive destination:
-  - `/home/mkkto/srv/EIP/projects/ProjectForge/archive/obsolete-project-copies/macroforge-relocation-obsolete`
+- Removed obsolete nested MacroForge copy from ProjectForge after confirming current MacroForge operates at `/home/mkkto/srv/EIP/projects/MacroForge`.
+- Relocation evidence remains in:
+  - `/home/mkkto/srv/EIP/projects/ProjectForge/artifacts/reports/R-20260618-eip-relocation-retrospective.md`
+  - `/home/mkkto/srv/EIP/recovery/backups/20260618_090131`
 - Archived stale generated ProjectForge context bundle from:
   - `/home/mkkto/srv/EIP/projects/ProjectForge/context/active_context.md`
 - Archive destination:

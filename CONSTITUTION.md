@@ -274,7 +274,7 @@ These names are non-binding architectural context only unless separately approve
 
 ## MetaHarvest / MetaHarvest advisory rule
 
-MetaHarvest is currently ProjectForge's hosted advisory subsystem. Its conceptual long-term name is MetaHarvest because its durable purpose now covers reusable non-domain knowledge, not architecture patterns alone. The physical directory remains `MetaHarvest/`; this conceptual rename does not split projects, create a new project, relocate files, or grant governance authority.
+MetaHarvest is an autonomous sibling EIP project at `/home/mkkto/srv/EIP/projects/MetaHarvest`. ProjectForge consumes MetaHarvest through the configured external provider interface and must not host a full MetaHarvest project tree. The `architecture/architectureharvest/` generated-project path remains a compatibility path for historical ArchitectureHarvest lineage and generated-project artifacts.
 
 MetaHarvest is a librarian, reference system, evidence repository, and advisory knowledge system. It discovers, preserves, analyzes, organizes, and recommends reusable non-domain knowledge including architecture patterns, interface patterns, shared concepts, shared vocabulary, shared methodologies, decision patterns, governance patterns, heuristics, anti-patterns, and failure patterns. It is consulted for architectural and reusable-knowledge judgment, not daily implementation control.
 

@@ -22,13 +22,7 @@ def context_policy() -> dict:
 
 def resolve_provider_root() -> Path:
     provider = projectforge_config()["metaharvest_provider"]
-    configured = Path(provider["path"])
-    if configured.exists():
-        return configured
-    if provider.get("status") == "copy_pending":
-        fallback = Path(provider["transition_fallback_path"])
-        return fallback if fallback.is_absolute() else ROOT / fallback
-    return configured
+    return Path(provider["path"])
 
 
 def test_metaharvest_provider_interface_configured_for_external_copy_first_cutover():
@@ -36,7 +30,7 @@ def test_metaharvest_provider_interface_configured_for_external_copy_first_cutov
     assert provider["provider"] == "external"
     assert provider["status"] == "active"
     assert provider["path"] == "/home/mkkto/srv/EIP/projects/MetaHarvest"
-    assert provider["transition_fallback_path"] == "MetaHarvest"
+    assert "transition_fallback_path" not in provider
     assert provider["compatibility"]["generated_project_path"] == "architecture/architectureharvest"
     assert provider["compatibility"]["source_cache_root"] == "/home/mkkto/srv/EIP/projects/ProjectForge/external_sources"
     assert provider["compatibility"]["source_cache_policy"] == "transitional_projectforge_hosted_cache"
@@ -48,7 +42,7 @@ def test_metaharvest_provider_interface_configured_for_external_copy_first_cutov
     assert policy["provider"] == "external"
     assert policy["provider_status"] == "active"
     assert policy["root_location"] == "/home/mkkto/srv/EIP/projects/MetaHarvest"
-    assert policy["transition_fallback_location"] == "MetaHarvest"
+    assert "transition_fallback_location" not in policy
     assert policy["generated_project_location"] == "architecture/architectureharvest"
 
 
@@ -81,7 +75,7 @@ def test_metaharvest_governance_text_and_templates_parse():
         ROOT / "AGENTS.md",
         ROOT / "README.md",
         ROOT / "instructions" / "GENERAL_INSTRUCTIONS.md",
-        ROOT / "MetaHarvest" / "INTEGRATION.md",
+        resolve_provider_root() / "INTEGRATION.md",
         ROOT / "docs" / "METAHARVEST_INTEGRATION.md",
         ROOT / "templates" / "_shared_project" / "AGENTS.md",
     ]

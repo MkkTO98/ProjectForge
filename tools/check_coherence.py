@@ -53,13 +53,13 @@ def metaharvest_provider_config(root: Path) -> dict:
         provider.setdefault('provider', ah.get('provider'))
         provider.setdefault('status', ah.get('provider_status'))
         provider.setdefault('path', ah.get('root_location'))
-        provider.setdefault('transition_fallback_path', ah.get('transition_fallback_location'))
+        if ah.get('transition_fallback_location'):
+            provider.setdefault('transition_fallback_path', ah.get('transition_fallback_location'))
         provider.setdefault('compatibility', {})
         provider['compatibility'].setdefault('generated_project_path', ah.get('generated_project_location'))
-    provider.setdefault('provider', 'in_tree')
+    provider.setdefault('provider', 'external')
     provider.setdefault('status', 'active')
-    provider.setdefault('path', 'MetaHarvest')
-    provider.setdefault('transition_fallback_path', 'MetaHarvest')
+    provider.setdefault('path', '/home/mkkto/srv/EIP/projects/MetaHarvest')
     provider.setdefault('required_interface_files', [
         'README.md',
         'CONSTITUTION.md',
@@ -90,7 +90,7 @@ def check_metaharvest_provider(root: Path, blocks: list[str], warns: list[str]) 
     status = provider.get('status')
     configured_root = resolve_provider_path(root, provider.get('path'))
     fallback_root = resolve_provider_path(root, provider.get('transition_fallback_path'))
-    active_root = configured_root if configured_root and configured_root.exists() else fallback_root
+    active_root = configured_root
 
     if mode != 'external':
         warns.append('MetaHarvest provider is not configured as external; extraction cutover is not prepared')
@@ -98,6 +98,9 @@ def check_metaharvest_provider(root: Path, blocks: list[str], warns: list[str]) 
     if configured_root and not configured_root.exists():
         if status == 'active':
             blocks.append(f'configured external MetaHarvest provider path does not exist: {configured_root}')
+        elif fallback_root and fallback_root.exists():
+            active_root = fallback_root
+            warns.append(f'configured external MetaHarvest provider path is pending copy-first extraction: {configured_root}')
         else:
             warns.append(f'configured external MetaHarvest provider path is pending copy-first extraction: {configured_root}')
 

@@ -118,10 +118,10 @@ uvx --from pytest --with pyyaml pytest tests -q
 
 ## MetaHarvest advisory loop
 
-ProjectForge currently hosts `MetaHarvest/` as an advisory subsystem: a librarian, reference system, evidence repository, and architectural advisory layer. MetaHarvest is conceptually separable and potentially capable of future independent operation, but it remains hosted within ProjectForge for now.
+ProjectForge consumes MetaHarvest as an autonomous sibling EIP project at `/home/mkkto/srv/EIP/projects/MetaHarvest`. MetaHarvest is a librarian, reference system, evidence repository, and architectural advisory layer. ProjectForge validates the external provider interface and must not host a full MetaHarvest project tree.
 
 MetaHarvest is consulted for architecture definition, major architecture changes, new subsystems, new agent roles, memory/context systems, orchestration, permissions, workflow redesign, scheduled architecture reviews, repeated implementation failures, and user-requested improvement scans. During new project creation, consult it when architectural uncertainty or relevant pattern evidence exists; simple projects should not be forced into unnecessary ceremony. It is not consulted for ordinary bug fixes, minor documentation edits, small utilities, simple test additions, or implementation work that does not alter architecture.
 
 Every generated project receives lightweight architecture review and MetaHarvest placeholders under `architecture/`, including `architecture/architectureharvest/relevance_map.yaml`, recommendation/rejection trackers, and review history. MetaHarvest recommendations remain advisory: strong recommendations are allowed, but adoption remains project-local and implementation continues through normal project decisions, dry-runs, tests, and coherence checks. MetaHarvest may recommend that a project consider opening a task; it may not create that task automatically.
 
-Adoption outcomes flow back into `MetaHarvest/adoption_log/` so ProjectForge accumulates local evidence about which external patterns actually helped, failed, or became stale.
+Adoption outcomes flow back into the external MetaHarvest provider's `adoption_log/` so the EIP ecosystem preserves local evidence about which external patterns actually helped, failed, or became stale.

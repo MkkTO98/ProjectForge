@@ -185,7 +185,6 @@ context_policy:
     provider: external
     provider_status: active
     root_location: /home/mkkto/srv/EIP/projects/MetaHarvest
-    transition_fallback_location: MetaHarvest
     generated_project_location: architecture/architectureharvest
     consult_required_during:
       - new_project_creation
@@ -238,7 +237,7 @@ context_policy:
       - recommendation_strength
     feedback_loop:
       adoption_outcomes_recorded_in_project: architecture/architectureharvest/
-      broadly_useful_outcomes_mirrored_to: MetaHarvest/adoption_log/
+      broadly_useful_outcomes_mirrored_to: /home/mkkto/srv/EIP/projects/MetaHarvest/adoption_log/
     negative_rules:
       - never_force_implementation
       - never_bypass_project_governance
