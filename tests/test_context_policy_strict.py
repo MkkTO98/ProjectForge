@@ -81,3 +81,19 @@ def test_unrelated_large_files_are_excluded_from_normal_context(tmp_path):
     audit = json.loads((project / "context" / "context_audit.json").read_text(encoding="utf-8"))
     assert "UNRELATED LARGE FILE" not in context
     assert all(item["path"] != "unrelated/huge.txt" for item in audit["included_files"])
+
+def test_normal_context_uses_priority_hierarchy_before_broader_project_summary(tmp_path):
+    project = make_project(tmp_path)
+    (project / "state" / "architecture.md").write_text("# Architecture\nCurrent architecture.\n", encoding="utf-8")
+    (project / "context" / "project_summary.md").write_text("# Project Summary\nBROAD SUMMARY SHOULD NOT BE DEFAULT NORMAL CONTEXT.\n", encoding="utf-8")
+
+    result = run(ROOT / "tools" / "build_context.py", "--project", project, "--task", "small source edit", "--files", "src/app.py", "--folders", "src")
+    assert result.returncode == 0, result.stderr
+    context = (project / "context" / "active_context.md").read_text(encoding="utf-8")
+    audit = json.loads((project / "context" / "context_audit.json").read_text(encoding="utf-8"))
+    included = [item["path"] for item in audit["included_files"]]
+
+    assert audit["context_hierarchy"]["priority_1"] == ["state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"]
+    assert "Context loading hierarchy:" in context
+    assert included[:4] == ["state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"]
+    assert "BROAD SUMMARY SHOULD NOT BE DEFAULT NORMAL CONTEXT" not in context

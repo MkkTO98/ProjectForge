@@ -43,16 +43,18 @@ GENERATED_OR_BULK_DIRS = {
     "htmlcov",
     "generated",
 }
-DEFAULT_SUMMARY_CANDIDATES = [
-    "context/PROJECT_CONTEXT.md",
-    "context/project_summary.md",
-    "state/project_state.md",
+PRIORITY1_STATE_CANDIDATES = [
     "state/active_goal.md",
+    "state/project_state.md",
     "state/architecture.md",
 ]
-DEFAULT_HANDOFF_CANDIDATES = [
+PRIORITY1_HANDOFF_CANDIDATES = [
     "context/latest_handoff.md",
     "context/handoff.md",
+]
+PRIORITY3_PROJECT_SUMMARY_CANDIDATES = [
+    "context/PROJECT_CONTEXT.md",
+    "context/project_summary.md",
     "state/recent_changes.md",
 ]
 DECISION_DIRS = ["artifacts/decisions"]
@@ -266,22 +268,37 @@ def main() -> int:
     items: list[ContextItem] = []
     excluded: list[dict[str, str]] = []
 
-    for rel in DEFAULT_SUMMARY_CANDIDATES:
-        add_if_exists(items, project, rel, "project summary/current state", "project_summary", policy["summary_chars"])
-    for rel in DEFAULT_HANDOFF_CANDIDATES:
-        add_if_exists(items, project, rel, "short recent handoff summary", "handoff", policy["handoff_chars"])
+    for rel in PRIORITY1_STATE_CANDIDATES:
+        add_if_exists(items, project, rel, "priority 1 current state artifact", "priority_1_state", policy["summary_chars"])
+    for rel in PRIORITY1_HANDOFF_CANDIDATES:
+        add_if_exists(items, project, rel, "priority 1 recent handoff pointer", "priority_1_handoff", policy["handoff_chars"])
     if ns.task_file:
-        add_if_exists(items, project, ns.task_file, "active task file", "active_task", policy["task_chars"])
+        add_if_exists(items, project, ns.task_file, "priority 2 active task file", "priority_2_active_task", policy["task_chars"])
     for rel, reason in relevant_folder_summaries(project, folders, explicit_files, ns.task, ns.context_mode, policy["project_wide_summary_limit"]):
-        add_if_exists(items, project, rel, reason, "folder_summary", policy["summary_chars"])
+        add_if_exists(items, project, rel, f"priority 2 {reason}", "priority_2_folder_summary", policy["summary_chars"])
     for rel, reason in relevant_decisions(project, explicit_decisions, ns.task):
-        add_if_exists(items, project, rel, reason, "decision_record", policy["decision_chars"])
+        add_if_exists(items, project, rel, f"priority 2 {reason}", "priority_2_decision_record", policy["decision_chars"])
+    if ns.context_mode != "normal":
+        for rel in PRIORITY3_PROJECT_SUMMARY_CANDIDATES:
+            add_if_exists(items, project, rel, "priority 3 broader project summary for governance/review context", "priority_3_broader_context", policy["summary_chars"])
     source_file_chars = policy["project_wide_per_file_chars"] if ns.context_mode == "project_wide_review" else policy["per_file_chars"]
     for rel in explicit_files:
-        add_if_exists(items, project, rel, "explicitly retrieved source file", "source_file", source_file_chars)
+        add_if_exists(items, project, rel, "explicitly retrieved source file after priority context is insufficient", "source_file", source_file_chars)
 
     seen: set[str] = set()
-    sections = ["# Active Context Bundle", "", f"Task: {ns.task}", f"Task type: {ns.task_type}", f"Context mode: {ns.context_mode}", ""]
+    sections = [
+        "# Active Context Bundle",
+        "",
+        f"Task: {ns.task}",
+        f"Task type: {ns.task_type}",
+        f"Context mode: {ns.context_mode}",
+        "",
+        "Context loading hierarchy:",
+        "- Priority 1: active goal, project state, architecture, latest handoff.",
+        "- Priority 2: active task, relevant decisions, relevant folder summaries.",
+        "- Priority 3: broader summaries/docs/reports/design notes only for justified expansion.",
+        "",
+    ]
     if ns.review_justification:
         sections.extend(["Review justification:", ns.review_justification, ""])
     included: list[dict[str, Any]] = []
@@ -329,6 +346,11 @@ def main() -> int:
         "within_budget": within_budget,
         "raw_logs_excluded": raw_logs_excluded and not ns.allow_raw_logs,
         "summaries_used": summaries_used,
+        "context_hierarchy": {
+            "priority_1": ["state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"],
+            "priority_2": ["active task file", "relevant decision records", "relevant folder summaries"],
+            "priority_3": ["broader documentation", "reports", "design notes", "roadmaps", "historical artifacts"],
+        },
         "included_files": included,
         "excluded_files": excluded,
     }

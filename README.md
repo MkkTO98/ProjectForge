@@ -1,8 +1,17 @@
 # ProjectForge v6
 
-ProjectForge is a reusable, Hermes-native project initializer and governance scaffold for agent-supported projects. It creates projects with explicit state, decisions, tasks, logs, summaries, safety policy, and verification hooks so future Hermes sessions and humans can resume work without reconstructing context from chat.
+ProjectForge is a reusable, Hermes-native project initializer, framework, and governance scaffold for agent-supported projects. It creates projects with explicit state, decisions, tasks, logs, summaries, safety policy, and verification hooks so future Hermes sessions and humans can resume work without reconstructing context from chat. Generated projects become autonomous at creation; ProjectForge improves itself and future inheritance, but does not own or silently mutate existing projects.
 
 ProjectForge is not MacroForge. ProjectForge is the factory/governance system; MacroForge is one generated or managed project.
+
+
+## Ecosystem autonomy boundary
+
+ProjectForge is not an ecosystem meta-controller. Projects remain autonomous and communicate through recommendations, notifications, documented interfaces, manifests, registries, and explicit contracts. A project may recommend or notify, but it may not govern, directly modify, create tasks inside, or assume authority over another project.
+
+Future ecosystem concepts such as the EIP ecosystem, ResearchMemory, EconGraph, MonitorForge, ReportForge, EII, and future ecosystem infrastructure are architectural context only unless separately approved. EIP means Economic Intelligence Platform, the ecosystem as a whole; EII means Economic Intelligence Initiative, a possible future user-facing intelligence project. They are not implementation targets and must not be used to expand ProjectForge scope by default. No project owns the EIP root by default; if a root is adopted later, it represents ecosystem organization and neutral infrastructure, not project authority.
+
+Project extraction readiness separates conceptual readiness from physical migration readiness. Conceptual readiness depends primarily on purpose, ownership boundaries, authority boundaries, and interface boundaries. Physical extraction additionally requires path inventory, artifact ownership inventory, compatibility planning, verification planning, rollback planning, and stable evidence references. Filesystem structure is a migration constraint, not governance authority.
 
 ## Primary operating model
 
@@ -10,7 +19,7 @@ ProjectForge is not MacroForge. ProjectForge is the factory/governance system; M
 Hermes-led adaptive interview -> sufficiency policy -> captured answers -> scaffold render -> decisions/tasks/state -> verification -> summaries/handoff
 ```
 
-Hermes should lead project creation. The static questionnaire in `config/setup_questionnaire.yaml` is a coverage map, not the user-facing script. `tools/new_project.py` remains the deterministic scaffold renderer and should normally be called with `--answers-json` after Hermes has gathered enough information.
+Hermes should lead project creation as a discovery conversation. The static questionnaire in `config/setup_questionnaire.yaml` is a coverage map, not the user-facing script. Hermes should distinguish FOUNDATIONAL, ARCHITECTURAL, IMPLEMENTATION, and PREFERENCE questions, explain why foundational choices matter, and defer implementation details where possible. `tools/new_project.py` remains the deterministic scaffold renderer and should normally be called with `--answers-json` after Hermes has gathered enough information.
 
 ## Important defaults
 
@@ -29,17 +38,15 @@ Hermes should lead project creation. The static questionnaire in `config/setup_q
 
 ## Context and token policy
 
-ProjectForge context is built in this order:
+ProjectForge context follows a strict hierarchy:
 
-1. Read project summary/current state.
-2. Read `context/latest_handoff.md` if present.
-3. Identify relevant folders from the task and explicitly requested files.
-4. Read only those folders' `_SUMMARY.md` files.
-5. Read relevant decision records and the active task file.
-6. Retrieve explicit source files only when summaries are insufficient.
-7. Read raw logs only for `failure_investigation`, `forensic`, or `incident` task types.
+1. Priority 1 current-state context: `state/active_goal.md`, `state/project_state.md`, `state/architecture.md`, and `context/latest_handoff.md` when present.
+2. Priority 2 task-scoped context: the active task file, relevant decision records, and relevant folder `_SUMMARY.md` files.
+3. Priority 3 broader context: documentation, reports, design notes, roadmap files, and historical artifacts only after narrower context is insufficient or a justified project-wide review requires it.
+4. Explicit source files only when summaries/current state are insufficient for the task.
+5. Raw logs only for `failure_investigation`, `forensic`, or `incident` task types.
 
-Normal task context may include project summary, active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short handoff. It must not include raw logs, previous full conversations, full session JSONL files, whole-project dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
+Repository-wide exploration is not default startup behavior. Normal task context may include only the current-state files, active task file, relevant folder summaries, relevant decision records, explicitly retrieved source files, and a short handoff. It must not include raw logs, previous full conversations, full session JSONL files, whole-project dumps, unrelated folders, large tool outputs, or generated artifacts unless explicitly relevant.
 
 Build and inspect context with:
 
@@ -48,12 +55,18 @@ python3 tools/build_context.py --project . --task "describe task" --folders src,
 python3 tools/build_context.py --project . --task "cloud review" --model-target cloud --model-selected codex_supervisor --model-reason "architecture_decision" --folders src --files src/example.py
 ```
 
-The builder writes:
+The builder writes generated artifacts for that specific task/model target:
 
-- `context/active_context.md`: compact bundle.
+- `context/active_context.md`: generated bundle; do not treat stale copies as mandatory startup context.
 - `context/context_manifest.json`: files used and estimated tokens.
 - `context/context_audit.json`: machine-readable audit.
 - `context/context_audit.md`: human-readable audit with included/excluded files and reasons.
+
+Keep primary state artifacts concise. `state/active_goal.md`, `state/project_state.md`, and `state/architecture.md` should describe current truth and pointers, not become historical ledgers. Move long verification transcripts and old file-change inventories to task artifacts, reports, handoffs, or derived logs. Check drift with:
+
+```bash
+python3 tools/context_health.py --project . --json
+```
 
 If compact cloud context exceeds the governance budget, first reduce context or summarize locally. If the work is a legitimate project-wide audit, redesign, strategic review, gap analysis, or consistency review, use project-wide review mode with an explicit justification rather than treating the larger context as an error:
 
@@ -84,6 +97,8 @@ python3 tools/select_model.py --project . --agent planner --task project_audit -
 
 - `tools/new_project.py`: render a generated project from templates and accepted/deferred setup answers.
 - `tools/build_context.py`: build a task context bundle.
+- `tools/context_health.py`: check state/handoff/generated context size hygiene.
+- `tools/architecture_reality_audit.py`: run the recurring Architecture-to-Reality Audit every 5-10 completed tasks, before major architecture changes, and before major governance reviews; writes results to `artifacts/reports/`.
 - `tools/update_context_summaries.py`: refresh `_SUMMARY.md` context maps.
 - `tools/dry_run.py`: create validated dry-run reports.
 - `tools/validate_dry_run.py`: validate dry-run reports.
@@ -97,5 +112,16 @@ From the ProjectForge root:
 
 ```bash
 python3 tools/check_coherence.py --project . --json
+python3 tools/architecture_reality_audit.py --project . --json
 uvx --from pytest --with pyyaml pytest tests -q
 ```
+
+## MetaHarvest advisory loop
+
+ProjectForge currently hosts `MetaHarvest/` as an advisory subsystem: a librarian, reference system, evidence repository, and architectural advisory layer. MetaHarvest is conceptually separable and potentially capable of future independent operation, but it remains hosted within ProjectForge for now.
+
+MetaHarvest is consulted for architecture definition, major architecture changes, new subsystems, new agent roles, memory/context systems, orchestration, permissions, workflow redesign, scheduled architecture reviews, repeated implementation failures, and user-requested improvement scans. During new project creation, consult it when architectural uncertainty or relevant pattern evidence exists; simple projects should not be forced into unnecessary ceremony. It is not consulted for ordinary bug fixes, minor documentation edits, small utilities, simple test additions, or implementation work that does not alter architecture.
+
+Every generated project receives lightweight architecture review and MetaHarvest placeholders under `architecture/`, including `architecture/architectureharvest/relevance_map.yaml`, recommendation/rejection trackers, and review history. MetaHarvest recommendations remain advisory: strong recommendations are allowed, but adoption remains project-local and implementation continues through normal project decisions, dry-runs, tests, and coherence checks. MetaHarvest may recommend that a project consider opening a task; it may not create that task automatically.
+
+Adoption outcomes flow back into `MetaHarvest/adoption_log/` so ProjectForge accumulates local evidence about which external patterns actually helped, failed, or became stale.

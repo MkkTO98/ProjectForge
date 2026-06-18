@@ -17,6 +17,12 @@ This folder is part of the ProjectForge file-backed operating system for `artifa
 - `D-20260601-hermes-native-project-creation.md`
 - `D-20260601-projectforge-batch2-generated-ux.md`
 - `D-20260601-projectforge-hardening.md`
+- `D-20260605-architecture-reality-audit.md`
+- `D-20260605-strict-context-hierarchy.md`
+- `D-20260606-architectureharvest-advisory-integration.md`
+- `D-20260606-architectureharvest-decision-support-layer.md`
+- `D-20260606-architectureharvest-file-based-subsystem.md`
+- `D-20260614-file-backed-continuity-recovery-framework.md`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work

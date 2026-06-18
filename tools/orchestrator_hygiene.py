@@ -40,6 +40,7 @@ def main() -> int:
     if ns.phase in {"before_commit", "all"}:
         commands.append([sys.executable, str(tools / "check_coherence.py"), "--project", str(root)])
     if ns.phase in {"periodic", "all"}:
+        commands.append([sys.executable, str(tools / "architecture_reality_audit.py"), "--project", str(root), "--write-report"])
         commands.append([sys.executable, str(tools / "review_metrics.py"), "--project", str(root)])
         commands.append([sys.executable, str(tools / "resolve_deferred_specs.py"), "--project", str(root)])
 

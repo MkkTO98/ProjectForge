@@ -1,57 +1,92 @@
 # Project State
 
-ProjectForge is a reusable, Hermes-native project initializer for agent-assisted projects. It is a file-first project operating system: Markdown for human-readable policy, YAML for machine-readable configuration, JSONL for events/metrics, and explicit artifacts for decisions, tasks, reports, and handoffs.
+ProjectForge is a reusable, Hermes-native project initializer and framework for agent-assisted projects. It creates file-backed project operating systems with explicit state, decisions, tasks, handoffs, recovery procedures, permissions, verification, and context discipline.
+
+Generated projects become autonomous at creation. ProjectForge improves itself and future inheritance, but does not own, manage, or silently mutate instantiated projects.
 
 ## Stable defaults
-- AI-first but human-designed through initial questioning.
+
 - Hermes is the primary operator and adaptive interviewer.
-- `config/setup_questionnaire.yaml` is a coverage map, not a rigid user-facing terminal script.
+- `config/setup_questionnaire.yaml` is a coverage map, not a rigid user-facing questionnaire.
 - `tools/new_project.py` is the deterministic scaffold renderer and manual fallback.
-- Balanced-to-aggressive local autonomy with permission and dry-run constraints.
-- Standard logging by default; no SQLite index by default.
-- Auto-commit after tests may be allowed; remote push requires human approval.
-- Specialized agents require a request and explanation before generation.
-- Context budgeting uses auto-maintained folder summaries as inputs.
-- Task completion policy is centralized: update task/state/handoff and affected summaries, inspect refreshed `_SUMMARY.md` files for stale curated sections, then run final verification after governance/summary edits.
-- Capability failures escalate current Hermes session -> stronger local model if configured -> Codex/premium model -> human.
+- Local execution / cloud governance is the operating model: local tools/models for routine implementation and verification; cloud/Codex only for high-leverage governance with context audit.
+- Standard logging is file-backed; raw logs are audit/debug artifacts only and are excluded from normal context.
+- Auto-commit after tests may be allowed by policy; remote push requires human approval.
+- Specialized agents require explicit request/explanation before generation.
 
-## Current MacroForge rebuild handoff
+## Current framework doctrine
 
-- The old generated MacroForge project directory was deleted by explicit user request and no longer exists at `workspace/projects/macroforge`.
-- Compact pre-deletion evidence is preserved at `workspace/macroforge-deletion-manifest-20260602T204545Z.md`.
-- MacroForge reconstruction from Desktop ChatGPT exports and ProjectForge evidence is preserved at `workspace/macroforge-reconstruction-report-20260602.md`.
-- The user confirmed these rebuild defaults: recreate schema/WDI work cleanly from reconstruction, default DB name to `macro` unless live verification proves otherwise, and use World Bank WDI as the first v1 source.
-- Next session should start from `/home/mkkto/srv/projectforge` because this session's terminal cwd was deleted with MacroForge and terminal execution is broken until restarted from a surviving directory.
+- ProjectForge is a reusable framework, not an active project manager or meta-controller.
+- ProjectForge owns framework doctrine, project creation procedures, reusable structure/governance/standards/questioning/handoff/delegation infrastructure, and reusable verification/coherence expectations.
+- ProjectForge does not own instantiated project goals, architecture, implementation, task execution, or adoption decisions.
+- Framework improvements affect future inheritance by default. Existing projects receive recommendations or improvement notices and decide adoption through their own governance.
+- Framework-level changes must be named explicitly when they affect inheritance, templates, governance, questioning, artifact standards, handoff standards, delegation/worker infrastructure, framework doctrine, or MetaHarvest doctrine.
 
-## Current local-execution/cloud-governance hardening
-- `tools/build_context.py` builds summary-first bundles, estimates tokens, excludes raw logs/session transcripts from normal context, writes `context/context_audit.json` and `context/context_audit.md`, and supports three modes: normal, compact governance, and justified `project_wide_review`.
-- `tools/select_model.py` routes implementation/refactoring/testing/debugging/summarization/retrieval toward local tools/models and requires an allowed governance/escalation reason plus a passing context audit before returning a cloud/Codex model.
-- Project-wide architecture audits, redesigns, strategic planning, gap analysis, and consistency review remain possible under a larger configurable review budget when a review justification is recorded.
-- `tools/log_run.py` preserves raw JSONL audit records while also maintaining compact derived session summaries, `context/latest_handoff.md`, and `context/project_summary.md`.
-- `context/context_policy.yaml`, model routing/selection policies, logging policy, AGENTS/CONSTITUTION/README/instructions, and generated-project templates state the local-execution/cloud-governance split and raw-log exclusion requirements.
+## Current continuity/recovery framework
 
-## Current v6 additions
-- Root ProjectForge `AGENTS.md` for Hermes/local agent startup instructions.
-- Generated-project `AGENTS.md` in `templates/_shared_project/`.
-- Local Hermes skill `projectforge` installed under `~/.hermes/skills/software-development/projectforge/`.
-- Hermes-led project creation flow documented in README and operator manual.
-- Model registry/routing YAML repaired and reframed as advisory to Hermes.
-- Test coverage now verifies Hermes-native entrypoints and generated-project `AGENTS.md`.
+- `tools/recover_session.py` provides bounded file-backed recovery from fixed startup files plus recent task/decision/question artifacts.
+- `recovery/continuity_framework.md` defines the recovery contract, standard closeout contract, near-quota shutdown order, resume procedure, and existing-project adoption path.
+- `context/context_policy.yaml` includes `continuity_recovery.standard_closeout_command` and `standard_closeout_order`.
+- Coherence requires the recovery helper/framework and blocks missing standard closeout or fresh recovery command contracts.
+- Future generated projects inherit the framework through `templates/_shared_project/`.
+- MacroForge explicitly adopted the framework through its own project-local task because it was named in the user request.
+- No database, vector store, embeddings, service, daemon, autonomous propagation, or parallel state system is part of this framework.
 
-## Current hardening additions
-- Root and generated-project coherence contracts are split with `tools/check_coherence.py --mode root|generated|auto`.
-- Project scaffolding validates must-pause sufficiency items, derives paths from the active ProjectForge root, and avoids registering noncanonical temp outputs by default.
-- Generated projects receive setup-answer-derived state files and no longer receive the factory-only `tools/new_project.py`.
-- Workspace registry schema is clean YAML with no `raw` fallback or pytest temp entries.
-- Context summary refreshes are deterministic, preserve curated Purpose/Active Work/Needs Attention sections, and avoid volatile timestamps/ignored dry-run report listings.
-- Tests now exercise registry side effects, generated coherence, generated wrapper behavior across all templates, runtime-cache filtering, stale questionnaire language, uv-first install guidance, and non-mutating verification behavior.
-- Generated templates use uv/venv-first setup guidance on this PEP 668/no-pip host.
-- Generated agent prompts now tell Hermes sessions to use Hermes tools directly and reserve `tools/run.py` for manual or explicitly audited wrapper use.
-- Root and generated-project `AGENTS.md` plus `context/context_policy.yaml` now carry the standard task-completion summary policy for efficient affected-summary maintenance.
+## Current context and verification systems
 
-## Earlier additions preserved
-- Workspace layer for multi-project coordination.
-- Confidence policy for explicit uncertainty handling.
-- Memory retention policy for long-term hygiene.
-- Invariant tests for ProjectForge's own rules.
-- Simplified knowledge graph to reduce maintenance burden.
+- Primary state artifacts are concise current-state pointers: `state/active_goal.md`, `state/project_state.md`, and `state/architecture.md`.
+- `context/latest_handoff.md` is the short operational handoff for the next session.
+- Folder `_SUMMARY.md` files support summary-first retrieval.
+- `tools/build_context.py` builds explicit context bundles and audits for local/cloud use.
+- `tools/context_health.py` is wired into coherence to catch oversized state/handoff and stale generated context bundles.
+- Task completion policy is centralized: update task/state/handoff and affected summaries, inspect refreshed summaries for stale curated sections, then run final verification after governance/summary edits.
+- `tools/architecture_reality_audit.py` provides recurring Architecture-to-Reality Audit coverage.
+
+## Current governance permission framework
+
+- ProjectForge uses a four-level permission ladder: L1 Operational, L2 Architectural, L3 Strategic, L4 Foundational.
+- L2 requires explicit approval before project-local architecture implementation.
+- L3 requires explicit approval and a `GOVERNANCE_WARNING` block before implementation.
+- L4 requires stopping implementation until explicit foundational approval and a `FOUNDATIONAL_GOVERNANCE_WARNING` block.
+- Project purpose is protected; Hermes may recommend expansion or extraction but must not silently expand, redefine, reinterpret, or absorb responsibilities that alter project identity.
+- Confidence and priority are advisory metadata, not authority.
+- Rejected recommendations remain discoverable when meaningful to preserve negative knowledge.
+
+## Current MetaHarvest provider
+
+- MetaHarvest has been copy-first extracted to `/home/mkkto/srv/EIP/projects/MetaHarvest` and ProjectForge now treats that path as the active external advisory provider.
+- The in-tree `MetaHarvest/` copy remains a transition fallback/reference only until later cleanup is explicitly approved.
+- MetaHarvest is a file-backed librarian, reference system, evidence repository, advisory subsystem, and feedback repository; it is not a controller and must not decide adoption, enforce standards, modify projects, force migration, create tasks inside projects, or bypass project-local approval, dry-run, tests, and coherence gates.
+- It remains non-domain: domain conclusions such as GDP analysis, inflation analysis, energy-market knowledge, macroeconomic conclusions, investment theses, and company research belong to domain projects.
+- Generated projects retain lightweight `architecture/architectureharvest/` compatibility placeholders for relevance maps, candidates, rejections, review history, and adoption outcomes.
+
+## Current task status
+
+- Current task: none open.
+- EIP relocation and cleanup are complete.
+- ProjectForge operates at `/home/mkkto/srv/EIP/projects/ProjectForge`.
+- MacroForge operates at `/home/mkkto/srv/EIP/projects/MacroForge`.
+- MetaHarvest operates at `/home/mkkto/srv/EIP/projects/MetaHarvest`.
+- Obsolete nested MacroForge copy is archived at `archive/obsolete-project-copies/macroforge-relocation-obsolete/`.
+- Stale generated ProjectForge `context/active_context.md` is archived under `context/archive/generated-context-bundles/`.
+- Durable relocation retrospective: `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
+- Relocation status: clean with warnings; no active relocation work remains.
+
+## Current ecosystem autonomy doctrine
+
+- Projects are autonomous and retain their own purpose, scope, governance, lifecycle, artifacts, and decision history.
+- Projects may recommend, notify, expose interfaces, and provide context, but may not govern, directly modify, create tasks inside, or assume authority over other projects.
+- Scope extraction pressure produces recommendation artifacts with rationale, expected value, implementation effort estimate, architectural impact estimate, confidence/priority when meaningful, and lineage; it does not produce automatic project creation, task creation, or implementation.
+- New project creation remains a foundational ecosystem decision requiring explicit human approval.
+- Recommendation records should preserve review outcomes, adoption outcomes, rejection/adoption rationale, and supersession lineage; adoption by one project does not imply adoption by another.
+- The workspace registry is descriptive only and does not grant write authority or governance. Future ecosystem-registry ownership remains TBD through future governance review.
+- Future concepts such as the EIP ecosystem, ResearchMemory, EconGraph, MonitorForge, ReportForge, EII, and future ecosystem infrastructure are non-binding architectural context only.
+- EIP means Economic Intelligence Platform, the ecosystem as a whole, not a project. EII means Economic Intelligence Initiative, a possible future user-facing intelligence project and not an ecosystem owner.
+- No project owns the EIP root by default; if adopted later, it represents ecosystem organization and neutral infrastructure, not project authority.
+- Project extraction readiness has two layers: conceptual readiness depends on purpose, ownership, authority, and interface boundaries; physical extraction additionally requires path inventory, artifact ownership inventory, compatibility planning, verification planning, rollback planning, and evidence-reference stability.
+
+## Current MetaHarvest boundary
+
+- Active external provider: `/home/mkkto/srv/EIP/projects/MetaHarvest`.
+- In-tree `MetaHarvest/` remains only a transition fallback/reference until cleanup is approved.
+- MetaHarvest may produce recommendations and candidate task proposals; it may not create tasks inside another project, decide adoption, modify target projects, or force implementation.

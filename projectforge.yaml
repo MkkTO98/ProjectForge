@@ -12,10 +12,11 @@ projectforge:
     skills_style: small_composable_first
     specialized_agent_creation: request_then_auto_generate_after_user_approval
     codex_escalation: controlled_before_human_for_capability_failures
-    workspace_projects_root: /home/mkkto/srv/projectforge/workspace/projects
+    workspace_projects_root: /home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects
     orchestrator_hygiene: scheduled_and_event_driven
     primary_operator: hermes_agent
     project_creation_ux: hermes_led_adaptive_interview_then_noninteractive_render
+    metaharvest_advisory: enabled_for_architecture_governance_not_daily_implementation
   required_separation:
     state: current_project_truth
     decisions: durable_choices_and_deferred_specifications
@@ -24,6 +25,31 @@ projectforge:
     logs: raw_operational_records
     metrics: derived_performance_evidence
     workspace: cross_project_coordination
+
+  metaharvest_provider:
+    provider: external
+    status: active
+    path: /home/mkkto/srv/EIP/projects/MetaHarvest
+    transition_fallback_path: MetaHarvest
+    interface_version: 1
+    compatibility:
+      historical_name: ArchitectureHarvest
+      generated_project_path: architecture/architectureharvest
+      source_cache_root: /home/mkkto/srv/EIP/projects/ProjectForge/external_sources
+      source_cache_policy: transitional_projectforge_hosted_cache
+    required_interface_files:
+      - README.md
+      - CONSTITUTION.md
+      - INTEGRATION.md
+      - source_registry.yaml
+      - retrieval/problem_catalog.yaml
+      - retrieval/retrieval_index.yaml
+      - retrieval/recommendation_rules.yaml
+    authority:
+      advisory_only: true
+      may_modify_projectforge: false
+      may_modify_consumer_projects: false
+      may_create_consumer_tasks: false
 
   orchestrator_automation:
     before_agent_assignment:
@@ -34,6 +60,12 @@ projectforge:
       - update_context_summaries_if_changed
       - check_coherence
     periodic:
+      - architecture_reality_audit_every_5_to_10_completed_tasks
+      - metaharvest_review_on_architecture_triggers
       - review_metrics
+    before_major_architecture_change:
+      - architecture_reality_audit
+    before_major_governance_review:
+      - architecture_reality_audit
     visibility: compact_log_summary
     auto_fix_safe_violations: true

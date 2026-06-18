@@ -24,6 +24,30 @@ orchestration_schedule:
       required_when: dry_run_required
       reason: Prevent vague or incomplete dry-runs from becoming execution permission.
 
+  before_major_architecture_change:
+    - name: architecture_reality_audit
+      command: python3 tools/architecture_reality_audit.py --project {project} --write-report
+      required: true
+      reason: Prevent documented architecture, state, governance, templates, and implementation from diverging before changing direction.
+
+  before_major_governance_review:
+    - name: architecture_reality_audit
+      command: python3 tools/architecture_reality_audit.py --project {project} --write-report
+      required: true
+      reason: Establish current implementation reality before broad governance review.
+
+  before_architectureharvest_consultation_trigger:
+    - name: architectureharvest_relevance_check
+      command: inspect ArchitectureHarvest indexes, target relevance map, adoption candidates, rejected candidates, and review history; do not implement recommendations directly
+      required_when: architecture_creation_or_major_change_or_repeated_failure_or_user_scan
+      reason: Bring external pattern evidence and prior local outcomes into architectural judgment without involving ArchitectureHarvest in ordinary implementation work.
+
+  periodic_architecture_review:
+    - name: architectureharvest_architecture_review
+      command: create architecture review under architecture/architecture_reviews/ and update architecture/architectureharvest/review_history.md
+      cadence: scheduled_project_review_or_before_major_architecture_governance_review
+      reason: Check whether new external patterns, stale recommendations, simplification/replacement/deletion opportunities, recurring failures, or adoption outcomes should influence future decisions.
+
   after_folder_change:
     - name: update_context_summaries
       command: python3 tools/update_context_summaries.py --project {project}
@@ -44,6 +68,10 @@ orchestration_schedule:
       required: true
 
   periodic:
+    - name: architecture_reality_audit
+      command: python3 tools/architecture_reality_audit.py --project {project} --write-report
+      cadence: every_5_to_10_completed_tasks_or_before_major_architecture_or_governance_review
+      reason: Detect drift, obsolete docs, duplicated/unused systems, missing implementations, and implementation without documentation.
     - name: review_metrics
       command: python3 tools/review_metrics.py --project {project}
       cadence: every_10_runs_or_on_failure_cluster

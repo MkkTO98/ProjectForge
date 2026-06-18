@@ -1,20 +1,16 @@
-# Folder Summary: config
-
-Updated: 2026-05-30
+# Folder Summary: templates/_shared_project/config
 
 ## Purpose
-TODO: Maintain a concise description of what this folder contains and why it exists.
+This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/config`.
 
-## Contents
+## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `setup_questionnaire.yaml`
 - `sufficiency_policy.yaml`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
-## Current Status
-- Auto-generated or refreshed summary. Replace TODOs with project-specific detail when material work occurs.
+## Active Work
+- No folder-specific active work recorded.
 
-## Open Work
-- Keep this summary updated when important files are added, removed, or repurposed.
-
-## Agent Notes
-- Read this file before scanning the whole folder.
-- Update this file before handoff if you materially change this folder.
+## Needs Attention
+- No folder-specific issues recorded.

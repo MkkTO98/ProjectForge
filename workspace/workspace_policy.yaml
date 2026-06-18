@@ -34,11 +34,11 @@ workspace_policy:
 
 
   canonical_paths:
-    projectforge_root: /home/mkkto/srv/projectforge
-    workspace_root: /home/mkkto/srv/projectforge/workspace
-    generated_projects_root: /home/mkkto/srv/projectforge/workspace/projects
+    projectforge_root: /home/mkkto/srv/EIP/projects/ProjectForge
+    workspace_root: /home/mkkto/srv/EIP/projects/ProjectForge/workspace
+    generated_projects_root: /home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects
 
   generated_project_creation_rule: >
     Unless explicitly overridden, new projects are created under
-    /home/mkkto/srv/projectforge/workspace/projects/<project_slug> and registered
+    /home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/<project_slug> and registered
     in workspace/projects_registry.yaml.

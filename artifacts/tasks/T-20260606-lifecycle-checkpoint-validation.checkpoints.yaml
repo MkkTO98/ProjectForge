@@ -1,0 +1,51 @@
+checkpoints:
+- lifecycle_status: active
+  checkpoint_id: CKPT-20260606-lifecycle-checkpoint-01
+  parent_checkpoint_id: null
+  resume_pointer: artifacts/tasks/T-20260606-lifecycle-checkpoint-validation.checkpoints.yaml#CKPT-20260606-lifecycle-checkpoint-01
+  next_action: Score treatment resume-question coverage using Priority 1 context plus this checkpoint sidecar, then create the outcome record and final report.
+  completed_since_parent:
+  - Re-inspected ProjectForge startup context and the approved PF-AH-REC-010 experiment design.
+  - Created implementation dry-run simulation/dry_runs/20260606_135706-dry-run.md.
+  - Created experiment task artifact with baseline measurements.
+  decisions_since_parent:
+  - Use ProjectForge architecture/governance review closeout as the real task type, as specified by the approved experiment design.
+  - Keep vocabulary sidecar-only and experiment-specific.
+  blockers_or_interrupts: none
+  verification_state: partial
+  context_budget_hint: Read state/active_goal.md, state/project_state.md, state/architecture.md, context/latest_handoff.md, and this checkpoint sidecar only; do not read raw logs, external repositories, templates, tools, or broad project files for resume.
+  measurement_notes: Baseline used 6 files, 4 resume steps, 3 ambiguous questions, 62.5 percent resume-question coverage, and confidence 3/5 before checkpoint sidecar.
+- lifecycle_status: verifying
+  checkpoint_id: CKPT-20260606-lifecycle-checkpoint-02
+  parent_checkpoint_id: CKPT-20260606-lifecycle-checkpoint-01
+  resume_pointer: artifacts/reports/R-20260606-lifecycle-checkpoint-validation-results.md#threshold-evaluation
+  next_action: Run final validation checks, then report Adopt recommendation if checks pass.
+  completed_since_parent:
+  - Performed treatment resume using Priority 1 context plus checkpoint sidecar.
+  - Scored treatment resume-question coverage at 87.5 percent.
+  - Measured treatment files read to resume at 5, ambiguity count at 1, resume steps at 2, and reviewer confidence at 4/5.
+  - Drafted adoption outcome and final report inputs.
+  decisions_since_parent:
+  - Threshold evaluation supports Adopt if final validation passes.
+  - Central ArchitectureHarvest outcome weighting file should not be modified because the approved experiment scope allows only the experiment-specific outcome record for weighting effect.
+  blockers_or_interrupts: none
+  verification_state: partial
+  context_budget_hint: Read this checkpoint sidecar, artifacts/reports/R-20260606-lifecycle-checkpoint-validation-results.md, and ArchitectureHarvest/adoption_log/O-20260606-lifecycle-checkpoint-vocabulary.yaml; then run validation commands.
+  measurement_notes: Treatment used 5 files, 2 resume steps, 1 ambiguous question, 87.5 percent resume-question coverage, estimated 8 minutes checkpoint overhead, and confidence 4/5.
+- lifecycle_status: complete
+  checkpoint_id: CKPT-20260606-lifecycle-checkpoint-03
+  parent_checkpoint_id: CKPT-20260606-lifecycle-checkpoint-02
+  resume_pointer: artifacts/reports/R-20260606-lifecycle-checkpoint-validation-results.md#final-recommendation
+  next_action: None; experiment complete. Await user direction before any broader adoption or template/policy change.
+  completed_since_parent:
+  - Validated dry-run simulation/dry_runs/20260606_135706-dry-run.md.
+  - Parsed checkpoint, outcome, and experiment YAML artifacts.
+  - Ran full ProjectForge tests, context health, coherence, and architecture audit with no blocks or warnings.
+  - Finalized Adopt recommendation narrowly for this experiment.
+  decisions_since_parent:
+  - Final recommendation is Adopt, narrowly.
+  - No broader ProjectForge operating procedure, template, generated-project, or ArchitectureHarvest framework change was made.
+  blockers_or_interrupts: none
+  verification_state: passed
+  context_budget_hint: Read artifacts/reports/R-20260606-lifecycle-checkpoint-validation-results.md for final evidence and ArchitectureHarvest/adoption_log/O-20260606-lifecycle-checkpoint-vocabulary.yaml for outcome weighting effect.
+  measurement_notes: Final verification passed; no contradiction between checkpoint sidecar, active goal, latest handoff, task artifact, report, and outcome record was observed.

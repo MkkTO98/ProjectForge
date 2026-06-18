@@ -6,6 +6,8 @@ This folder is part of the ProjectForge file-backed operating system for `worksp
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `cross_project_dependencies.yaml`
+- `macroforge-deletion-manifest-20260602T204545Z.md`
+- `macroforge-reconstruction-report-20260602.md`
 - `projects/`
 - `projects_registry.yaml`
 - `shared_assets/`
@@ -18,7 +20,7 @@ This folder is part of the ProjectForge file-backed operating system for `worksp
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- No folder-specific active work recorded.
+- `projects_registry.yaml` now clarifies that the workspace registry is descriptive only and grants no project governance or write authority.
 
 ## Needs Attention
-- No folder-specific issues recorded.
+- Future ecosystem registry ownership remains TBD through future governance review; do not assign it to EII, MetaHarvest, ProjectForge, or another project by default. EIP means the ecosystem, not a project owner.

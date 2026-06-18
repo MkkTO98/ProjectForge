@@ -7,19 +7,19 @@ This manual lists the manual actions you may still want to perform, how to do th
 Assumed location:
 
 ```txt
-/home/mkkto/srv/projectforge/
+/home/mkkto/srv/EIP/projects/ProjectForge/
 ```
 
 Generated projects should be created under:
 
 ```txt
-/home/mkkto/srv/projectforge/workspace/projects/
+/home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/
 ```
 
 Example:
 
 ```txt
-/home/mkkto/srv/projectforge/workspace/projects/macroforge/
+/home/mkkto/srv/EIP/projects/MacroForge/
 ```
 
 Why: this keeps ProjectForge, its workspace, shared resources, and generated projects under one predictable hierarchy.
@@ -33,21 +33,21 @@ The questionnaire in `config/setup_questionnaire.yaml` is a coverage map. It is 
 Manual fallback:
 
 ```bash
-cd /home/mkkto/srv/projectforge
+cd /home/mkkto/srv/EIP/projects/ProjectForge
 python3 tools/new_project.py --name "My New Project" --template python_data_project
 ```
 
 Hermes/noninteractive rendering path:
 
 ```bash
-cd /home/mkkto/srv/projectforge
+cd /home/mkkto/srv/EIP/projects/ProjectForge
 python3 tools/new_project.py --name "My New Project" --template python_data_project --answers-json context/project_creation_answers_my_new_project.json
 ```
 
 By default, this creates:
 
 ```txt
-/home/mkkto/srv/projectforge/workspace/projects/my_new_project/
+/home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/my_new_project/
 ```
 
 It also registers the project in:
@@ -163,6 +163,50 @@ coherence: 0 block(s), 0 warning(s)
 
 If blocks appear, fix them before continuing. Warnings can be reviewed but do not always block work.
 
+## 5a. Run Architecture-to-Reality Audit
+
+Use:
+
+```bash
+python3 tools/architecture_reality_audit.py --project . --write-report
+```
+
+When to run it:
+
+- every 5-10 completed tasks;
+- before major architecture changes;
+- before major governance reviews;
+- when documentation and implementation appear to disagree.
+
+Why: normal coherence checks catch required files and known invariants, but long-running projects also drift in softer ways: architecture documents describe systems that no longer exist, implementation grows without matching decisions, state files become historical ledgers, templates diverge from generated projects, or governance rules stop matching actual agent behavior.
+
+Audit categories:
+
+- architecture vs implementation;
+- state files vs reality;
+- agent instructions vs behavior;
+- logging systems;
+- context-management systems;
+- governance processes;
+- automation workflows;
+- templates vs generated projects.
+
+The audit should identify drift, obsolete documentation, duplicated systems, unused systems, missing implementations, implementation without documentation, and documentation without implementation.
+
+Record results under:
+
+```txt
+artifacts/reports/R-YYYYMMDD-architecture-reality-audit.md
+```
+
+Remediation workflow:
+
+1. Fix blocks before major architecture/governance work continues.
+2. For durable policy, architecture, template, permission, model-routing, or scope changes, create or update a decision artifact.
+3. Update docs, state, templates, tools, tests, and operating procedures together rather than patching only one surface.
+4. Refresh affected `_SUMMARY.md` files and `context/latest_handoff.md`.
+5. Rerun `architecture_reality_audit.py`, `check_coherence.py`, and relevant tests.
+
 ## 6. Validate a dry-run report
 
 Use:
@@ -203,7 +247,7 @@ Do not store durable decisions in summaries. Decisions belong in:
 artifacts/decisions/
 ```
 
-## 8. Build active context
+## 8. Build task context
 
 Use:
 
@@ -211,7 +255,24 @@ Use:
 python3 tools/build_context.py --project . --task "implement ingestion pipeline"
 ```
 
-Why: agents should not read the whole repo blindly. Context budgeting selects the relevant constitution, state, decisions, summaries, and target files.
+Why: agents should not read the whole repo blindly. Context budgeting starts with Priority 1 current-state files, then adds Priority 2 active-task/decision/folder-summary context only when relevant, and uses Priority 3 broader docs/reports/history only after justified expansion.
+
+Important: `context/active_context.md` is a generated output for the task/model target that produced it. Do not make stale `active_context.md` mandatory startup context. For normal work, start from `state/active_goal.md`, `state/project_state.md`, `state/architecture.md`, and `context/latest_handoff.md`; then add active task/decisions/folder summaries and explicit files as needed. Rebuild a fresh bundle when a context bundle or cloud governance call is needed.
+
+Keep state files concise:
+
+```txt
+state/active_goal.md      = current objective and boundaries
+state/project_state.md    = current truth and compact pointers, not history
+state/architecture.md     = current architecture posture and active decisions
+context/latest_handoff.md = short recent handoff/pointers
+```
+
+Move long verification logs, old file-change inventories, and session history to task artifacts, reports, handoffs, or derived logs. Check context drift with:
+
+```bash
+python3 tools/context_health.py --project . --json
+```
 
 ## 9. Review metrics
 
@@ -310,8 +371,8 @@ Manual registration:
 
 ```bash
 python3 tools/register_project.py \
-  --workspace /home/mkkto/srv/projectforge/workspace \
-  --project /home/mkkto/srv/projectforge/workspace/projects/my_project \
+  --workspace /home/mkkto/srv/EIP/projects/ProjectForge/workspace \
+  --project /home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/my_project \
   --name "My Project"
 ```
 
@@ -373,7 +434,7 @@ knowledge/dependencies.yaml
 
 Why: agents need dependency awareness before refactoring.
 
-## 18. Agent vs skill separation
+## 18. Agent/skill separation
 
 Use this rule:
 
@@ -391,7 +452,9 @@ skills/dry-run-workflow.md defines dry-run procedure
 models/routing.yaml chooses which local or premium model powers the work
 ```
 
-Why: without this separation, agent files become bloated and skills become redundant.
+Skills should be loaded on demand, not injected universally. A session should read a skill when the task matches the skill trigger, an artifact explicitly references it, or an attempt fails in a way covered by that skill. Keep startup context focused on state/task/decision/summary artifacts; use skills as procedural expansion points.
+
+Why: without this separation, agent files become bloated, skills become redundant, and every run pays token cost for procedures it does not need.
 
 ## 19. Updating this manual
 

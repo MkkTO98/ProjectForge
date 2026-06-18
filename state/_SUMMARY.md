@@ -15,7 +15,8 @@ This folder is part of the ProjectForge file-backed operating system for `state`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- No folder-specific active work recorded.
+- `active_goal.md` and `project_state.md` now point to the bounded ecosystem-autonomy doctrine/schema alignment and record explicit non-actions.
 
 ## Needs Attention
-- No folder-specific issues recorded.
+- The stale generated `context/active_context.md` warning remains non-blocking; regenerate a task-specific context bundle before future context/model-routing work.
+- Broad uncommitted ProjectForge/MetaHarvest/Continuity changes remain in the working tree; use hunk-level staging and preserve commit boundaries.

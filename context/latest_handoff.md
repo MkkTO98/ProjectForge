@@ -1,86 +1,66 @@
 # Latest Handoff
 
-Updated: 2026-06-03T22:51:32Z
+Updated: 2026-06-18
 Agent: Hermes
-Status: completed
+Status: EIP relocation, cleanup, validation, and retrospective complete
 
-## Goal
+## Current EIP locations
 
-Add a central task-completion summary policy to ProjectForge and MacroForge so future agents update summaries efficiently when finishing tasks.
+- ProjectForge: `/home/mkkto/srv/EIP/projects/ProjectForge`
+- MacroForge: `/home/mkkto/srv/EIP/projects/MacroForge`
+- MetaHarvest: `/home/mkkto/srv/EIP/projects/MetaHarvest`
 
-## What changed
+## Current outcome
 
-ProjectForge now records task-completion summary behavior centrally instead of duplicating long instructions in every task.
+ProjectForge, MacroForge, and MetaHarvest operate from their EIP locations. Core recovery, coherence, and test workflows no longer require `/home/mkkto/srv/projectforge`.
 
-Updated ProjectForge root:
-
-- `AGENTS.md`
-- `context/context_policy.yaml`
-
-Updated generated-project template:
-
-- `templates/_shared_project/AGENTS.md`
-- `templates/_shared_project/context/context_policy.yaml`
-
-Updated current MacroForge project:
-
-- `workspace/projects/macroforge/AGENTS.md`
-- `workspace/projects/macroforge/context/context_policy.yaml`
-
-Updated Hermes procedural memory:
-
-- local `projectforge` skill was patched to remember this convention.
-
-## Policy now in force
-
-Generated projects should carry a central `context/context_policy.yaml` section:
-
-```yaml
-task_completion:
-  update_summaries: true
-  summary_mode: affected_only
-  require_summary_inspection: true
-  require_final_verification_after_summary_updates: true
-```
-
-Agents completing tasks should update task/state/handoff, refresh affected `_SUMMARY.md` files where relevant, inspect refreshed summaries for stale curated sections such as `Active Work` / `Needs Attention`, and run final verification after governance/summary edits.
-
-## Verification output
-
-ProjectForge root:
+MetaHarvest source-cache paths were migrated from the legacy root to:
 
 ```text
-python3 tools/check_coherence.py --project . --json && uvx --from pytest --with pyyaml pytest tests -q
-
-{
-  "mode": "root",
-  "blocks": [],
-  "warnings": []
-}
-.....................................................                    [100%]
-53 passed in 3.57s
+/home/mkkto/srv/EIP/projects/ProjectForge/external_sources
 ```
 
-MacroForge generated project:
+MetaHarvest `source_registry.yaml` points analyzed source `local_path` entries at the EIP cache root, and source-cache git HEADs matched recorded analyzed commits during final validation.
+
+## Cleanup completed
+
+- Archived obsolete nested MacroForge copy from:
+  - `/home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/macroforge`
+- Archive destination:
+  - `/home/mkkto/srv/EIP/projects/ProjectForge/archive/obsolete-project-copies/macroforge-relocation-obsolete`
+- Archived stale generated ProjectForge context bundle from:
+  - `/home/mkkto/srv/EIP/projects/ProjectForge/context/active_context.md`
+- Archive destination:
+  - `/home/mkkto/srv/EIP/projects/ProjectForge/context/archive/generated-context-bundles/20260618T075848Z/active_context.md`
+
+## Retrospective
+
+Durable relocation retrospective created:
 
 ```text
-python3 tools/check_coherence.py --project . --json && PYTHONPATH=src uvx --from pytest --with pyyaml pytest tests -q
-
-{
-  "mode": "generated",
-  "blocks": [],
-  "warnings": []
-}
-......................                                                   [100%]
-22 passed in 1.19s
+/home/mkkto/srv/EIP/projects/ProjectForge/artifacts/reports/R-20260618-eip-relocation-retrospective.md
 ```
 
-## Remaining risks / notes
+Key lesson: future relocations should avoid repeated architecture/governance/extraction-readiness review once blockers are known; update active path surfaces, validate from destination roots, classify residual references, archive obsolete duplicates, and preserve historical evidence unchanged.
 
-- This change is policy/config only; no deterministic `complete_task.py` helper was added yet.
-- Existing ProjectForge git status includes older modified state/handoff files and untracked MacroForge reconstruction/deletion manifest files from prior work; no commit or push was performed.
-- For MacroForge specifically, the current active implementation direction remains TASK-017 unless a newer session updates it.
+## Verification notes
 
-## Next recommended task
+Final cleanup validation passed:
 
-If further hardening is desired, add a deterministic ProjectForge helper or checker for task completion, for example affected-summary refresh detection plus a coherence warning when completed tasks lack state/handoff/summary updates.
+- ProjectForge recovery: no blockers, no pending questions.
+- ProjectForge coherence: no blocks.
+- ProjectForge tests: passing.
+- MacroForge recovery: no blockers, no pending questions.
+- MacroForge coherence: no blocks.
+- MacroForge tests: passing.
+- MetaHarvest registry integrity: required files present, YAML parses, no registry errors, source git HEADs checked with no mismatches.
+
+## Known remaining warnings
+
+- ProjectForge `state/project_state.md` is approaching context-health limit.
+- MacroForge `state/active_goal.md` is approaching context-health limit.
+- Legacy root `/home/mkkto/srv/projectforge` may still exist outside active EIP operation; delete only with explicit destructive-action approval and exact-path guards.
+
+## Resume instruction
+
+No relocation work remains. Resume normal ProjectForge or MacroForge work only by explicit user request.

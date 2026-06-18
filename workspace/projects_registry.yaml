@@ -1,9 +1,12 @@
 workspace:
   name: default_projectforge_workspace
   description: Shared registry for projects that may reuse ProjectForge conventions.
+  registry_role: descriptive_only_not_authoritative
+  governance_authority: none
+  future_ownership: TBD through future ecosystem governance review
 projects:
 - name: MacroForge
-  path: /home/mkkto/srv/projectforge/workspace/projects/macroforge
+  path: /home/mkkto/srv/EIP/projects/MacroForge
   mode: hybrid_inheritance
 shared_defaults:
   models: ../models/registry.yaml
@@ -17,3 +20,6 @@ rules:
 - Shared assets must not silently override project-local policies.
 - Project-local decisions override workspace defaults only when recorded in artifacts/decisions/.
 - Secrets must never be stored in the workspace registry.
+- The registry is descriptive; it does not govern projects or grant write authority.
+- Registered projects retain autonomy and project-local governance.
+- Future registry ownership is not assigned to EII, MetaHarvest, ProjectForge, or another project by default; EIP means the ecosystem, not a project owner.

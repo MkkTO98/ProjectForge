@@ -10,7 +10,7 @@ def read(rel: str) -> str:
 
 def test_operator_manual_exists_and_mentions_manual_tasks():
     text = read('docs/OPERATOR_MANUAL.md')
-    assert '/home/mkkto/srv/projectforge/workspace/projects/' in text
+    assert 'workspace/projects/' in text
     assert 'python3 tools/check_coherence.py --project .' in text
     assert 'logs/    = raw operational records' in text
     assert 'metrics/ = derived performance evidence' in text

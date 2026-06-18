@@ -1,21 +1,28 @@
 # Active Goal
 
 Current objective:
-- Rebuild MacroForge as a fresh ProjectForge-managed project from the completed reconstruction report, using current ProjectForge templates and compact curated context before any major implementation.
+- EIP relocation, cleanup, validation, and retrospective are complete.
 
-Immediate next action:
-- Start a fresh Hermes session from `/home/mkkto/srv/projectforge`, read `context/latest_handoff.md` and `workspace/macroforge-reconstruction-report-20260602.md`, then initialize MacroForge at `workspace/projects/macroforge` with the `python_data_project` template.
+Current task:
+- None open.
 
-Definition of done for ProjectForge v1:
-- Can initialize a new project from templates.
-- Stores setup decisions in `artifacts/decisions/`.
-- Supports deferred specifications.
-- Provides layered command permissions.
-- Provides always-on logging.
-- Provides MacroForge-like state files.
-- Provides agent and skill instructions usable by Hermes or other agent frameworks.
+Completed relocation outcome:
+- ProjectForge operates at `/home/mkkto/srv/EIP/projects/ProjectForge`.
+- MacroForge operates at `/home/mkkto/srv/EIP/projects/MacroForge`.
+- MetaHarvest operates at `/home/mkkto/srv/EIP/projects/MetaHarvest`.
+- Obsolete nested MacroForge copy was archived under ProjectForge archive.
+- Stale generated ProjectForge `context/active_context.md` was archived under ProjectForge context archive.
+- Durable retrospective created at `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
 
-Current constraints:
-- Framework-adjacent by default.
-- Do not rely on hidden chat memory.
-- All durable assumptions must be file-backed.
+Final verified status:
+- Ecosystem integrity status: clean with warnings.
+- ProjectForge recovery/coherence/tests passed after cleanup.
+- MacroForge recovery/coherence/tests passed after cleanup.
+- MetaHarvest registry integrity passed after cleanup.
+
+Known remaining warnings:
+- `state/project_state.md` is approaching the context-health limit.
+- The legacy root `/home/mkkto/srv/projectforge` may still exist outside active EIP operation; deletion requires explicit destructive-action approval and exact-path guards.
+
+Next recommended action:
+- None for relocation. Resume normal ProjectForge or MacroForge work only by explicit user request.

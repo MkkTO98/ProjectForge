@@ -7,7 +7,12 @@ This folder is part of the ProjectForge file-backed operating system for `tests`
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `invariants/`
+- `test_architecture_reality_audit.py`
+- `test_metaharvest_integration.py`
 - `test_batch2_generated_ux.py`
+- `test_context_governance_mode.py`
+- `test_context_health.py`
+- `test_context_policy_strict.py`
 - `test_hardening.py`
 - `test_invariants.py`
 - `test_scaffold.py`

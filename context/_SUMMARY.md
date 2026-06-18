@@ -18,7 +18,7 @@ This folder stores compact context policy, generated task-context reports, setup
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- No folder-specific active work recorded.
+- `latest_handoff.md` records ecosystem-autonomy doctrine alignment, explicit non-actions, validation status, and commit-boundary guidance.
 
 ## Needs Attention
-- No folder-specific issues recorded.
+- `active_context.md` is a stale generated task bundle; do not treat it as mandatory startup context. Rebuild context for the next task if needed.

@@ -7,6 +7,7 @@ This folder is part of the ProjectForge file-backed operating system for `.`.
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitignore`
 - `AGENTS.md`
+- `ArchitectureHarvest/`
 - `CONSTITUTION.md`
 - `README.md`
 - `agents/`
@@ -17,6 +18,7 @@ This folder is part of the ProjectForge file-backed operating system for `.`.
 - `context/`
 - `docs/`
 - `examples/`
+- `external_sources/`
 - `hardware/`
 - `instructions/`
 - `knowledge/`
@@ -26,6 +28,7 @@ This folder is part of the ProjectForge file-backed operating system for `.`.
 - `models/`
 - `permissions/`
 - `policies/`
+- `projectforge.egg-info/`
 - `projectforge.yaml`
 - `pyproject.toml`
 - `question_queue/`
@@ -36,11 +39,13 @@ This folder is part of the ProjectForge file-backed operating system for `.`.
 - `templates/`
 - `tests/`
 - `tools/`
+- `uv.lock`
 - `workspace/`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- No folder-specific active work recorded.
+- Ecosystem-autonomy doctrine alignment is complete and verified. Keep any commit boundary separate from pre-existing Continuity/Recovery, broad ArchitectureHarvest, generated-project, and `uv.lock` changes.
 
 ## Needs Attention
-- No folder-specific issues recorded.
+- Remaining worktree contains mixed pre-existing changes plus this doctrine/schema alignment. Use hunk-level staging; do not use `git add .`.
+- `uv.lock` remains untracked; `external_sources/` and `projectforge.egg-info/` remain ignored and must stay out of commits unless explicitly approved.

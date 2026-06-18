@@ -1,6 +1,10 @@
-# Folder Summary: agents
+# Folder Summary: templates/_shared_project/agents
+
+## Purpose
+This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/agents`.
 
 ## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `auditor.md`
 - `bootstrapper.md`
@@ -11,12 +15,10 @@
 - `researcher.md`
 - `reviewer.md`
 - `summarizer.md`
-
-## Purpose
-Auto-maintained context-map summary. Agents should refine this when folder responsibilities become clearer.
+<!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Not specified.
+- No folder-specific active work recorded.
 
 ## Needs Attention
-- Keep this summary current when changing this folder.
+- No folder-specific issues recorded.

@@ -1,29 +1,28 @@
-# Folder Summary: skills
-
-Updated: 2026-05-30
+# Folder Summary: templates/_shared_project/skills
 
 ## Purpose
-TODO: Maintain a concise description of what this folder contains and why it exists.
+This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/skills`.
 
-## Contents
+## Contains
+<!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `.gitkeep`
 - `clarification-queue.md`
 - `command-permissions.md`
+- `context-budgeting.md`
 - `deferred-specification.md`
+- `dry-run-workflow.md`
 - `folder-summaries.md`
 - `git-workflow.md`
 - `logging-workflow.md`
+- `metrics-feedback.md`
 - `model-routing.md`
 - `project-bootstrap.md`
 - `state-update.md`
 - `structured-questionnaire.md`
+<!-- PROJECTFORGE:END-CONTAINS -->
 
-## Current Status
-- Auto-generated or refreshed summary. Replace TODOs with project-specific detail when material work occurs.
+## Active Work
+- No folder-specific active work recorded.
 
-## Open Work
-- Keep this summary updated when important files are added, removed, or repurposed.
-
-## Agent Notes
-- Read this file before scanning the whole folder.
-- Update this file before handoff if you materially change this folder.
+## Needs Attention
+- No folder-specific issues recorded.

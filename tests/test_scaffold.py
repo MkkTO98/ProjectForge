@@ -12,8 +12,8 @@ def test_required_files_exist():
         'instructions/GENERAL_INSTRUCTIONS.md', 'instructions/CONTEXT_POLICY.md',
         'instructions/SMALL_SKILLS_POLICY.md', 'instructions/SPECIALIZED_AGENT_POLICY.md',
         'context/context_policy.yaml', 'knowledge/components.yaml', 'recovery/failure_playbooks.md',
-        'metrics/metrics_policy.yaml', 'hardware/profile.yaml', 'simulation/dry_run_policy.yaml',
-        'tools/select_model.py', 'tools/build_context.py', 'tools/update_context_summaries.py',
+        'recovery/continuity_framework.md', 'metrics/metrics_policy.yaml', 'hardware/profile.yaml', 'simulation/dry_run_policy.yaml',
+        'tools/select_model.py', 'tools/build_context.py', 'tools/recover_session.py', 'tools/update_context_summaries.py',
         'tools/dry_run.py', 'tools/validate_dry_run.py', 'tools/check_coherence.py', 'tools/escalate.py', 'tools/review_metrics.py',
         'tools/record_metric.py', 'tools/analyze_metrics.py'
     ]:

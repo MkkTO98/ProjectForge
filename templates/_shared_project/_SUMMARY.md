@@ -8,7 +8,9 @@ This folder is part of the ProjectForge file-backed operating system for `templa
 - `AGENTS.md`
 - `CONSTITUTION.md`
 - `agents/`
+- `architecture/`
 - `artifacts/`
+- `automation/`
 - `confidence/`
 - `config/`
 - `context/`
@@ -33,7 +35,7 @@ This folder is part of the ProjectForge file-backed operating system for `templa
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- No folder-specific active work recorded.
+- Shared templates contain uncommitted Continuity/Recovery inheritance changes and larger MetaHarvest integration placeholders; commit those boundaries separately.
 
 ## Needs Attention
-- No folder-specific issues recorded.
+- Next session should stage shared-template Continuity/Recovery hunks before MetaHarvest hunks. Avoid pulling `templates/_shared_project/architecture/` or MetaHarvest consultation placeholders into the Continuity/Recovery commit.

@@ -6,6 +6,10 @@ venv/
 .env
 .env.*
 
+# Local build metadata
+projectforge.egg-info/
+*.egg-info/
+
 # Logs and runtime outputs
 logs/raw/*
 logs/derived/*
@@ -24,10 +28,11 @@ question_queue/archive/*
 !question_queue/answered/.gitkeep
 !question_queue/archive/.gitkeep
 
-# Generated projects, workspace checkouts, and workspace-local backups
+# Generated projects, workspace checkouts, workspace-local backups, and local external-source mirrors
 /generated/
 workspace/projects/*
 workspace/backups/
+external_sources/
 !workspace/projects/_SUMMARY.md
 !workspace/projects/.gitkeep
 
