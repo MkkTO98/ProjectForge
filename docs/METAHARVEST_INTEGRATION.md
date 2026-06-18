@@ -74,13 +74,13 @@ ProjectForge tests should validate the interface contract, not assume ownership 
 
 ## Source-cache policy
 
-Local source caches currently live under:
+Configured local source cache root:
 
 ```text
 /home/mkkto/srv/EIP/projects/ProjectForge/external_sources
 ```
 
-ProjectForge treats those caches as replaceable storage. MetaHarvest's `source_registry.yaml` may contain absolute local paths to this cache root, but those paths are cache hints rather than canonical source identity.
+ProjectForge treats this as optional, replaceable storage. MetaHarvest's `source_registry.yaml` may contain absolute local paths to this cache root, but those paths are cache hints rather than canonical source identity. Normal ProjectForge/MetaHarvest consultation must not require the cache directory to exist.
 
 ## Authority boundary
 

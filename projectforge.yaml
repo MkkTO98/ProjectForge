@@ -35,7 +35,7 @@ projectforge:
       historical_name: ArchitectureHarvest
       generated_project_path: architecture/architectureharvest
       source_cache_root: /home/mkkto/srv/EIP/projects/ProjectForge/external_sources
-      source_cache_policy: replaceable_projectforge_hosted_cache_hint
+      source_cache_policy: optional_replaceable_projectforge_hosted_cache_hint
     required_interface_files:
       - README.md
       - CONSTITUTION.md

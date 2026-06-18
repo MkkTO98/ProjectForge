@@ -33,7 +33,7 @@ def test_metaharvest_provider_interface_configured_for_external_provider():
     assert "transition_fallback_path" not in provider
     assert provider["compatibility"]["generated_project_path"] == "architecture/architectureharvest"
     assert provider["compatibility"]["source_cache_root"] == "/home/mkkto/srv/EIP/projects/ProjectForge/external_sources"
-    assert provider["compatibility"]["source_cache_policy"] == "replaceable_projectforge_hosted_cache_hint"
+    assert provider["compatibility"]["source_cache_policy"] == "optional_replaceable_projectforge_hosted_cache_hint"
     assert provider["authority"]["advisory_only"] is True
     assert provider["authority"]["may_modify_consumer_projects"] is False
     assert provider["authority"]["may_create_consumer_tasks"] is False
