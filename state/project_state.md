@@ -54,8 +54,8 @@ Generated projects become autonomous at creation. ProjectForge improves itself a
 
 ## Current MetaHarvest provider
 
-- MetaHarvest has been copy-first extracted to `/home/mkkto/srv/EIP/projects/MetaHarvest`, and ProjectForge treats that path as the active external advisory provider.
-- ProjectForge no longer hosts an in-tree MetaHarvest fallback copy; active provider validation must use the external sibling provider when status is active.
+- ProjectForge uses `/home/mkkto/srv/EIP/projects/MetaHarvest` as the active external advisory provider.
+- ProjectForge does not host an in-tree MetaHarvest fallback copy; active provider validation must use the external sibling provider when status is active.
 - MetaHarvest is a file-backed librarian, reference system, evidence repository, advisory subsystem, and feedback repository; it is not a controller and must not decide adoption, enforce standards, modify projects, force migration, create tasks inside projects, or bypass project-local approval, dry-run, tests, and coherence gates.
 - It remains non-domain: domain conclusions such as GDP analysis, inflation analysis, energy-market knowledge, macroeconomic conclusions, investment theses, and company research belong to domain projects.
 - Generated projects retain lightweight `architecture/architectureharvest/` compatibility placeholders for relevance maps, candidates, rejections, review history, and adoption outcomes.
@@ -63,14 +63,9 @@ Generated projects become autonomous at creation. ProjectForge improves itself a
 ## Current task status
 
 - Current task: none open.
-- EIP relocation and cleanup are complete.
 - ProjectForge operates at `/home/mkkto/srv/EIP/projects/ProjectForge`.
-- MacroForge operates at `/home/mkkto/srv/EIP/projects/MacroForge`.
-- MetaHarvest operates at `/home/mkkto/srv/EIP/projects/MetaHarvest`.
-- Obsolete nested MacroForge copy was removed from ProjectForge after relocation cleanup; current MacroForge operates at `/home/mkkto/srv/EIP/projects/MacroForge`, with relocation evidence retained in the retrospective and recovery backups.
-- Stale generated ProjectForge `context/active_context.md` is archived under `context/archive/generated-context-bundles/`.
-- Durable relocation retrospective: `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
-- Relocation status: clean with warnings; no active relocation work remains.
+- MetaHarvest provider operates at `/home/mkkto/srv/EIP/projects/MetaHarvest`.
+- Relocation provenance is preserved in `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
 
 ## Current ecosystem autonomy doctrine
 

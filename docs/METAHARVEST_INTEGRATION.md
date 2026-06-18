@@ -1,10 +1,10 @@
 # ProjectForge MetaHarvest Integration Behavior
 
-ProjectForge owns this file. It defines how ProjectForge consumes MetaHarvest during the extraction-preparation and cutover period.
+ProjectForge owns this file. It defines how ProjectForge consumes the external MetaHarvest provider.
 
 ## Provider model
 
-Approved extraction destination:
+Active provider path:
 
 ```text
 /home/mkkto/srv/EIP/projects/MetaHarvest
@@ -13,7 +13,7 @@ Approved extraction destination:
 Current implementation state:
 
 ```text
-copy-first extraction executed to neutral EIP project location
+external sibling provider active
 ```
 
 ProjectForge may be configured for an external MetaHarvest provider. ProjectForge tooling uses `/home/mkkto/srv/EIP/projects/MetaHarvest` as the active provider and does not silently fall back to an embedded MetaHarvest copy while provider status is active.
@@ -52,7 +52,7 @@ architecture/architectureharvest/review_history.md
 architecture/architectureharvest/adoption_outcome.template.yaml
 ```
 
-This path is intentionally not renamed during first extraction.
+This path remains intentionally stable as a generated-project compatibility layer.
 
 ## External provider interface
 
@@ -72,15 +72,15 @@ ProjectForge root coherence validates that the active external provider path exi
 
 ProjectForge tests should validate the interface contract, not assume ownership of all MetaHarvest internals.
 
-## Transitional source-cache policy
+## Source-cache policy
 
-During first extraction, source caches remain under:
+Local source caches currently live under:
 
 ```text
 /home/mkkto/srv/EIP/projects/ProjectForge/external_sources
 ```
 
-ProjectForge treats those caches as transitional storage. MetaHarvest's `source_registry.yaml` may contain absolute local paths to this cache root during first extraction, but those paths are cache hints rather than canonical source identity.
+ProjectForge treats those caches as replaceable storage. MetaHarvest's `source_registry.yaml` may contain absolute local paths to this cache root, but those paths are cache hints rather than canonical source identity.
 
 ## Authority boundary
 
@@ -112,13 +112,11 @@ ProjectForge does not require MetaHarvest for:
 
 MetaHarvest may recommend. ProjectForge decides through ProjectForge governance.
 
-## Cutover invariant
+## Compatibility invariant
 
-First extraction must not:
+Normal ProjectForge consumption must not:
 
 - modify MacroForge;
 - modify consumer projects;
-- move `external_sources/`;
-- create EIP structure;
 - stage or commit changes without explicit approval;
 - rewrite historical `ArchitectureHarvest` references.

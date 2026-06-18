@@ -15,8 +15,7 @@ This folder is part of the ProjectForge file-backed operating system for `state`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work
-- Active state now records the EIP sibling-project boundary: ProjectForge uses the external MetaHarvest provider, no embedded MetaHarvest fallback, and no obsolete nested MacroForge archive.
+- No active ProjectForge task.
 
 ## Needs Attention
-- The stale generated `context/active_context.md` warning remains non-blocking; regenerate a task-specific context bundle before future context/model-routing work.
 - Broad uncommitted ProjectForge recovery changes may remain in the working tree; use hunk-level staging and preserve commit boundaries.

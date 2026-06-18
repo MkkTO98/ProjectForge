@@ -25,7 +25,7 @@ def resolve_provider_root() -> Path:
     return Path(provider["path"])
 
 
-def test_metaharvest_provider_interface_configured_for_external_copy_first_cutover():
+def test_metaharvest_provider_interface_configured_for_external_provider():
     provider = projectforge_config()["metaharvest_provider"]
     assert provider["provider"] == "external"
     assert provider["status"] == "active"
@@ -33,7 +33,7 @@ def test_metaharvest_provider_interface_configured_for_external_copy_first_cutov
     assert "transition_fallback_path" not in provider
     assert provider["compatibility"]["generated_project_path"] == "architecture/architectureharvest"
     assert provider["compatibility"]["source_cache_root"] == "/home/mkkto/srv/EIP/projects/ProjectForge/external_sources"
-    assert provider["compatibility"]["source_cache_policy"] == "transitional_projectforge_hosted_cache"
+    assert provider["compatibility"]["source_cache_policy"] == "replaceable_projectforge_hosted_cache_hint"
     assert provider["authority"]["advisory_only"] is True
     assert provider["authority"]["may_modify_consumer_projects"] is False
     assert provider["authority"]["may_create_consumer_tasks"] is False
@@ -62,7 +62,7 @@ def test_metaharvest_provider_interface_files_exist_via_configured_interface():
     behavior = (ROOT / "docs" / "METAHARVEST_INTEGRATION.md").read_text(encoding="utf-8")
     assert "ProjectForge MetaHarvest Integration Behavior" in behavior
     assert "architecture/architectureharvest/" in behavior
-    assert "transitional" in behavior.lower()
+    assert "replaceable" in behavior.lower()
 
     for rel in provider["required_interface_files"]:
         if rel.endswith(".yaml"):
