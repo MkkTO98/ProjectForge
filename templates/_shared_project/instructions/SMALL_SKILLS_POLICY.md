@@ -1,6 +1,6 @@
 # Small Skills Policy
 
-ProjectForge prefers small composable skills.
+This project prefers small composable skills.
 
 Good skill size:
 - one workflow

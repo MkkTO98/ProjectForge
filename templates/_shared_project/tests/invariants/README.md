@@ -1,6 +1,6 @@
 # Invariant Tests
 
-Invariant tests enforce ProjectForge's own operating rules. They are not ordinary application tests.
+Invariant tests enforce this project's own operating rules. They are not ordinary application tests.
 
 Examples:
 - Required policy files exist.

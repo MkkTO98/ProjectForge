@@ -9,4 +9,4 @@ Request must include:
 - permissions required
 - proposed scope and stop conditions
 
-After approval, ProjectForge may generate the agent automatically. The user should not have to hand-write the agent.
+After approval, the project may add the agent locally. The user should not have to hand-write the agent.

@@ -1,17 +1,37 @@
 # Project State
 
-ProjectForge is a reusable, Hermes-native project initializer and framework for agent-assisted projects. It creates file-backed project operating systems with explicit state, decisions, tasks, handoffs, recovery procedures, permissions, verification, and context discipline.
+ProjectForge is a reusable, Hermes-native project initialization and governance framework. It creates file-backed project operating systems with explicit identity, context, governance, work methodology, validation, and recovery discipline.
 
 Generated projects become autonomous at creation. ProjectForge improves itself and future inheritance, but does not own, manage, or silently mutate instantiated projects.
+
+## Current operating status
+
+- Current task: ProjectForge v1.0.0 architectural release has been committed and tagged.
+- ProjectForge root: `/home/mkkto/srv/ProjectForge`.
+- Active external MetaHarvest provider: `/home/mkkto/srv/EIP/projects/MetaHarvest`.
+- Relocation provenance: `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
+- Root current-state ledger cleanup provenance: `artifacts/reports/R-20260701-root-current-state-ledger-cleanup.md`.
+
+## Current architectural operating system
+
+ProjectForge v1 is organized around five complete systems:
+
+1. Project Identity.
+2. Context and Continuity.
+3. Governance and Decision.
+4. Work Execution Methodology.
+5. Validation and Evidence.
+
+No sixth subsystem is currently justified. Future work should refine these systems unless repeated implementation evidence proves a genuinely missing responsibility.
 
 ## Stable defaults
 
 - Hermes is the primary operator and adaptive interviewer.
 - `config/setup_questionnaire.yaml` is a coverage map, not a rigid user-facing questionnaire.
 - `tools/new_project.py` is the deterministic scaffold renderer and manual fallback.
-- Local execution / cloud governance is the operating model: local tools/models for routine implementation and verification; cloud/Codex only for high-leverage governance with context audit.
-- Standard logging is file-backed; raw logs are audit/debug artifacts only and are excluded from normal context.
-- Auto-commit after tests may be allowed by policy; remote push requires human approval.
+- Local execution / cloud governance remains the operating model: local tools/models for routine implementation and verification; cloud/Codex only for high-leverage governance with context audit.
+- Raw logs are audit/debug artifacts only and are excluded from normal context.
+- Local version-control snapshots may be allowed by policy after tests; remote push requires human approval.
 - Specialized agents require explicit request/explanation before generation.
 
 ## Current framework doctrine
@@ -22,66 +42,27 @@ Generated projects become autonomous at creation. ProjectForge improves itself a
 - Framework improvements affect future inheritance by default. Existing projects receive recommendations or improvement notices and decide adoption through their own governance.
 - Framework-level changes must be named explicitly when they affect inheritance, templates, governance, questioning, artifact standards, handoff standards, delegation/worker infrastructure, framework doctrine, or MetaHarvest doctrine.
 
-## Current continuity/recovery framework
-
-- `tools/recover_session.py` provides bounded file-backed recovery from fixed startup files plus recent task/decision/question artifacts.
-- `recovery/continuity_framework.md` defines the recovery contract, standard closeout contract, near-quota shutdown order, resume procedure, and existing-project adoption path.
-- `context/context_policy.yaml` includes `continuity_recovery.standard_closeout_command` and `standard_closeout_order`.
-- Coherence requires the recovery helper/framework and blocks missing standard closeout or fresh recovery command contracts.
-- Future generated projects inherit the framework through `templates/_shared_project/`.
-- MacroForge explicitly adopted the framework through its own project-local task because it was named in the user request.
-- No database, vector store, embeddings, service, daemon, autonomous propagation, or parallel state system is part of this framework.
-
-## Current context and verification systems
+## Current continuity and validation pointers
 
 - Primary state artifacts are concise current-state pointers: `state/active_goal.md`, `state/project_state.md`, and `state/architecture.md`.
 - `context/latest_handoff.md` is the short operational handoff for the next session.
 - Folder `_SUMMARY.md` files support summary-first retrieval.
 - `tools/build_context.py` builds explicit context bundles and audits for local/cloud use.
-- `tools/context_health.py` is wired into coherence to catch oversized state/handoff and stale generated context bundles.
-- Task completion policy is centralized: update task/state/handoff and affected summaries, inspect refreshed summaries for stale curated sections, then run final verification after governance/summary edits.
-- `tools/architecture_reality_audit.py` provides recurring Architecture-to-Reality Audit coverage.
+- `tools/context_health.py` is wired into coherence to catch oversized state/handoff, stale generated context bundles, and ledger-like current-state drift.
+- `tools/check_coherence.py` validates structural invariants across the five systems.
+- `tools/architecture_reality_audit.py` provides advisory architectural drift detection.
 
-## Current governance permission framework
+## Current governance boundaries
 
 - ProjectForge uses a four-level permission ladder: L1 Operational, L2 Architectural, L3 Strategic, L4 Foundational.
-- L2 requires explicit approval before project-local architecture implementation.
-- L3 requires explicit approval and a `GOVERNANCE_WARNING` block before implementation.
-- L4 requires stopping implementation until explicit foundational approval and a `FOUNDATIONAL_GOVERNANCE_WARNING` block.
 - Project purpose is protected; Hermes may recommend expansion or extraction but must not silently expand, redefine, reinterpret, or absorb responsibilities that alter project identity.
 - Confidence and priority are advisory metadata, not authority.
-- Rejected recommendations remain discoverable when meaningful to preserve negative knowledge.
-
-## Current MetaHarvest provider
-
-- ProjectForge uses `/home/mkkto/srv/EIP/projects/MetaHarvest` as the active external advisory provider.
-- ProjectForge does not host an in-tree MetaHarvest fallback copy; active provider validation must use the external sibling provider when status is active.
-- MetaHarvest is a file-backed librarian, reference system, evidence repository, advisory subsystem, and feedback repository; it is not a controller and must not decide adoption, enforce standards, modify projects, force migration, create tasks inside projects, or bypass project-local approval, dry-run, tests, and coherence gates.
-- It remains non-domain: domain conclusions such as GDP analysis, inflation analysis, energy-market knowledge, macroeconomic conclusions, investment theses, and company research belong to domain projects.
-- Generated projects retain lightweight `architecture/architectureharvest/` compatibility placeholders for relevance maps, candidates, rejections, review history, and adoption outcomes.
-
-## Current task status
-
-- Current task: none open.
-- ProjectForge operates at `/home/mkkto/srv/EIP/projects/ProjectForge`.
-- MetaHarvest provider operates at `/home/mkkto/srv/EIP/projects/MetaHarvest`.
-- Relocation provenance is preserved in `artifacts/reports/R-20260618-eip-relocation-retrospective.md`.
-
-## Current ecosystem autonomy doctrine
-
-- Projects are autonomous and retain their own purpose, scope, governance, lifecycle, artifacts, and decision history.
-- Projects may recommend, notify, expose interfaces, and provide context, but may not govern, directly modify, create tasks inside, or assume authority over other projects.
-- Scope extraction pressure produces recommendation artifacts with rationale, expected value, implementation effort estimate, architectural impact estimate, confidence/priority when meaningful, and lineage; it does not produce automatic project creation, task creation, or implementation.
+- The workspace registry is descriptive only and does not grant write authority or governance.
 - New project creation remains a foundational ecosystem decision requiring explicit human approval.
-- Recommendation records should preserve review outcomes, adoption outcomes, rejection/adoption rationale, and supersession lineage; adoption by one project does not imply adoption by another.
-- The workspace registry is descriptive only and does not grant write authority or governance. Future ecosystem-registry ownership remains TBD through future governance review.
-- Future concepts such as the EIP ecosystem, ResearchMemory, EconGraph, MonitorForge, ReportForge, EII, and future ecosystem infrastructure are non-binding architectural context only.
-- EIP means Economic Intelligence Platform, the ecosystem as a whole, not a project. EII means Economic Intelligence Initiative, a possible future user-facing intelligence project and not an ecosystem owner.
-- No project owns the EIP root by default; if adopted later, it represents ecosystem organization and neutral infrastructure, not project authority.
-- Project extraction readiness has two layers: conceptual readiness depends on purpose, ownership, authority, and interface boundaries; physical extraction additionally requires path inventory, artifact ownership inventory, compatibility planning, verification planning, rollback planning, and evidence-reference stability.
 
 ## Current MetaHarvest boundary
 
 - Active external provider: `/home/mkkto/srv/EIP/projects/MetaHarvest`.
-- No embedded MetaHarvest fallback copy is hosted in ProjectForge when provider status is active.
-- MetaHarvest may produce recommendations and candidate task proposals; it may not create tasks inside another project, decide adoption, modify target projects, or force implementation.
+- ProjectForge does not host an in-tree MetaHarvest fallback copy while provider status is active.
+- MetaHarvest is advisory and non-domain. It may produce recommendations and candidate task proposals, but may not create tasks inside another project, decide adoption, modify target projects, or force implementation.
+- Generated projects retain lightweight `architecture/architectureharvest/` compatibility placeholders for historical ArchitectureHarvest lineage and generated-project artifacts.

@@ -1,7 +1,7 @@
 # Folder Summary: templates/_shared_project/instructions
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/instructions`.
+This folder contains shared generated-project instructions. `WORK_EXECUTION_METHODOLOGY.md` owns bounded implementation slices, implementation restraint, and evidence-gated architectural evolution.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->
@@ -12,6 +12,7 @@ This folder is part of the ProjectForge file-backed operating system for `templa
 - `PROJECTFORGE_SELF_MANAGEMENT.md`
 - `SMALL_SKILLS_POLICY.md`
 - `SPECIALIZED_AGENT_POLICY.md`
+- `WORK_EXECUTION_METHODOLOGY.md`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work

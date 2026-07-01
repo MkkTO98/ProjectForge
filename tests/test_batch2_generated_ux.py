@@ -18,16 +18,16 @@ def run(*args: object, cwd: Path | None = None) -> subprocess.CompletedProcess[s
 
 def answers_file(tmp_path: Path) -> Path:
     answers = {
-        "purpose": "Exercise generated ProjectForge UX.",
+        "purpose": "Exercise generated project UX.",
         "success": "Generated project wrapper and hygiene paths work.",
         "project_type": "general",
         "autonomy": "balanced",
         "command_policy": "layered default",
         "secrets": "No secrets in v1.",
-        "logging": "ProjectForge default logging.",
+        "logging": "project-local default logging.",
         "folder_summaries": "yes",
         "testing": "Run relevant tests before summarizing changes.",
-        "documentation_standard": "Maintain ProjectForge state and decisions.",
+        "documentation_standard": "Maintain project-local state and decisions.",
     }
     path = tmp_path / "answers.json"
     path.write_text(json.dumps(answers), encoding="utf-8")
@@ -71,7 +71,7 @@ def test_generated_project_safe_runner_can_run_own_coherence_for_all_templates(t
 @pytest.mark.parametrize("template", TEMPLATES)
 def test_generated_projects_do_not_copy_template_runtime_caches(tmp_path, template):
     projectforge = tmp_path / "projectforge_copy"
-    shutil.copytree(ROOT, projectforge, ignore=shutil.ignore_patterns(".git", ".pytest_cache", ".venv", "workspace/projects/*"))
+    shutil.copytree(ROOT, projectforge, ignore=shutil.ignore_patterns(".git", ".pytest_cache", ".venv", "external_sources", "workspace/projects/*"))
     cache_dir = projectforge / "templates" / "_shared_project" / "tools" / "__pycache__"
     cache_dir.mkdir(parents=True, exist_ok=True)
     (cache_dir / "stale.cpython-312.pyc").write_bytes(b"stale bytecode")

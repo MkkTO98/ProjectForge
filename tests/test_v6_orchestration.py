@@ -21,7 +21,7 @@ def test_hermes_native_entrypoints_exist():
     template_agents = read('templates/_shared_project/AGENTS.md')
     readme = read('README.md')
     assert 'Hermes-led adaptive interrogation' in root_agents
-    assert 'Generated Project Agent Instructions' in template_agents
+    assert 'Project Agent Instructions' in template_agents
     assert 'Hermes-native' in readme
     assert 'coverage map, not the user-facing script' in readme
 
@@ -38,11 +38,8 @@ def test_new_project_default_output_is_derived_from_projectforge_root():
     assert 'register_project.py' in text
 
 
-def test_workspace_config_uses_rendered_projectforge_paths():
-    text = read('templates/_shared_project/workspace_config.yaml')
-    assert '{projectforge_root}' in text
-    assert '{workspace_root}' in text
-    assert '{projects_root}' in text
+def test_default_shared_template_has_no_parent_workspace_config():
+    assert not (ROOT / 'templates/_shared_project/workspace_config.yaml').exists()
 
 
 def test_orchestrator_hygiene_after_task(tmp_path):
@@ -53,7 +50,7 @@ def test_orchestrator_hygiene_after_task(tmp_path):
         'autonomy': 'balanced',
         'command_policy': 'layered default',
         'secrets': 'No secrets in v1.',
-        'logging': 'ProjectForge default logging.',
+        'logging': 'project-local default logging.',
         'folder_summaries': 'yes',
     }
     answers_path = tmp_path / 'answers.json'

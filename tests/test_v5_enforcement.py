@@ -39,12 +39,12 @@ def test_coherence_checker_passes_projectforge():
     assert 'coherence:' in result.stdout
 
 
-def test_generated_project_uses_workspace_config_not_workspace_tree(tmp_path):
+def test_generated_project_does_not_embed_parent_workspace_coupling(tmp_path):
     script = ROOT/'tools'/'new_project.py'
     result = subprocess.run([sys.executable, str(script), '--name', 'Workspace Test', '--template', 'default_project', '--output', str(tmp_path), '--noninteractive', '--allow-deferred-required'], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     project = tmp_path/'workspace_test'
-    assert (project/'workspace_config.yaml').exists()
+    assert not (project/'workspace_config.yaml').exists()
     assert not (project/'workspace').exists()
 
 

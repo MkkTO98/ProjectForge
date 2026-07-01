@@ -32,7 +32,7 @@ def test_metaharvest_provider_interface_configured_for_external_provider():
     assert provider["path"] == "/home/mkkto/srv/EIP/projects/MetaHarvest"
     assert "transition_fallback_path" not in provider
     assert provider["compatibility"]["generated_project_path"] == "architecture/architectureharvest"
-    assert provider["compatibility"]["source_cache_root"] == "/home/mkkto/srv/EIP/projects/ProjectForge/external_sources"
+    assert provider["compatibility"]["source_cache_root"] == "/home/mkkto/srv/ProjectForge/external_sources"
     assert provider["compatibility"]["source_cache_policy"] == "optional_replaceable_projectforge_hosted_cache_hint"
     assert provider["authority"]["advisory_only"] is True
     assert provider["authority"]["may_modify_consumer_projects"] is False
@@ -58,6 +58,12 @@ def test_metaharvest_provider_interface_files_exist_via_configured_interface():
     assert "MetaHarvest Interface Contract" in integration
     assert "MetaHarvest is advisory only" in integration
     assert "ProjectForge-specific consumption behavior is owned by ProjectForge" in integration
+    assert "change-discoverability boundary" in integration.lower()
+    assert "change_discovery/index.yaml" in provider["required_interface_files"]
+
+    change_index = yaml.safe_load((root / "change_discovery" / "index.yaml").read_text(encoding="utf-8"))
+    assert change_index["kind"] == "metaharvest_change_discovery_index"
+    assert change_index["consumer_contract"]["question_answered"] == "What changed in MetaHarvest since I last looked?"
 
     behavior = (ROOT / "docs" / "METAHARVEST_INTEGRATION.md").read_text(encoding="utf-8")
     assert "ProjectForge MetaHarvest Integration Behavior" in behavior
@@ -77,7 +83,6 @@ def test_metaharvest_governance_text_and_templates_parse():
         ROOT / "instructions" / "GENERAL_INSTRUCTIONS.md",
         resolve_provider_root() / "INTEGRATION.md",
         ROOT / "docs" / "METAHARVEST_INTEGRATION.md",
-        ROOT / "templates" / "_shared_project" / "AGENTS.md",
     ]
     for path in required_text:
         text = path.read_text(encoding="utf-8").lower()
@@ -88,14 +93,15 @@ def test_metaharvest_governance_text_and_templates_parse():
     assert "new_project_creation" in policy["consult_required_during"]
     assert "bug_fixes" in policy["consult_not_required_during"]
     assert set(["active", "stale", "superseded", "retired"]).issubset(policy["recommendation_statuses"])
+    assert not (ROOT / "templates" / "_shared_project" / "architecture" / "architectureharvest").exists()
 
 
-def test_generated_project_receives_metaharvest_compatibility_placeholders(tmp_path):
+def test_default_generated_project_does_not_receive_metaharvest_placeholders(tmp_path):
     result = run(
         sys.executable,
         ROOT / "tools" / "new_project.py",
         "--name",
-        "MetaHarvest Generated",
+        "Neutral Generated",
         "--template",
         "default_project",
         "--output",
@@ -104,25 +110,19 @@ def test_generated_project_receives_metaharvest_compatibility_placeholders(tmp_p
         "--allow-deferred-required",
     )
     assert result.returncode == 0, result.stderr
-    project = tmp_path / "metaharvest_generated"
+    project = tmp_path / "neutral_generated"
 
-    expected = [
-        "architecture/architecture_state.md",
-        "architecture/architecture_decisions/.gitkeep",
-        "architecture/architecture_reviews/architecture_review.template.md",
-        "architecture/architectureharvest/relevance_map.yaml",
-        "architecture/architectureharvest/adoption_candidates.md",
-        "architecture/architectureharvest/rejected_candidates.md",
-        "architecture/architectureharvest/review_history.md",
-        "architecture/architectureharvest/adoption_outcome.template.yaml",
-    ]
-    for rel in expected:
-        assert (project / rel).exists(), rel
+    assert (project / "architecture" / "architecture_state.md").exists()
+    assert not (project / "architecture" / "architectureharvest").exists()
+    assert not (project / "architecture" / "architecture_reviews" / "architecture_review.template.md").exists()
 
-    relevance = yaml.safe_load((project / "architecture" / "architectureharvest" / "relevance_map.yaml").read_text(encoding="utf-8"))
-    assert relevance["target"]["project_id"] == "metaharvest_generated"
-    assert "architecture_definition" in relevance["consult_required_during"]
-    assert "bug_fixes" in relevance["consult_not_required_during"]
+    generated_text = "\n".join(
+        path.read_text(encoding="utf-8", errors="replace")
+        for path in project.rglob("*")
+        if path.is_file()
+    ).lower()
+    assert "metaharvest" not in generated_text
+    assert "architectureharvest" not in generated_text
 
     coherence = run(sys.executable, project / "tools" / "check_coherence.py", "--project", project, "--json")
     assert coherence.returncode == 0, coherence.stderr

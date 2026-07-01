@@ -2,7 +2,7 @@
 
 Purpose: preserve work continuity across Hermes sessions while spending the fewest possible tokens needed to recover useful state.
 
-This framework extends existing ProjectForge state, task, decision, context-health, and handoff mechanisms. It is not a new governance layer, database, vector store, index, or parallel source of truth.
+This framework extends existing project-local state, task, decision, context-health, and handoff mechanisms. It is not a new governance layer, database, vector store, index, or parallel source of truth.
 
 ## Recovery contract
 
@@ -41,12 +41,12 @@ The recovery snapshot must expose:
 
 If these answers are missing or stale, update the existing state/task/handoff artifacts. Do not create a new state artifact just because a current one was poorly maintained.
 
-## Standard ProjectForge closeout contract
+## Standard project closeout contract
 
 The following user command is sufficient to end a normal session safely:
 
 ```text
-Perform standard ProjectForge closeout. Follow the continuity framework. Run required verification if project files changed. Then stop.
+Perform standard project closeout. Follow the continuity framework. Run required verification if project files changed. Then stop.
 ```
 
 When receiving that command, the agent must not ask the user for a custom closeout checklist. It must execute the standard file-backed closeout sequence below, using the current project root:
@@ -56,7 +56,7 @@ When receiving that command, the agent must not ask the user for a custom closeo
 3. Update `context/latest_handoff.md` with context used, files changed, decisions/tasks updated, tests/checks actually run with real output, blockers, next recommended actions, and the exact resume command.
 4. Update `state/active_goal.md` and `state/project_state.md` when their current-state pointers changed. Keep them concise; move history to task, decision, report, or handoff artifacts.
 5. Refresh affected `_SUMMARY.md` files when summaries are affected; inspect curated `Active Work`, `Needs Attention`, and task-status sections; patch stale curated notes manually.
-6. Run the narrowest meaningful verification after the task/state/handoff/summary edits. For ProjectForge framework/template changes this normally includes tests, root coherence, generated-project inheritance/recovery smoke checks, MacroForge checks when MacroForge was touched, and Architecture-to-Reality Audit for governance/template changes.
+6. Run the narrowest meaningful verification after the task/state/handoff/summary edits. For structural scaffold changes this normally includes tests, local coherence, recovery smoke checks, and Architecture-to-Reality Audit for governance/template changes.
 7. Replace any `pending verification` placeholders with real verification output, or explicitly record remaining verification as a blocker before stopping.
 
 This standard closeout replaces ad hoc user-provided closeout procedures. User instructions may narrow scope or add checks, but they should not be required to restate the standard task/state/handoff/summary/verification sequence.
@@ -99,4 +99,4 @@ Existing generated projects are autonomous. They adopt this framework through a 
 - run the project-local recovery smoke check and coherence check;
 - record the adoption in local task/state/handoff artifacts.
 
-ProjectForge must not silently mutate an existing project just because the template changed.
+Generator/template changes must not silently mutate this existing project.

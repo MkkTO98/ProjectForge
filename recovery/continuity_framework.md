@@ -41,7 +41,7 @@ The recovery snapshot must expose:
 
 If these answers are missing or stale, update the existing state/task/handoff artifacts. Do not create a new state artifact just because a current one was poorly maintained.
 
-## Standard ProjectForge closeout contract
+## Standard project closeout contract
 
 The following user command is sufficient to end a normal session safely:
 

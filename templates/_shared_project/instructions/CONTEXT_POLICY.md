@@ -1,6 +1,6 @@
 # Context Policy
 
-ProjectForge context is summary-first, incremental, and optimized for leverage per cloud token. `_SUMMARY.md` files are folder-local maps. `context/active_context.md` is the selected task bundle. `context/context_audit.md` explains what was included/excluded and why. `state/` contains current project truth. `artifacts/decisions/` contains durable choices and deferred specifications.
+Project context is summary-first, incremental, and optimized for leverage per cloud token. `_SUMMARY.md` files are folder-local maps. `context/active_context.md` is the selected task bundle. `context/context_audit.md` explains what was included/excluded and why. `state/` contains current project truth. `artifacts/decisions/` contains durable choices and deferred specifications.
 
 Rules:
 - Context building should use `tools/build_context.py` for explicit bundles.

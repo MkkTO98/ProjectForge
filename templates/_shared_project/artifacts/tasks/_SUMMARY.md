@@ -1,19 +1,18 @@
 # Folder Summary: artifacts/tasks
 
-Updated: 2026-05-30
+Artifact role: durable governance history for tasks.
 
 ## Purpose
-TODO: Maintain a concise description of what this folder contains and why it exists.
+Task artifacts record substantive work that must survive the current chat/session. They preserve request, status, scope/non-scope, outcome, and links to decisions/reports/handoffs; they are not hidden chat plans and not a full project-management product.
 
-## Contents
-- `.gitkeep`
+## Task record should answer
+- What work was requested or accepted?
+- What status is it in?
+- What changed or was intentionally not changed?
+- Which decisions, reports, or handoffs are related?
+- What remains blocked, deferred, or out of scope?
 
-## Current Status
-- Auto-generated or refreshed summary. Replace TODOs with project-specific detail when material work occurs.
-
-## Open Work
-- Keep this summary updated when important files are added, removed, or repurposed.
-
-## Agent Notes
-- Read this file before scanning the whole folder.
-- Update this file before handoff if you materially change this folder.
+## Rules
+- Do not convert every idea, recommendation, or advisory note into a task automatically.
+- Keep task artifacts durable and factual; avoid rewriting history merely to look clean.
+- Keep current pointers in `state/` and latest recovery details in `context/latest_handoff.md`.

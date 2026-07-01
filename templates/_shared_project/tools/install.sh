@@ -9,7 +9,7 @@ fi
 uv venv --allow-existing >/dev/null
 uv pip install 'PyYAML>=6.0' 'pytest>=8.0' >/dev/null
 chmod +x tools/*.py
-printf '[ok] ProjectForge tools prepared in .venv.
+printf '[ok] project-local tools prepared in .venv.
 '
 printf 'Use: .venv/bin/python tools/check_coherence.py --project . --json
 '

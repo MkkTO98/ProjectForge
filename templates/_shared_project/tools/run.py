@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Layered command runner for ProjectForge projects.
+"""Layered command runner for generated projects.
 
 This is intentionally conservative. It is not a sandbox. It is a policy gate.
 Use OS-level sandboxing for stronger isolation.

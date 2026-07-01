@@ -1,7 +1,7 @@
 # Folder Summary: templates/_shared_project/automation
 
 ## Purpose
-This folder provides generated-project automation schedule guidance inherited from ProjectForge.
+This folder provides generated-project automation schedule guidance inherited from Project-local.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

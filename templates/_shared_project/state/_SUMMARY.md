@@ -1,7 +1,7 @@
 # Folder Summary: templates/_shared_project/state
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/state`.
+This folder is part of the project-local file-backed operating system for `templates/_shared_project/state`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate ProjectForge dry-run reports.
+"""Validate project-local dry-run reports.
 
 This is intentionally lightweight. It ensures dry-run reports contain the
 fields agents need before execution proceeds.

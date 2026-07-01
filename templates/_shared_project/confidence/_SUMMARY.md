@@ -1,7 +1,7 @@
 # Folder Summary: templates/_shared_project/confidence
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/confidence`.
+This folder is part of the project-local file-backed operating system for `templates/_shared_project/confidence`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

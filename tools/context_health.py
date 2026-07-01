@@ -37,6 +37,21 @@ HISTORICAL_LEDGER_MARKERS = (
     "```text\npython3 tools/",
     "passed in ",
     "failed tests/",
+    "files changed",
+    "commit ",
+    "diff --git",
+)
+
+HANDOFF_EXPECTED_MARKERS = (
+    "context used",
+    "files changed",
+    "tests/checks",
+    "checks run",
+    "decisions/tasks",
+    "remaining risks",
+    "blockers",
+    "next",
+    "resume",
 )
 
 PRIMARY_STATE = {
@@ -89,11 +104,19 @@ def check(project: Path) -> dict[str, Any]:
     blocks: list[str] = []
     warnings: list[str] = []
     measured: list[dict[str, Any]] = []
+    files_checked: list[str] = []
+    checks_performed: list[str] = [
+        "primary_state_size_and_ledger_hygiene",
+        "handoff_size_and_completeness",
+        "generated_context_bundle_integrity",
+        "context_budget_bounds",
+    ]
 
     for rel, limit_key in PRIMARY_STATE.items():
         path = project / rel
         if not path.exists():
             continue
+        files_checked.append(rel)
         text = read_text(path)
         chars = len(text)
         limit = limits[limit_key]
@@ -102,18 +125,18 @@ def check(project: Path) -> dict[str, Any]:
             blocks.append(f"{rel} is {chars} chars; primary state files must stay concise (limit {limit})")
         elif chars > int(limit * 0.75):
             warnings.append(f"{rel} is approaching context-health limit ({chars}/{limit} chars)")
-        if rel == "state/project_state.md":
-            lowered = text.lower()
-            marker_hits = [m for m in HISTORICAL_LEDGER_MARKERS if m in lowered]
-            if marker_hits and chars > int(limit * 0.6):
-                warnings.append(
-                    "state/project_state.md looks like a historical ledger; move long logs/file histories to handoffs, reports, or logs/derived"
-                )
+        lowered = text.lower()
+        marker_hits = [m for m in HISTORICAL_LEDGER_MARKERS if m in lowered]
+        if marker_hits and chars > int(limit * 0.6):
+            warnings.append(
+                f"{rel} looks like a historical ledger; move long logs/file histories to handoffs, reports, or logs/derived"
+            )
 
     for rel in ("context/latest_handoff.md", "context/handoff.md"):
         path = project / rel
         if not path.exists():
             continue
+        files_checked.append(rel)
         text = read_text(path)
         chars = len(text)
         measured.append({
@@ -127,9 +150,17 @@ def check(project: Path) -> dict[str, Any]:
             blocks.append(f"{rel} is {chars} chars; handoff must be a short recent pointer (block limit {limits['handoff_block_chars']})")
         elif chars > limits["handoff_warn_chars"]:
             warnings.append(f"{rel} is {chars} chars; prefer a concise handoff and move detail to artifacts/handoffs or reports")
+        lowered = text.lower()
+        marker_hits = sum(1 for marker in HANDOFF_EXPECTED_MARKERS if marker in lowered)
+        # Empty/new-project handoffs are allowed, but substantive handoffs should preserve recovery evidence.
+        if chars > 500 and marker_hits < 3:
+            warnings.append(f"{rel} appears incomplete for recovery evidence ({marker_hits} expected handoff markers found)")
+        if sum(1 for marker in HISTORICAL_LEDGER_MARKERS if marker in lowered) >= 3 and chars > limits["handoff_warn_chars"]:
+            warnings.append(f"{rel} looks like a historical ledger; move long history to artifacts/handoffs or reports and keep latest handoff concise")
 
     active_context = project / "context" / "active_context.md"
     if active_context.exists():
+        files_checked.append("context/active_context.md")
         text = read_text(active_context)
         chars = len(text)
         measured.append({
@@ -144,9 +175,12 @@ def check(project: Path) -> dict[str, Any]:
         audit_mode = None
         audit: dict[str, Any] = {}
         if audit_path.exists():
+            files_checked.append("context/context_audit.json")
             try:
                 audit = json.loads(read_text(audit_path))
                 audit_mode = audit.get("context_mode")
+                if not audit.get("estimated_tokens") and not audit.get("budget_tokens") and chars > 2000:
+                    warnings.append("context/context_audit.json lacks token/budget evidence for a non-placeholder generated bundle")
             except json.JSONDecodeError:
                 warnings.append("context/context_audit.json is not valid JSON; regenerate context with tools/build_context.py")
         else:
@@ -185,6 +219,8 @@ def check(project: Path) -> dict[str, Any]:
         "warnings": warnings,
         "measured": measured,
         "policy": limits,
+        "files_checked": files_checked,
+        "checks_performed": checks_performed,
     }
 
 

@@ -1,6 +1,8 @@
-# ProjectForge v6
+# ProjectForge v1.0.0
 
-ProjectForge is a reusable, Hermes-native project initializer, framework, and governance scaffold for agent-supported projects. It creates projects with explicit state, decisions, tasks, logs, summaries, safety policy, and verification hooks so future Hermes sessions and humans can resume work without reconstructing context from chat. Generated projects become autonomous at creation; ProjectForge improves itself and future inheritance, but does not own or silently mutate existing projects.
+ProjectForge is a reusable, Hermes-native project initialization and governance framework for agent-supported projects. v1.0.0 is architecturally stable: the five-system architecture is frozen subject to constitutional evidence-based evolution.
+
+It creates projects with explicit identity, context, decisions, tasks, methodology, run evidence, safety boundaries, and validation hooks so future Hermes sessions and humans can resume work without reconstructing context from chat. Generated projects become autonomous at creation; ProjectForge improves itself and future inheritance, but does not own or silently mutate existing projects.
 
 ProjectForge is not MacroForge. ProjectForge is the factory/governance system; MacroForge is one generated or managed project.
 

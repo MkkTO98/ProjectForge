@@ -1,6 +1,6 @@
 # Skill: Structured Setup Coverage
 
-Use this when deciding what to ask before ProjectForge renders a project.
+Use this when deciding what to ask before rendering or revising local project structure.
 
 ## Principle
 The setup questionnaire is a coverage map, not a rigid interview script. Hermes should ask the smallest useful set of questions, reuse known context, explain tradeoffs when helpful, and record unknowns explicitly.

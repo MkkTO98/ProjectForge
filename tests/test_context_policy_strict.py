@@ -93,7 +93,7 @@ def test_normal_context_uses_priority_hierarchy_before_broader_project_summary(t
     audit = json.loads((project / "context" / "context_audit.json").read_text(encoding="utf-8"))
     included = [item["path"] for item in audit["included_files"]]
 
-    assert audit["context_hierarchy"]["priority_1"] == ["state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"]
-    assert "Context loading hierarchy:" in context
-    assert included[:4] == ["state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"]
+    assert audit["context_hierarchy"]["priority_1"] == ["CONSTITUTION.md", "state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"]
+    included = [item["path"] for item in audit["included_files"]]
+    assert included[:5] == ["CONSTITUTION.md", "state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"]
     assert "BROAD SUMMARY SHOULD NOT BE DEFAULT NORMAL CONTEXT" not in context

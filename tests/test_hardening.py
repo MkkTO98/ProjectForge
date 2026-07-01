@@ -17,7 +17,7 @@ def run(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess[str]
 
 def test_safe_runner_allows_python3_coherence_and_handles_missing_executable(tmp_path):
     project = tmp_path / "projectforge_copy"
-    ignore = shutil.ignore_patterns(".git", ".pytest_cache", "__pycache__", "workspace/projects/*")
+    ignore = shutil.ignore_patterns(".git", ".pytest_cache", "__pycache__", "external_sources", "workspace/projects/*")
     shutil.copytree(ROOT, project, ignore=ignore)
     ok = run(project / "tools" / "run.py", "--project", project, "--level", "safe", "--", "python3", "tools/check_coherence.py", "--project", ".")
     assert ok.returncode == 0, ok.stderr + ok.stdout
@@ -45,7 +45,7 @@ def test_new_project_temp_output_does_not_register_and_populates_state(tmp_path)
         "autonomy": "balanced",
         "command_policy": "layered default",
         "secrets": "No secrets in v1.",
-        "logging": "ProjectForge default logging.",
+        "logging": "project-local default logging.",
         "folder_summaries": "yes",
     }
     answers_path = tmp_path / "answers.json"
@@ -56,10 +56,11 @@ def test_new_project_temp_output_does_not_register_and_populates_state(tmp_path)
     project = tmp_path / "hardening_smoke"
     assert project.exists()
     assert (ROOT / "workspace" / "projects_registry.yaml").read_text(encoding="utf-8") == registry_before
-    assert "Validate hardened generation." in (project / "state" / "active_goal.md").read_text(encoding="utf-8")
+    assert "Validate hardened generation." in (project / "CONSTITUTION.md").read_text(encoding="utf-8")
+    assert "CONSTITUTION.md" in (project / "state" / "active_goal.md").read_text(encoding="utf-8")
     assert "layered default" in (project / "state" / "project_state.md").read_text(encoding="utf-8")
     assert "No secrets in v1." in (project / "state" / "project_state.md").read_text(encoding="utf-8")
-    assert "projectforge_root:" in (project / "workspace_config.yaml").read_text(encoding="utf-8")
+    assert not (project / "workspace_config.yaml").exists()
     assert not (project / "tools" / "new_project.py").exists()
 
     coherence = run(ROOT / "tools" / "check_coherence.py", "--project", project, "--mode", "generated", "--json")

@@ -2,7 +2,7 @@
 
 A git branch is a separate line of development.
 
-ProjectForge default:
+project-local default:
 
 - Start with one main branch.
 - Use feature branches when work becomes risky, parallel, or long-running.

@@ -26,10 +26,18 @@ questionnaire:
           severity: L2
           required_for_bootstrap: false
           text: "Who uses this project: only you, agents, public users, clients, or another group?"
+        - id: scope
+          severity: L2
+          required_for_bootstrap: false
+          text: "What work is explicitly in scope for v1?"
         - id: non_goals
           severity: L2
           required_for_bootstrap: false
           text: "What should this project explicitly not try to do in v1?"
+        - id: responsibility_boundaries
+          severity: L2
+          required_for_bootstrap: false
+          text: "What responsibilities, external systems, or neighboring projects should this project explicitly not own?"
 
     - id: architecture
       title: "Architecture and Runtime"
@@ -94,6 +102,10 @@ questionnaire:
           severity: L4
           required_for_bootstrap: true
           text: "Will the project handle secrets/API keys/credentials? If yes, specify where they should live."
+        - id: approval_boundaries
+          severity: L3
+          required_for_bootstrap: false
+          text: "Any project-specific approval boundaries beyond destructive actions, external publication, remote pushes, paid resources, credentials/production data, major scope changes, and architecture changes beyond existing doctrine?"
 
     - id: quality
       title: "Quality, Logging, and Documentation"
@@ -105,7 +117,7 @@ questionnaire:
         - id: logging
           severity: L2
           required_for_bootstrap: true
-          text: "Any logging needs beyond ProjectForge's MacroForge-like default?"
+          text: "Any logging needs beyond the project-local default?"
         - id: folder_summaries
           severity: L2
           required_for_bootstrap: true
@@ -114,6 +126,10 @@ questionnaire:
           severity: L2
           required_for_bootstrap: false
           text: "Documentation standard: minimal, normal, rigorous, or project-specific?"
+        - id: implementation_methodology
+          severity: L2
+          required_for_bootstrap: false
+          text: "Any project-specific implementation methodology constraints beyond bounded slices, explicit non-goals, and smallest useful implementation?"
 
     - id: model_routing
       title: "Local Model Routing"

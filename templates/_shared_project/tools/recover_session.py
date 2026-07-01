@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Produce a compact ProjectForge session recovery report.
+"""Produce a compact project-local session recovery report.
 
 The tool intentionally reads a bounded, fixed set of file-backed governance
 artifacts. It is a continuity helper, not a repository scanner, indexer, database,
@@ -260,7 +260,7 @@ def to_markdown(report: dict[str, Any]) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Build a compact ProjectForge recovery report without broad repository scanning")
+    ap = argparse.ArgumentParser(description="Build a compact project-local recovery report without broad repository scanning")
     ap.add_argument("--project", default=".", help="Project root to recover")
     ap.add_argument("--json", action="store_true", help="Emit JSON instead of Markdown")
     ns = ap.parse_args()

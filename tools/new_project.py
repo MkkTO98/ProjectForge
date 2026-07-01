@@ -24,6 +24,8 @@ SKIP_NAMES = {".coverage"}
 FALLBACK_QUESTIONS = [
     {"id":"purpose", "text":"What is the project's primary purpose?", "severity":"L3", "required_for_bootstrap": True, "section": "identity"},
     {"id":"success", "text":"What counts as success for v1?", "severity":"L3", "required_for_bootstrap": True, "section": "identity"},
+    {"id":"scope", "text":"What work is in scope for v1?", "severity":"L2", "required_for_bootstrap": False, "section": "identity"},
+    {"id":"non_goals", "text":"What should this project explicitly not try to do in v1?", "severity":"L2", "required_for_bootstrap": False, "section": "identity"},
     {"id":"autonomy", "text":"Agent autonomy?", "severity":"L3", "required_for_bootstrap": True, "section": "operating_model"},
 ]
 
@@ -101,14 +103,42 @@ def copy_tree_render(src: Path, dst: Path, mapping: dict[str,str]):
 def write_decision(project: Path, qid: str, question: str, answer: str, status: str, severity: str, section: str = 'setup'):
     date = dt.date.today().isoformat()
     fname = f"D-{date.replace('-','')}-setup-{qid}.md"
-    content = f"""# Decision: Setup - {qid}\n\nDate: {date}\nStatus: {status}\nSeverity: {severity}\nSection: {section}\n\n## Question\n{question}\n\n## Answer\n{answer or 'Deferred.'}\n\n## Consequence\nAgents must consult this artifact before asking the same question again. If status is Deferred and the issue becomes blocking, create a question in `question_queue/pending/`.\n"""
+    decision = answer or 'Deferred.'
+    content = f"""# Decision: Setup - {qid}
+
+Date: {date}
+Status: {status}
+Severity: {severity}
+Section: {section}
+Scope: local project
+Owner: project-owned
+
+## Question
+{question}
+
+## Decision
+{decision}
+
+## Rationale
+Captured during project initialization so future humans and agents do not need hidden chat history to understand the setup choice.
+
+## Alternatives considered
+- Defer: allowed when the answer is not required for bootstrap.
+- Record now: used when the setup answer affects current scaffolding, safety, scope, architecture, or operating behavior.
+
+## Consequences
+Agents must consult this artifact before asking the same setup question again. If status is Deferred and the issue becomes blocking, create a question in `question_queue/pending/` or a superseding decision artifact.
+
+## Approval boundary
+This setup decision does not grant authority for destructive actions, external publication, remote pushes, paid resources, credential/production-data handling, major scope changes, or architecture changes beyond existing project doctrine.
+"""
     (project/'artifacts'/'decisions').mkdir(parents=True, exist_ok=True)
     (project/'artifacts'/'decisions'/fname).write_text(content, encoding='utf-8')
 
 
 def interactive_answers(questions: list[dict]) -> dict:
     answers={}
-    print("ProjectForge setup interview. Use 'undecided' to defer a question.\n")
+    print("Project setup interview. Use 'undecided' to defer a question.\n")
     current=None
     for q in questions:
         if q.get('section') != current:
@@ -133,10 +163,88 @@ def answer(answers: dict, key: str, default: str = 'Deferred.') -> str:
 def write_state_files(project: Path, name: str, template: str, answers: dict, unresolved: list[str]) -> None:
     today = dt.date.today().isoformat()
     (project/'state').mkdir(parents=True, exist_ok=True)
-    (project/'state'/'active_goal.md').write_text(f"""# Active Goal\n\nProject: {name}\n\n## Purpose\n{answer(answers, 'purpose')}\n\n## V1 Success\n{answer(answers, 'success')}\n\n## Non-goals\n{answer(answers, 'non_goals', 'Deferred until needed.')}\n\n## Current first milestone\nBootstrap the ProjectForge-generated project, preserve setup decisions, and run generated-project coherence before broad implementation.\n\n## Last updated\n{today}\n""", encoding='utf-8')
+    (project/'state'/'active_goal.md').write_text(f"""# Active Goal
+
+Project: {name}
+
+## Artifact role
+Current-state pointer for Context and Continuity. Keep this file concise; do not use it as a historical ledger.
+
+## Purpose and scope source
+Project identity, purpose, scope, non-scope, operating principles, responsibility boundaries, instruction hierarchy, and independence doctrine live in `CONSTITUTION.md`.
+
+## Current first milestone
+Bootstrap the project-local scaffold, read Priority 1 startup context, and run local coherence before broad implementation.
+
+## Last updated
+{today}
+""", encoding='utf-8')
     deferred = ', '.join(unresolved) if unresolved else 'Nonblocking unknowns are recorded as Deferred setup decisions.'
-    (project/'state'/'project_state.md').write_text(f"""# Project State\n\nProject: {name}\nTemplate: {template}\nCreated by: ProjectForge\n\n## Operating context\n- Project type: {answer(answers, 'project_type')}\n- Primary users: {answer(answers, 'users', 'Deferred.')}\n- Agent autonomy: {answer(answers, 'autonomy')}\n- Command policy: {answer(answers, 'command_policy')}\n- Secrets policy: {answer(answers, 'secrets')}\n- Logging standard: {answer(answers, 'logging')}\n- Testing standard: {answer(answers, 'testing', 'ProjectForge default: run relevant tests before summarizing changes.')}\n- Documentation standard: {answer(answers, 'documentation_standard', 'Normal ProjectForge file-backed documentation.')}\n\n## Deferred or watchlist items\n{deferred}\n\n## Source of truth\nSetup answers are recorded under `artifacts/decisions/`. Future agents must update decision artifacts when durable policy changes.\n""", encoding='utf-8')
-    (project/'state'/'architecture.md').write_text(f"""# Architecture\n\nProject: {name}\n\n## Initial architecture posture\n- Project type: {answer(answers, 'project_type')}\n- Language/runtime: {answer(answers, 'language', 'Deferred until implementation requires it.')}\n- Storage: {answer(answers, 'storage', 'Deferred until implementation requires it.')}\n- Deployment: {answer(answers, 'deployment', 'Deferred until implementation requires it.')}\n- External services: {answer(answers, 'external_services', 'Deferred; do not add paid or credentialed services without a decision artifact.')}\n\n## ArchitectureHarvest\nThis project includes lightweight MetaHarvest advisory placeholders under `architecture/architectureharvest/`. Consult them only at architecture decision points, scheduled architecture reviews, repeated failures, and user-requested improvement scans; do not force MetaHarvest into ordinary implementation tasks.\n\n## Guardrails\nUse the local constitution, permissions, dry-run policy, setup decision artifacts, `architecture/architecture_state.md`, and MetaHarvest compatibility relevance map before changing architecture.\n""", encoding='utf-8')
+    (project/'state'/'project_state.md').write_text(f"""# Project State
+
+Project: {name}
+Template: {template}
+Scaffold source: template
+
+## Artifact role
+Current-state pointer for Context and Continuity. Keep this file concise; move history and evidence to durable artifacts.
+
+## Identity source
+Use `CONSTITUTION.md` for project identity, purpose, scope, explicit non-scope, operating principles, responsibility boundaries, instruction hierarchy, and generated-project independence.
+
+## Context hierarchy
+- Priority 1 startup context: `CONSTITUTION.md`, `state/active_goal.md`, `state/project_state.md`, `state/architecture.md`, `context/latest_handoff.md`.
+- Priority 2 task-specific context: active task files, relevant decisions, relevant summaries, explicitly retrieved source files.
+- Priority 3 historical/deep context: broader documentation, reports, design notes, roadmaps, historical artifacts only after justified expansion.
+- Generated bundles: `context/active_context.md` is task-specific output and not mandatory startup context.
+
+## Operating context
+- Project type: {answer(answers, 'project_type')}
+- Agent autonomy: {answer(answers, 'autonomy')}
+- Command policy: {answer(answers, 'command_policy')}
+- Secrets policy: {answer(answers, 'secrets')}
+- Logging standard: {answer(answers, 'logging')}
+- Testing standard: {answer(answers, 'testing', 'Run relevant tests before summarizing changes.')}
+- Documentation standard: {answer(answers, 'documentation_standard', 'Normal project-local file-backed documentation.')}
+- Implementation methodology: {answer(answers, 'implementation_methodology', 'Use bounded implementation slices, explicit non-goals, smallest useful implementation, and evidence-gated architectural evolution.')}
+
+## Deferred or watchlist items
+{deferred}
+
+## Governance pointers
+- Tasks: `artifacts/tasks/` for substantive work that must survive the session.
+- Decisions: `artifacts/decisions/` for rationale, alternatives, consequences, and status.
+- Reports: `artifacts/reports/` for reviews, audits, investigations, and architecture-to-reality findings.
+- Handoffs: `artifacts/handoffs/` for durable handoff history when `context/latest_handoff.md` should stay concise.
+- Approval required: destructive actions, external publication, remote pushes, paid resources, credential/production-data handling, major scope changes, and architecture changes beyond existing doctrine.
+- Project-specific approval boundaries: {answer(answers, 'approval_boundaries', 'None beyond the default approval boundaries.')}
+""", encoding='utf-8')
+    (project/'state'/'architecture.md').write_text(f"""# Architecture
+
+Project: {name}
+
+## Artifact role
+Current-state architecture pointer. Keep this file concise; move historical architecture evidence to durable artifacts.
+
+## Initial architecture posture
+- Project type: {answer(answers, 'project_type')}
+- Language/runtime: {answer(answers, 'language', 'Deferred until implementation requires it.')}
+- Storage: {answer(answers, 'storage', 'Deferred until implementation requires it.')}
+- Deployment: {answer(answers, 'deployment', 'Deferred until implementation requires it.')}
+- External services: {answer(answers, 'external_services', 'Deferred; do not add paid or credentialed services without a decision artifact.')}
+
+## Identity boundary
+Use `CONSTITUTION.md` for project identity, scope, non-scope, responsibility boundaries, operating principles, instruction hierarchy, and independence doctrine before changing architecture.
+
+## Context boundary
+Use `context/context_policy.yaml` and `recovery/continuity_framework.md` for context-loading, handoff, recovery, and generated-bundle discipline.
+
+## Governance boundary
+Record architecture changes, architecture-to-reality findings, and architecture-impacting approvals in `artifacts/decisions/` or `artifacts/reports/`. Keep this file as the current architecture pointer, not a full change log.
+
+## Methodology boundary
+Use `instructions/WORK_EXECUTION_METHODOLOGY.md` to decide when implementation evidence justifies architectural evolution. Do not broaden architecture during local implementation without repeated implementation evidence, recurring implementation pain, measurable maintenance reduction, or direct contradiction.
+""", encoding='utf-8')
 
 
 def should_register(base: Path, output_arg: str | None, output_root: Path, explicit_register: bool | None) -> bool:
@@ -152,7 +260,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--name', required=True)
     ap.add_argument('--template', default='default_project', choices=['default_project','python_data_project','web_project','research_project'])
-    ap.add_argument('--output', default=None, help='Project parent directory. Defaults to this ProjectForge root workspace/projects.')
+    ap.add_argument('--output', default=None, help="Project parent directory. Defaults to this framework checkout's workspace/projects.")
     ap.add_argument('--answers-json')
     ap.add_argument('--noninteractive', action='store_true')
     ap.add_argument('--allow-deferred-required', action='store_true', help='Allow unresolved must-pause sufficiency items and record them as Deferred decisions.')
@@ -186,8 +294,13 @@ def main() -> int:
 
     mapping={
         'project_name': ns.name, 'project_slug': slug, 'date': dt.date.today().isoformat(),
-        'projectforge_root': str(base.resolve()), 'workspace_root': str((base/'workspace').resolve()),
         'projects_root': str(canonical_output.resolve()),
+        'identity_purpose': answer(answers, 'purpose'),
+        'identity_success': answer(answers, 'success'),
+        'identity_users': answer(answers, 'users', 'Deferred until needed.'),
+        'identity_scope': answer(answers, 'scope', 'Work required to achieve the stated purpose and v1 success criteria. Refine with a local decision artifact when scope becomes concrete.'),
+        'identity_non_goals': answer(answers, 'non_goals', 'Deferred until needed. Do not broaden scope by convenience.'),
+        'identity_responsibility_boundaries': answer(answers, 'responsibility_boundaries', 'Deferred until needed. Use the default boundaries below until a local decision refines them.'),
     }
     copy_tree_render(shared, out, mapping)
     copy_tree_render(template, out, mapping)
@@ -203,7 +316,7 @@ def main() -> int:
         if status == 'Deferred': deferred_ids.append(q['id'])
         write_decision(out, q['id'], q.get('text',''), ans, status, q.get('severity','L2'), q.get('section','setup'))
     write_state_files(out, ns.name, ns.template, answers, deferred_ids)
-    (out/'state'/'recent_changes.md').write_text(f"# Recent Changes\n\n- {dt.date.today().isoformat()}: Project initialized by ProjectForge using `{ns.template}`.\n", encoding='utf-8')
+    (out/'state'/'recent_changes.md').write_text(f"# Recent Changes\n\n- {dt.date.today().isoformat()}: Initial scaffold created from template `{ns.template}`.\n", encoding='utf-8')
 
     updater = base/'tools'/'update_context_summaries.py'
     if updater.exists():

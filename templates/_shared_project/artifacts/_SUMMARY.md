@@ -1,18 +1,17 @@
-# Folder Summary: templates/_shared_project/artifacts
+# Folder Summary: artifacts
+
+Artifact role: durable governance history root.
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/artifacts`.
+This folder stores project-owned durable governance history for task, decision, report, and handoff accountability records. It is not current-state startup context and not a project-management database. Historical artifacts should not be rewritten merely to make history look clean; amend or supersede them instead.
 
-## Contains
-<!-- PROJECTFORGE:BEGIN-CONTAINS -->
-- `decisions/`
-- `handoffs/`
-- `reports/`
-- `tasks/`
-<!-- PROJECTFORGE:END-CONTAINS -->
+## Governance artifact responsibilities
+- `tasks/` — durable records of substantive work, status, outcome, and links to decisions/reports/handoffs.
+- `decisions/` — accepted, rejected, deferred, or superseded choices with rationale, alternatives, consequences, and status.
+- `reports/` — review, audit, architecture-to-reality, investigation, or implementation findings.
+- `handoffs/` — durable handoff snapshots when more history is needed than `context/latest_handoff.md` should carry.
 
-## Active Work
-- No folder-specific active work recorded.
-
-## Needs Attention
-- No folder-specific issues recorded.
+## Rules
+- Current state belongs in `state/` and `context/latest_handoff.md`; long history belongs here.
+- Historical artifacts should not be rewritten merely to make history look clean. Amend or supersede them instead.
+- Advisory recommendations, ideas, and review notes do not automatically become tasks.

@@ -30,7 +30,7 @@ levels:
       - pytest
       - python3 -m pytest
 
-      # ProjectForge read-only safe operations
+      # Project-local read-only safe operations
       - python3 tools/check_coherence.py
       - python3 tools/architecture_reality_audit.py
       - python3 tools/validate_dry_run.py
@@ -56,7 +56,7 @@ levels:
       - git add
       - git commit
 
-      # ProjectForge operational mutation
+      # Project-local operational mutation
       - python3 tools/build_context.py
       - python3 tools/update_context_summaries.py
       - python3 tools/review_metrics.py

@@ -1,7 +1,7 @@
 # Folder Summary: templates/default_project/question_queue
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/default_project/question_queue`.
+This folder is part of the project-local file-backed operating system for `templates/default_project/question_queue`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

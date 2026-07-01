@@ -1,5 +1,7 @@
 projectforge:
-  version: v6
+  version: v1.0.0
+  status: architecturally_stable
+  architecture: frozen_subject_to_constitutional_evidence_based_evolution
   purpose: reusable_project_initializer_for_agent_supported_projects
   philosophy: boring_reliable_infrastructure
   defaults:
@@ -12,7 +14,7 @@ projectforge:
     skills_style: small_composable_first
     specialized_agent_creation: request_then_auto_generate_after_user_approval
     codex_escalation: controlled_before_human_for_capability_failures
-    workspace_projects_root: /home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects
+    workspace_projects_root: /home/mkkto/srv/ProjectForge/workspace/projects
     orchestrator_hygiene: scheduled_and_event_driven
     primary_operator: hermes_agent
     project_creation_ux: hermes_led_adaptive_interview_then_noninteractive_render
@@ -34,7 +36,7 @@ projectforge:
     compatibility:
       historical_name: ArchitectureHarvest
       generated_project_path: architecture/architectureharvest
-      source_cache_root: /home/mkkto/srv/EIP/projects/ProjectForge/external_sources
+      source_cache_root: /home/mkkto/srv/ProjectForge/external_sources
       source_cache_policy: optional_replaceable_projectforge_hosted_cache_hint
     required_interface_files:
       - README.md
@@ -44,6 +46,7 @@ projectforge:
       - retrieval/problem_catalog.yaml
       - retrieval/retrieval_index.yaml
       - retrieval/recommendation_rules.yaml
+      - change_discovery/index.yaml
     authority:
       advisory_only: true
       may_modify_projectforge: false

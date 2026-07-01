@@ -1,14 +1,13 @@
 # Folder Summary: templates/_shared_project/architecture
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/architecture`.
+This folder is part of the project-local file-backed operating system for `templates/_shared_project/architecture`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->
 - `architecture_decisions/`
 - `architecture_reviews/`
 - `architecture_state.md`
-- `architectureharvest/`
 <!-- PROJECTFORGE:END-CONTAINS -->
 
 ## Active Work

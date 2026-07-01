@@ -47,12 +47,12 @@ def test_generated_project_inherits_recovery_framework(tmp_path):
     assert (project / "tools" / "recover_session.py").exists()
     assert (project / "recovery" / "continuity_framework.md").exists()
     assert "recover_session.py" in (project / "AGENTS.md").read_text(encoding="utf-8")
-    assert "standard ProjectForge closeout" in (project / "AGENTS.md").read_text(encoding="utf-8")
+    assert "standard project closeout" in (project / "AGENTS.md").read_text(encoding="utf-8")
     policy_text = (project / "context" / "context_policy.yaml").read_text(encoding="utf-8")
     assert "continuity_recovery" in policy_text
     assert "standard_closeout_order" in policy_text
     framework_text = (project / "recovery" / "continuity_framework.md").read_text(encoding="utf-8")
-    assert "Standard ProjectForge closeout contract" in framework_text
+    assert "Standard project closeout contract" in framework_text
     assert "Recover project state and continue work" in framework_text
 
     recovery = run(project / "tools" / "recover_session.py", "--project", project, "--json")

@@ -1,7 +1,7 @@
 # Folder Summary: templates/default_project
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/default_project`.
+This folder is part of the project-local file-backed operating system for `templates/default_project`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

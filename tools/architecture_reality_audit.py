@@ -24,6 +24,8 @@ AUDIT_CATEGORIES = [
     "governance_processes",
     "automation_workflows",
     "templates_vs_generated_projects",
+    "subsystem_responsibility_boundaries",
+    "validator_ownership_boundaries",
 ]
 
 DRIFT_TYPES = [
@@ -70,6 +72,13 @@ TEMPLATE_POLICY_FILES = [
     "templates/_shared_project/context/context_policy.yaml",
     "templates/_shared_project/instructions/GENERAL_INSTRUCTIONS.md",
 ]
+
+SYSTEM_BOUNDARY_FILES = {
+    "identity": "CONSTITUTION.md",
+    "context": "context/context_policy.yaml",
+    "governance": "AGENTS.md",
+    "methodology": "instructions/WORK_EXECUTION_METHODOLOGY.md",
+}
 
 
 def read(path: Path) -> str:
@@ -201,6 +210,87 @@ def check_templates(project: Path, mode: str, findings: list[dict[str, str]]) ->
             add(findings, "block", "templates_vs_generated_projects", "missing_implementation", f"Generated-project template missing tool: {rel}", "Copy root tool into templates/_shared_project/tools/.")
 
 
+
+def check_subsystem_responsibility_drift(project: Path, mode: str, findings: list[dict[str, str]]) -> None:
+    """Advisory checks for System 1-5 boundary drift.
+
+    Coherence owns hard structural validation. This audit only reports likely
+    architectural drift: duplicated doctrine, validation platform creep, or
+    documentation/tool mismatch.
+    """
+    if (project / "instructions" / "VALIDATION_AND_EVIDENCE.md").exists():
+        add(
+            findings,
+            "warn",
+            "validator_ownership_boundaries",
+            "duplicated_systems",
+            "Standalone VALIDATION_AND_EVIDENCE.md exists even though validation policy should remain distributed across existing architecture",
+            "Remove or merge standalone validation doctrine into existing tool/policy locations unless a later accepted decision changes System 5 boundaries.",
+        )
+
+    methodology = project / "instructions" / "WORK_EXECUTION_METHODOLOGY.md"
+    if methodology.exists():
+        text = read(methodology).lower()
+        platform_terms = ["ci/cd", "workflow engine", "quality management system", "static analysis framework"]
+        for term in platform_terms:
+            if term in text and f"not {term}" not in text and f"not a {term}" not in text:
+                add(
+                    findings,
+                    "warn",
+                    "subsystem_responsibility_boundaries",
+                    "drift",
+                    f"Methodology file appears to contain validation/platform responsibility: {term}",
+                    "Keep validation/tool ownership in existing validation tools and keep methodology limited to how bounded work is performed.",
+                )
+
+    agents = read(project / "AGENTS.md")
+    if agents.lower().count("bounded implementation slice") > 3:
+        add(
+            findings,
+            "warn",
+            "subsystem_responsibility_boundaries",
+            "duplicated_systems",
+            "AGENTS.md appears to duplicate methodology doctrine instead of pointing to WORK_EXECUTION_METHODOLOGY.md",
+            "Keep AGENTS.md concise and delegate detailed methodology to instructions/WORK_EXECUTION_METHODOLOGY.md.",
+        )
+
+    if mode == "root":
+        for rel in [
+            "templates/_shared_project/tools/check_coherence.py",
+            "templates/_shared_project/tools/context_health.py",
+            "templates/_shared_project/tools/architecture_reality_audit.py",
+            "templates/_shared_project/tools/recover_session.py",
+        ]:
+            if not (project / rel).exists():
+                add(findings, "block", "templates_vs_generated_projects", "missing_implementation", f"Generated-project template missing validation/recovery tool: {rel}", "Copy the project-owned tool into templates/_shared_project/tools/ so generated projects remain independent.")
+        root_coherence = read(project / "tools" / "check_coherence.py")
+        template_coherence = read(project / "templates" / "_shared_project" / "tools" / "check_coherence.py")
+        if root_coherence and template_coherence and "generated-project independence scan" not in template_coherence:
+            add(
+                findings,
+                "warn",
+                "templates_vs_generated_projects",
+                "templates_vs_generated_projects",
+                "Template check_coherence.py does not include current generated-project independence evidence checks",
+                "Copy the current root check_coherence.py into templates/_shared_project/tools/check_coherence.py after validator changes are complete.",
+            )
+
+    # Duplicated identity doctrine outside CONSTITUTION should stay rare and referential.
+    identity_phrase = "generated-project independence"
+    duplicate_paths = []
+    for rel in ["AGENTS.md", "state/project_state.md", "state/architecture.md", "instructions/GENERAL_INSTRUCTIONS.md"]:
+        if identity_phrase in read(project / rel).lower():
+            duplicate_paths.append(rel)
+    if len(duplicate_paths) > 2:
+        add(
+            findings,
+            "warn",
+            "subsystem_responsibility_boundaries",
+            "duplicated_systems",
+            f"Identity doctrine appears duplicated outside CONSTITUTION.md: {', '.join(duplicate_paths)}",
+            "Prefer concise pointers to CONSTITUTION.md instead of repeating identity doctrine in operational files.",
+        )
+
 def check_architecture_docs(project: Path, findings: list[dict[str, str]]) -> None:
     arch = project / "state" / "architecture.md"
     if not arch.exists():
@@ -227,6 +317,7 @@ def check(project: Path) -> dict[str, Any]:
     check_agent_instruction_alignment(project, mode, findings)
     check_logging_and_metrics(project, findings)
     check_templates(project, mode, findings)
+    check_subsystem_responsibility_drift(project, mode, findings)
     check_architecture_docs(project, findings)
 
     if completed >= 10:
@@ -244,6 +335,19 @@ def check(project: Path) -> dict[str, Any]:
         "drift_types": DRIFT_TYPES,
         "latest_architecture_reality_audit": str(latest.relative_to(project)) if latest else None,
         "completed_tasks_since_latest_audit": completed,
+        "command": "python3 tools/architecture_reality_audit.py --project <project> --json",
+        "files_checked": sorted({rel for rel in POLICY_FILES if (project / rel).exists()} | {rel for rel in TEMPLATE_POLICY_FILES if (project / rel).exists()} | {"state/active_goal.md", "state/project_state.md", "state/architecture.md"}),
+        "checks_performed": [
+            "architecture_audit_process_documentation",
+            "tool_and_automation_alignment",
+            "context_and_state_drift",
+            "agent_instruction_alignment",
+            "logging_and_metrics_drift",
+            "template_inheritance",
+            "subsystem_responsibility_drift",
+            "architecture_documentation_reality",
+            "audit_cadence",
+        ],
         "blocks": blocks,
         "warnings": warnings,
     }

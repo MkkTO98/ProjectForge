@@ -6,11 +6,12 @@ It helps projects begin with a clear purpose, durable structure, continuity acro
 
 ProjectForge is a reusable framework. It is not an active project manager, a meta-controller, or the owner of instantiated projects after creation. Generated projects become autonomous at creation time.
 
-Lessons learned in one project should improve future projects when they solve recurring framework problems. A framework improvement should answer:
+ProjectForge canonizes proven architectural patterns. Lessons learned in one project should improve future projects only when they solve recurring framework problems. A framework improvement should answer:
 
 1. What recurring problem caused this improvement?
 2. What future projects benefit from it?
 3. Why should this become framework behavior instead of project-specific behavior?
+4. What implementation evidence shows the pattern has converged beyond one project?
 
 ## Non-negotiable rules
 
@@ -51,6 +52,28 @@ ProjectForge does not own instantiated project concerns:
 - instantiated project adoption decisions.
 
 ProjectForge must never silently mutate existing projects. It may modify an instantiated project only when that project is explicitly named as the approved target of a separate task.
+
+## Architecture freeze and canonization doctrine
+
+ProjectForge v1 has five architectural systems:
+
+1. Project Identity.
+2. Context and Continuity.
+3. Governance and Decision.
+4. Work Execution Methodology.
+5. Validation and Evidence.
+
+These systems are stable infrastructure. Future architectural work should assume they remain the permanent foundation unless implementation evidence proves otherwise.
+
+No new architectural subsystem may be introduced merely because it appears useful. A sixth subsystem may be created only when repeated implementation evidence from multiple independent generated projects demonstrates that an existing subsystem cannot reasonably own the responsibility. Architectural elegance, theoretical completeness, abstraction opportunities, or anticipated reuse are insufficient evidence.
+
+ProjectForge does not attempt to predict future architecture. Reusable capabilities should first emerge independently in generated projects. Only after repeated convergence should they be promoted into ProjectForge. ProjectForge canonizes patterns, not examples, projects, or domains.
+
+Generated projects remain autonomous after creation. ProjectForge has no ongoing architectural authority over generated projects. Future improvements to ProjectForge do not implicitly modify existing generated projects; adoption is always an explicit generated-project decision.
+
+Every ProjectForge artifact, tool, template, policy, and document should belong clearly to exactly one of the five architectural systems. If ownership cannot be identified, either the artifact is misplaced, the subsystem boundaries need evidence-backed refinement, or the artifact should not exist. Avoid shared miscellaneous infrastructure.
+
+ProjectForge should remain intentionally small. Adding reusable infrastructure carries ongoing maintenance cost, so the burden of proof lies with expansion. When uncertain, leave a capability inside an individual project until repeated evidence demonstrates broader reuse.
 
 ## Ecosystem autonomy doctrine
 
@@ -211,13 +234,15 @@ Until a dedicated ecosystem-level owner or neutral infrastructure home is approv
 
 No project owns the EIP root.
 
-ProjectForge, MetaHarvest, MacroForge, EII, ResearchMemory, and future projects may participate in the EIP ecosystem, but none owns the ecosystem root by default. The EIP root, if physically adopted later, represents ecosystem organization and possible neutral infrastructure, not project authority.
+ProjectForge, MetaHarvest, MacroForge, EII, ResearchMemory, and future projects may participate in the EIP ecosystem, but none owns the ecosystem root by default. The EIP root represents ecosystem organization and possible neutral infrastructure, not project authority.
 
 Root-level ecosystem artifacts must not be interpreted as granting one project authority over another unless explicit foundational governance says so. Temporary hosting of ecosystem-facing artifacts inside a project remains transitional convenience, not ownership transfer.
 
+The durable ecosystem capability ownership matrix lives at `/home/mkkto/srv/EIP/governance/CAPABILITY_OWNERSHIP.md`. It classifies knowledge storage, publication, retrieval, change discoverability, relevance evaluation, prioritization, notification routing, ecosystem coordination, domain intelligence, and future EII boundaries. If a proposed owner differs from that matrix, treat the proposal as a foundational doctrine change rather than an implementation detail.
+
 ## Improvement and adoption doctrine
 
-ProjectForge may improve itself and may improve future inheritance. ProjectForge improvements affect future inheritance by default.
+ProjectForge may improve itself and may improve future inheritance only under the architecture-freeze and canonization doctrine above. ProjectForge improvements affect future inheritance by default.
 
 Existing projects remain autonomous. They may receive improvement notices, recommendations, migration suggestions, or adoption checklists, but they decide relevance and adoption through their own governance.
 

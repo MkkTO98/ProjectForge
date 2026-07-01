@@ -29,7 +29,7 @@ def main() -> int:
             lines.append(f'- Consider a specialized agent/skill or routing change for `{k}`. Request user approval before generating anything.')
     if not any_rec: lines.append('- No specialized-agent or routing change recommended yet.')
     lines.append('\n## Policy')
-    lines.append('- This report may propose ProjectForge/template improvements but must not apply them automatically.')
+    lines.append('- This report may propose local scaffold improvements but must not apply them automatically.')
     out=root/'metrics'/'reports'/f"metrics_review_{dt.date.today().strftime('%Y%m%d')}.md"; out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text('\n'.join(lines)+'\n', encoding='utf-8')
     print(out)

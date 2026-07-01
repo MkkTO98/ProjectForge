@@ -31,7 +31,7 @@ def test_noninteractive_project_generation(tmp_path):
     assert (project/'models'/'registry.yaml').exists()
     assert (project/'context'/'context_policy.yaml').exists()
     assert (project/'simulation'/'dry_run_policy.yaml').exists()
-    assert (project/'workspace_config.yaml').exists()
+    assert not (project/'workspace_config.yaml').exists()
     assert not (project/'workspace').exists()
     assert (project/'metrics'/'metrics_policy.yaml').exists()
     assert (project/'state'/'_SUMMARY.md').exists()

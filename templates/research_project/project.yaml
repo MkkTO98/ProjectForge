@@ -2,7 +2,11 @@ project:
   name: "{project_name}"
   template: "research_project"
   kind: "research"
-  created_by: "ProjectForge"
+  scaffold_source: "template"
   logging: "always_on"
   decisions: "mandatory"
   deferred_specification: "enabled"
+  identity:
+    source: "CONSTITUTION.md"
+    ownership: "project-owned"
+    generator_authority: "none_after_creation"

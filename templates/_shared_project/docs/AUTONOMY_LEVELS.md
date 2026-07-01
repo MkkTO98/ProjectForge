@@ -9,7 +9,7 @@ Agents may modify project-local files, run tests, prepare commits, and ask when 
 ## Aggressive
 Agents may run longer loops, repair failures, prepare commits, and continue through L1/L2 ambiguity. L3/L4 still pause.
 
-## ProjectForge Default
+## Project-local Default
 Balanced-to-aggressive:
 - Balanced for permissions.
 - Aggressive for local iteration and testing.

@@ -1,7 +1,7 @@
 # Folder Summary: templates
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates`.
+This folder is part of the project-local file-backed operating system for `templates`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

@@ -24,6 +24,14 @@ CORE_DIRS = {
 GENERATED_BEGIN = '<!-- PROJECTFORGE:BEGIN-CONTAINS -->'
 GENERATED_END = '<!-- PROJECTFORGE:END-CONTAINS -->'
 
+GOVERNANCE_PURPOSE_DEFAULTS = {
+    'artifacts': 'Durable governance history root for project-owned task, decision, report, and handoff accountability records. Current state belongs in state/ and context/latest_handoff.md; historical artifacts should be amended or superseded rather than rewritten merely to look clean.',
+    'artifacts/tasks': 'Durable governance records for substantive work that must survive the current session. Tasks record request, status, scope/non-scope, outcome, and related decisions/reports/handoffs; they are not hidden chat plans or a project-management product.',
+    'artifacts/decisions': 'Durable governance records for choices affecting scope, responsibility, architecture, policy, external dependencies, approval boundaries, or future agent behavior. Decisions record rationale, alternatives, consequences, and status.',
+    'artifacts/reports': 'Durable governance records for review, audit, investigation, architecture-to-reality, implementation, or synthesis findings. Reports preserve evidence and findings; recommendations do not automatically become tasks.',
+    'artifacts/handoffs': 'Durable governance history for handoff snapshots when context/latest_handoff.md should remain concise. Handoffs preserve continuity, not complete project history.',
+}
+
 
 def entries_for(d: Path) -> list[str]:
     return [
@@ -65,7 +73,7 @@ def legacy_purpose(text: str) -> str | None:
 def summarize_content(d: Path, root: Path) -> str:
     rel = '.' if d == root else str(d.relative_to(root))
     existing = (d / '_SUMMARY.md').read_text(encoding='utf-8') if (d / '_SUMMARY.md').exists() else ''
-    purpose_default = f'This folder is part of the ProjectForge file-backed operating system for `{rel}`.'
+    purpose_default = GOVERNANCE_PURPOSE_DEFAULTS.get(rel, f'This folder is part of the project-local file-backed operating system for `{rel}`.')
     purpose = section(existing, 'Purpose', legacy_purpose(existing) or purpose_default)
     active = section(existing, 'Active Work', '- No folder-specific active work recorded.')
     needs = section(existing, 'Needs Attention', '- No folder-specific issues recorded.')

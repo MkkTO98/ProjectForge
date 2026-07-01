@@ -1,79 +1,96 @@
 # Architecture
 
-ProjectForge has six current framework layers. Generated projects are outputs of the framework, not subordinate runtime components owned by ProjectForge.
+ProjectForge is a reusable project initialization and governance framework. Generated projects are outputs of the framework, not subordinate runtime components owned by ProjectForge.
 
-## 1. Global Foundation
-Reusable skills, agent role documents, permissions, logging utilities, project templates, and ProjectForge-level governance.
+ProjectForge v1 now consists of five architectural systems. These systems are stable infrastructure and should remain the permanent foundation unless repeated implementation evidence from multiple independent generated projects proves that an existing subsystem cannot reasonably own a missing responsibility.
 
-## 2. Bootstrap Layer
-`tools/new_project.py` consumes Hermes-captured answers or a terminal fallback, renders a generated project, records setup decisions, and initializes lightweight architecture review and MetaHarvest participation files when appropriate.
+## 1. Project Identity
 
-Project creation is a Hermes-led discovery conversation. `config/setup_questionnaire.yaml` is a coverage map, not a rigid script. Questions are doctrinally classified as FOUNDATIONAL, ARCHITECTURAL, IMPLEMENTATION, or PREFERENCE; foundational questions should explain why they matter, what depends on them, and why they should be resolved now. The goal is clarity of purpose, not maximum questioning.
+Project Identity defines project purpose, scope, non-scope, ownership boundaries, instruction hierarchy, and generated-project independence.
 
-## 3. Generated Project Output Layer
-Generated projects include state files, decision/task artifacts, logging, permissions, optional specialized agents, and `architecture/` scaffolding for architecture state, reviews, and MetaHarvest relevance/outcome tracking.
+Primary artifacts:
 
-Generated projects become autonomous at creation. ProjectForge improves itself and future inheritance, but it does not own instantiated project goals, architecture, implementation, task execution, or adoption decisions.
+- `CONSTITUTION.md`
+- `AGENTS.md`
+- generated-project constitution and agent instructions
 
-## 4. Continuity and Recovery Layer
-`tools/recover_session.py`, `recovery/continuity_framework.md`, `context/latest_handoff.md`, concise state pointers, task artifacts, decision artifacts, context health, and coherence checks provide bounded fresh-session recovery and standard closeout. The layer extends existing file-backed governance; it is not a database, vector store, daemon, raw-log index, or parallel state system.
+Boundary:
+Project Identity owns doctrine and authority. It does not own context management, governance records, implementation methodology, or validation mechanics.
 
-The standard closeout command is sufficient: `Perform standard ProjectForge closeout. Follow the continuity framework. Then stop.` The standard recovery command is sufficient: `Recover project state and continue work.` Generated projects inherit this layer through shared templates; existing projects adopt only through explicit project-local approval or a user-named task.
+## 2. Context and Continuity
 
-## 5. Project-Local Task Standard Layer
-ProjectForge defines reusable task artifact, state, handoff, summary, and verification standards. Instantiated projects own their own task execution through project-local governance.
+Context and Continuity define bounded startup context, state pointers, handoffs, context bundles, summary-first retrieval, recovery behavior, and closeout discipline.
 
-Temporary task context is stored in `state/active_goal.md`, `artifacts/tasks/`, and run logs. MetaHarvest is not consulted for ordinary implementation tasks that do not alter architecture.
+Primary artifacts/tools:
 
-## 6. Reusable Knowledge Intelligence Layer
-MetaHarvest is an autonomous sibling EIP project at `/home/mkkto/srv/EIP/projects/MetaHarvest` and ProjectForge consumes it through an external provider interface. ProjectForge must not host a full MetaHarvest project tree. The generated-project path `architecture/architectureharvest/` remains a compatibility path for historical ArchitectureHarvest lineage and generated-project artifacts.
+- `state/active_goal.md`
+- `state/project_state.md`
+- `state/architecture.md`
+- `context/latest_handoff.md`
+- `context/context_policy.yaml`
+- `tools/build_context.py`
+- `tools/recover_session.py`
 
-MetaHarvest discovers, preserves, analyzes, organizes, and recommends reusable non-domain knowledge: architecture patterns, interface patterns, shared concepts, shared vocabulary, shared methodologies, decision patterns, governance patterns, heuristics, anti-patterns, and failure patterns. It stores problem-first retrieval indexes, synthesized pattern records, contradiction records, outcome models, relevance maps, advisory recommendations, rejection/retirement records, adoption outcomes, audits, and reports.
+Boundary:
+Context files are current-state pointers and recovery aids, not historical ledgers or hidden governance records.
 
-MetaHarvest remains advisory and non-domain. It may preserve reusable methods discovered while working on domain projects, but domain conclusions such as GDP analysis, inflation analysis, energy-market knowledge, macroeconomic conclusions, investment theses, and company research belong to domain projects. It may recommend task consideration, but it must not create tasks inside target projects, decide adoption, modify projects, enforce standards, force migration, or act as a controller.
+## 3. Governance and Decision
 
-The consultation path is compact-first: problem catalog, retrieval index, synthesis, contradictions, outcomes, relevance maps, then deep reports only when necessary. Consultation is required for major architecture decision points and scheduled reviews; during new project creation, consult it when architectural uncertainty or relevant pattern evidence exists.
+Governance and Decision define durable task, decision, report, handoff, approval, and architecture-audit records.
 
-## Governance permission layer
-ProjectForge uses a four-level permission ladder for governance-sensitive work:
+Primary artifacts:
 
-- L1 Operational: routine implementation inside approved scope.
-- L2 Architectural: project-local architecture changes; explicit approval before implementation.
-- L3 Strategic: scope expansion, ecosystem interaction, extraction recommendations, major governance additions, or new long-term responsibilities; approval plus `GOVERNANCE_WARNING` required.
-- L4 Foundational: purpose, doctrine, constitution, ecosystem ownership, project creation/split/merge, or authority-boundary changes; stop implementation until explicit foundational approval plus `FOUNDATIONAL_GOVERNANCE_WARNING`.
+- `artifacts/tasks/`
+- `artifacts/decisions/`
+- `artifacts/reports/`
+- `artifacts/handoffs/`
+- governance templates and folder summaries
 
-A project's approved purpose is protected. Hermes may recommend expansion or extraction, but may not silently expand, redefine, substantially reinterpret, or absorb responsibilities that materially alter project identity.
+Boundary:
+Governance records preserve decisions and evidence. They do not create automatic authority over generated or external projects.
 
-Confidence and priority are advisory metadata, not authority. Repeated high-confidence recommendation acceptance is evidence, not governance authority.
+## 4. Work Execution Methodology
+
+Work Execution Methodology defines bounded implementation slices, explicit non-goals, implementation boundaries, readiness, verification expectations, expected evidence, and evidence-gated architecture evolution.
+
+Primary artifacts:
+
+- `templates/_shared_project/instructions/WORK_EXECUTION_METHODOLOGY.md`
+- generated task/report methodology sections
+- methodology references from agent/general instructions
+
+Boundary:
+Methodology guides implementation work. It does not own project identity, context management, governance lifecycle, validation policy, or test strategy.
+
+## 5. Validation and Evidence
+
+Validation and Evidence strengthens existing project-owned tools rather than introducing a new validation platform.
+
+Primary tools:
+
+- `tools/check_coherence.py` for deterministic structural validation.
+- `tools/context_health.py` for context boundedness and current-state hygiene.
+- `tools/architecture_reality_audit.py` for advisory drift detection.
+- `tools/recover_session.py` for bounded recovery contract evidence.
+- `tools/validate_dry_run.py` for narrow dry-run report validation.
+
+Boundary:
+Validation checks mechanically verifiable claims and emits concise evidence. It does not become CI/CD, a workflow engine, an issue tracker, a quality management system, or a generic static analysis framework.
+
+## MetaHarvest provider boundary
+
+ProjectForge uses `/home/mkkto/srv/EIP/projects/MetaHarvest` as an active external advisory provider. ProjectForge must not host a full MetaHarvest project tree. Generated projects remain independent and project-owned.
+
+MetaHarvest may recommend and preserve reusable non-domain knowledge, but it may not decide adoption, modify projects, create tasks inside target projects, enforce standards, force migration, or act as a controller.
 
 ## Framework-change doctrine
-A framework change affects inheritance, templates, governance, questioning, artifact standards, handoff standards, delegation infrastructure, worker infrastructure, framework doctrine, or MetaHarvest doctrine. The user should be explicitly informed when a framework-level change is being made.
 
-## Improvement flow
-ProjectForge improvements affect future inheritance by default. Existing projects receive recommendations or improvement notices, review them locally, and decide adoption through their own governance. ProjectForge must not silently propagate changes into existing projects.
+A framework change affects inheritance, templates, governance, questioning, artifact standards, handoff standards, delegation infrastructure, worker infrastructure, framework doctrine, or MetaHarvest doctrine. Such changes must be explicitly named.
 
+ProjectForge improvements affect future inheritance by default. Existing projects receive recommendations or improvement notices, review them locally, and decide adoption through their own governance.
 
-## Ecosystem autonomy and interfaces
-Projects in the ecosystem communicate through explicit interfaces and artifacts where practical: documented contracts, manifests, registries, structured recommendations, and review records. These interfaces preserve autonomy; they do not grant governance authority.
-
-The workspace registry is descriptive, not authoritative. Long-term ownership of an ecosystem-level registry is TBD through future ecosystem governance review. No project owns the EIP root; if adopted later, it represents ecosystem organization and neutral infrastructure, not project authority.
-
-Future concepts such as the EIP ecosystem, ResearchMemory, EconGraph, MonitorForge, ReportForge, EII, and future ecosystem infrastructure are boundary-awareness context only. EIP means Economic Intelligence Platform, the ecosystem as a whole; EII means Economic Intelligence Initiative, a possible future user-facing intelligence project. They are not current implementation targets.
-
-Project extraction readiness has two layers: conceptual readiness depends on purpose, ownership, authority, and interface boundaries; physical extraction additionally requires path inventory, ownership inventory, compatibility planning, verification planning, rollback planning, and stable evidence references. Filesystem structure is a migration constraint, not governance authority.
+ProjectForge canonizes proven patterns, not examples, projects, or domains. Reusable capabilities should remain project-local until repeated implementation evidence demonstrates broader reuse.
 
 ## Automation doctrine
+
 Automation is not a goal. Automation is justified only when it is reliable, understandable, maintainable, testable, coherent, observable, and reversible. Correctness takes precedence over automation.
-
-Useful automation improves correctness, continuity, verification, or maintainability. Automation theater creates machinery without reliable, understandable, testable value.
-
-## Deferred specification
-If a decision cannot be made during setup or architecture analysis, it must be written as a deferred decision artifact. Agents should later ask for specification when that decision becomes relevant.
-
-## Clarification severity
-Questions are classified as:
-
-- L1: Silent autonomy. The agent may proceed.
-- L2: Batched clarification. Ask later; continue if safe.
-- L3: Blocking clarification. Pause and ask immediately.
-- L4: Emergency stop. Stop execution and require explicit human action.

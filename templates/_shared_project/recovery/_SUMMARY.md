@@ -1,7 +1,7 @@
 # Folder Summary: templates/_shared_project/recovery
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/recovery`.
+This folder is part of the project-local file-backed operating system for `templates/_shared_project/recovery`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

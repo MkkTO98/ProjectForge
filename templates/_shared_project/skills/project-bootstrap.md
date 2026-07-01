@@ -1,6 +1,6 @@
 # Skill: Project Bootstrap
 
-Use this when creating or revising a ProjectForge-managed project.
+Use this when creating or revising this project's local scaffold.
 
 ## Procedure
 1. Let Hermes lead an adaptive setup conversation. Do not dump a full questionnaire.

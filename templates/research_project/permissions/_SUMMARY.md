@@ -1,7 +1,7 @@
 # Folder Summary: templates/research_project/permissions
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/research_project/permissions`.
+This folder is part of the project-local file-backed operating system for `templates/research_project/permissions`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

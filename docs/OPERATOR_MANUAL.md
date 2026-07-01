@@ -7,13 +7,13 @@ This manual lists the manual actions you may still want to perform, how to do th
 Assumed location:
 
 ```txt
-/home/mkkto/srv/EIP/projects/ProjectForge/
+/home/mkkto/srv/ProjectForge/
 ```
 
 Generated projects should be created under:
 
 ```txt
-/home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/
+/home/mkkto/srv/ProjectForge/workspace/projects/
 ```
 
 Example:
@@ -33,21 +33,21 @@ The questionnaire in `config/setup_questionnaire.yaml` is a coverage map. It is 
 Manual fallback:
 
 ```bash
-cd /home/mkkto/srv/EIP/projects/ProjectForge
+cd /home/mkkto/srv/ProjectForge
 python3 tools/new_project.py --name "My New Project" --template python_data_project
 ```
 
 Hermes/noninteractive rendering path:
 
 ```bash
-cd /home/mkkto/srv/EIP/projects/ProjectForge
+cd /home/mkkto/srv/ProjectForge
 python3 tools/new_project.py --name "My New Project" --template python_data_project --answers-json context/project_creation_answers_my_new_project.json
 ```
 
 By default, this creates:
 
 ```txt
-/home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/my_new_project/
+/home/mkkto/srv/ProjectForge/workspace/projects/my_new_project/
 ```
 
 It also registers the project in:
@@ -371,8 +371,8 @@ Manual registration:
 
 ```bash
 python3 tools/register_project.py \
-  --workspace /home/mkkto/srv/EIP/projects/ProjectForge/workspace \
-  --project /home/mkkto/srv/EIP/projects/ProjectForge/workspace/projects/my_project \
+  --workspace /home/mkkto/srv/ProjectForge/workspace \
+  --project /home/mkkto/srv/ProjectForge/workspace/projects/my_project \
   --name "My Project"
 ```
 

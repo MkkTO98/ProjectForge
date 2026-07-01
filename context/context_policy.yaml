@@ -35,8 +35,9 @@ context_policy:
 
   context_loading_hierarchy:
     priority_1:
-      purpose: mandatory smallest sufficient current-state startup context
+      purpose: "mandatory smallest sufficient startup context: project identity plus concise current-state pointers"
       files:
+        - CONSTITUTION.md
         - state/active_goal.md
         - state/project_state.md
         - state/architecture.md
@@ -106,14 +107,38 @@ context_policy:
       task-specific bundle when explicit context bundling or cloud governance is
       needed.
 
-  primary_state_artifacts:
+  artifact_responsibilities:
+    current_state_pointers:
+      - state/active_goal.md
+      - state/project_state.md
+      - state/architecture.md
+    recovery_handoff_artifacts:
+      - context/latest_handoff.md
+      - recovery/continuity_framework.md
+    generated_context_bundles:
+      - context/active_context.md
+      - context/context_manifest.json
+      - context/context_audit.json
+      - context/context_audit.md
+    summary_navigation_artifacts:
+      - "**/_SUMMARY.md"
+    durable_historical_artifacts:
+      - artifacts/tasks/
+      - artifacts/decisions/
+      - artifacts/reports/
+      - artifacts/handoffs/
+      - logs/derived/
+    normal_startup_excludes:
+      - raw_logs
+      - stale_active_context_bundles
+      - whole_repository_scans
     rule: >-
-      `state/active_goal.md`, `state/project_state.md`, and
-      `state/architecture.md` are current-state artifacts, not historical
-      ledgers. Keep them concise and current. Move long verification transcripts,
-      old file-change inventories, and session histories to task artifacts,
-      handoffs, reports, or derived logs, then leave only compact pointers in
-      state.
+      State files are concise current-state pointers, not historical ledgers.
+      Historical evidence belongs in artifacts/tasks, artifacts/decisions,
+      artifacts/reports, artifacts/handoffs, or derived logs. Summaries are
+      navigation aids, not authoritative doctrine. Generated context bundles are
+      task/model-specific outputs and must not be treated as mandatory startup
+      context.
 
   context_health:
     active_goal_chars: 6000
@@ -173,9 +198,9 @@ context_policy:
       - refresh_affected_summaries_and_run_final_verification_if_budget_remains
     rule: >-
       A fresh session should recover from bounded file-backed state before any
-      broad repository exploration. Standard closeout must update task, handoff,
-      state pointers, affected summaries, blockers, next actions, and final
-      verification without requiring the user to provide an ad hoc checklist.
+      broad repository exploration. Standard closeout must preserve continuity
+      in the existing project-owned task, handoff, state, summary, blocker, next-action,
+      and verification artifacts without requiring the user to provide an ad hoc checklist.
       Near token, tool, time, or quota exhaustion, continuity updates take
       priority over optional cleanup, broad scans, raw-log reads, or narrative
       polish.

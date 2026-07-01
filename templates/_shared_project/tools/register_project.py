@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Register a ProjectForge-managed project in a parent workspace registry."""
+"""Register this project in an optional parent workspace registry."""
 from __future__ import annotations
 import argparse, sys
 from pathlib import Path
@@ -11,7 +11,7 @@ except Exception:
 DEFAULT_REGISTRY = {
     'workspace': {
         'name': 'default_projectforge_workspace',
-        'description': 'Shared registry for projects that may reuse ProjectForge conventions.',
+        'description': 'Shared registry for projects that may reuse compatible scaffold conventions.',
     },
     'projects': [],
     'shared_defaults': {

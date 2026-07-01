@@ -1,7 +1,7 @@
 # Folder Summary: templates/_shared_project/docs
 
 ## Purpose
-This folder is part of the ProjectForge file-backed operating system for `templates/_shared_project/docs`.
+This folder is part of the project-local file-backed operating system for `templates/_shared_project/docs`.
 
 ## Contains
 <!-- PROJECTFORGE:BEGIN-CONTAINS -->

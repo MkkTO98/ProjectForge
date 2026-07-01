@@ -35,8 +35,9 @@ context_policy:
 
   context_loading_hierarchy:
     priority_1:
-      purpose: mandatory smallest sufficient current-state startup context
+      purpose: "mandatory smallest sufficient startup context: project identity plus concise current-state pointers"
       files:
+        - CONSTITUTION.md
         - state/active_goal.md
         - state/project_state.md
         - state/architecture.md
@@ -106,14 +107,38 @@ context_policy:
       task-specific bundle when explicit context bundling or cloud governance is
       needed.
 
-  primary_state_artifacts:
+  artifact_responsibilities:
+    current_state_pointers:
+      - state/active_goal.md
+      - state/project_state.md
+      - state/architecture.md
+    recovery_handoff_artifacts:
+      - context/latest_handoff.md
+      - recovery/continuity_framework.md
+    generated_context_bundles:
+      - context/active_context.md
+      - context/context_manifest.json
+      - context/context_audit.json
+      - context/context_audit.md
+    summary_navigation_artifacts:
+      - "**/_SUMMARY.md"
+    durable_historical_artifacts:
+      - artifacts/tasks/
+      - artifacts/decisions/
+      - artifacts/reports/
+      - artifacts/handoffs/
+      - logs/derived/
+    normal_startup_excludes:
+      - raw_logs
+      - stale_active_context_bundles
+      - whole_repository_scans
     rule: >-
-      `state/active_goal.md`, `state/project_state.md`, and
-      `state/architecture.md` are current-state artifacts, not historical
-      ledgers. Keep them concise and current. Move long verification transcripts,
-      old file-change inventories, and session histories to task artifacts,
-      handoffs, reports, or derived logs, then leave only compact pointers in
-      state.
+      State files are concise current-state pointers, not historical ledgers.
+      Historical evidence belongs in artifacts/tasks, artifacts/decisions,
+      artifacts/reports, artifacts/handoffs, or derived logs. Summaries are
+      navigation aids, not authoritative doctrine. Generated context bundles are
+      task/model-specific outputs and must not be treated as mandatory startup
+      context.
 
   context_health:
     active_goal_chars: 6000
@@ -156,7 +181,7 @@ context_policy:
       - current_blockers
       - next_recommended_actions
       - recommended_resume_procedure
-    standard_closeout_command: Perform standard ProjectForge closeout. Follow the continuity framework. Run required verification if project files changed. Then stop.
+    standard_closeout_command: Perform standard project closeout. Follow the continuity framework. Run required verification if project files changed. Then stop.
     standard_closeout_order:
       - identify_active_task_from_state_handoff_or_recovery_report
       - update_active_task_status_outcome_blockers_incomplete_acceptance_criteria_and_next_action
@@ -173,101 +198,19 @@ context_policy:
       - refresh_affected_summaries_and_run_final_verification_if_budget_remains
     rule: >-
       A fresh session should recover from bounded file-backed state before any
-      broad repository exploration. Standard closeout must update task, handoff,
-      state pointers, affected summaries, blockers, next actions, and final
-      verification without requiring the user to provide an ad hoc checklist.
+      broad repository exploration. Standard closeout must preserve continuity
+      in the existing project-owned task, handoff, state, summary, blocker, next-action,
+      and verification artifacts without requiring the user to provide an ad hoc checklist.
       Near token, tool, time, or quota exhaustion, continuity updates take
       priority over optional cleanup, broad scans, raw-log reads, or narrative
       polish.
-
-  architecture_harvest:
-    role: first_class_architectural_advisory_service
-    root_location: MetaHarvest
-    generated_project_location: architecture/architectureharvest
-    consult_required_during:
-      - new_project_creation
-      - architecture_definition
-      - major_architecture_modification
-      - introduction_of_new_subsystems
-      - creation_of_new_agent_roles
-      - memory_context_system_design
-      - orchestration_design
-      - permission_system_design
-      - workflow_redesign
-      - scheduled_architecture_reviews
-      - repeated_implementation_failures
-      - user_requested_improvement_scans
-    consult_not_required_during:
-      - bug_fixes
-      - minor_documentation_changes
-      - test_additions
-      - small_utilities
-      - implementation_work_without_architecture_change
-    generated_project_placeholders:
-      - architecture/architecture_state.md
-      - architecture/architecture_decisions/
-      - architecture/architecture_reviews/
-      - architecture/architectureharvest/relevance_map.yaml
-      - architecture/architectureharvest/adoption_candidates.md
-      - architecture/architectureharvest/rejected_candidates.md
-      - architecture/architectureharvest/review_history.md
-    recommendation_statuses:
-      - active
-      - stale
-      - superseded
-      - retired
-    feedback_loop:
-      adoption_outcomes_recorded_in_project: architecture/architectureharvest/
-      broadly_useful_outcomes_mirrored_to: external_metaharvest_provider/adoption_log/
-    negative_rules:
-      - never_force_implementation
-      - never_bypass_project_governance
-      - never_bypass_approval_gates
-      - never_create_autonomous_refactoring_campaigns
-      - never_create_tasks_inside_other_projects
-      - never_create_architecture_changes_without_review
-      - never_continuously_scan_projects_during_ordinary_development
-    rule: >-
-      MetaHarvest improves architectural judgment. It generates
-      recommendations, candidate task proposals, decision inputs, rejection records, and
-      adoption outcome records, but implementation remains the responsibility of
-      the target project through normal approval, dry-run, testing, and coherence
-      gates.
-
-    recommendation_schema_v2:
-      schema_version: 2
-      required_fields:
-        - schema_version
-        - recommendation_id
-        - recommendation_type
-        - origin_project
-        - target_project_or_scope
-        - generated_at
-        - generated_by
-        - rationale
-        - expected_benefit
-        - implementation_cost_estimate
-        - architectural_impact_estimate
-        - confidence
-        - priority
-        - status
-        - lineage
-      recommendation_types:
-        - architecture_improvement
-        - project_creation
-        - doctrine_change
-        - schema_change
-        - interface_change
-        - tooling_change
-      numeric_guidance: confidence and priority use decimal representation whenever meaningful, such as 0.83 and 0.72; retain labels where decimals would imply false precision.
-      persistence_rule: rejected, adopted, deferred, superseded, and retired recommendations remain discoverable with review outcomes, implementation outcomes, rationale, and lineage preserved.
 
   architecture_reality_audit:
     name: Architecture-to-Reality Audit
     purpose: >-
       Periodically compare documented architecture, governance, operating
       procedures, state artifacts, templates, automation, logging/context
-      systems, and actual implementation so ProjectForge projects do not drift
+      systems, and actual implementation so generated projects do not drift
       into documentation-only or implementation-only behavior.
     cadence:
       - every_5_to_10_completed_tasks

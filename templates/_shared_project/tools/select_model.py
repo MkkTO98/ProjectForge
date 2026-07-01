@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Select a model from ProjectForge local-first routing policy.
+"""Select a model from project-local routing policy.
 
-The selector is advisory for Hermes/external agents. It enforces ProjectForge's
+The selector is advisory for Hermes/external agents. It enforces this project's
 rule that cloud/Codex choices need an explicit escalation reason and a recent
 context audit that fits the configured cloud budget.
 """
@@ -109,7 +109,7 @@ def validate_cloud_audit(project: Path, audit_arg: str, cloud_budget: int, proje
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="Select a model from ProjectForge local-first routing policy.")
+    p = argparse.ArgumentParser(description="Select a model from project-local routing policy.")
     p.add_argument("--project", default=".")
     p.add_argument("--agent", required=True)
     p.add_argument("--task", default="")

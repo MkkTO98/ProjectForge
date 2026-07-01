@@ -8,6 +8,9 @@ projects:
 - name: MacroForge
   path: /home/mkkto/srv/EIP/projects/MacroForge
   mode: hybrid_inheritance
+- name: InsightForge
+  path: /home/mkkto/srv/EIP/projects/InsightForge
+  mode: hybrid_inheritance
 shared_defaults:
   models: ../models/registry.yaml
   model_routing: ../models/routing.yaml
@@ -22,4 +25,5 @@ rules:
 - Secrets must never be stored in the workspace registry.
 - The registry is descriptive; it does not govern projects or grant write authority.
 - Registered projects retain autonomy and project-local governance.
-- Future registry ownership is not assigned to EII, MetaHarvest, ProjectForge, or another project by default; EIP means the ecosystem, not a project owner.
+- Future registry ownership is not assigned to EII, MetaHarvest, ProjectForge, or
+  another project by default; EIP means the ecosystem, not a project owner.

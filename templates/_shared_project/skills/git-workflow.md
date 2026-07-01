@@ -1,6 +1,6 @@
 # Skill: Git Workflow
 
-## Default MacroForge-style policy
+## Default project-local policy
 - Inspect before modifying: `git status`, `git diff`.
 - Commit small coherent units.
 - Commit messages must describe why, not only what.

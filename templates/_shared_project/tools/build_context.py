@@ -44,6 +44,7 @@ GENERATED_OR_BULK_DIRS = {
     "generated",
 }
 PRIORITY1_STATE_CANDIDATES = [
+    "CONSTITUTION.md",
     "state/active_goal.md",
     "state/project_state.md",
     "state/architecture.md",
@@ -232,7 +233,7 @@ def write_markdown_audit(audit_path: Path, audit: dict[str, Any]) -> None:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Build ProjectForge strict summary-first context")
+    ap = argparse.ArgumentParser(description="Build project-local strict summary-first context")
     ap.add_argument("--project", default=".")
     ap.add_argument("--task", default="general")
     ap.add_argument("--task-type", default="normal", choices=["normal", "implementation", "architecture_decision", "project_audit", "strategic_planning", "gap_analysis", "redesign", "failure_investigation", "forensic", "incident"])
@@ -294,7 +295,7 @@ def main() -> int:
         f"Context mode: {ns.context_mode}",
         "",
         "Context loading hierarchy:",
-        "- Priority 1: active goal, project state, architecture, latest handoff.",
+        "- Priority 1: CONSTITUTION.md plus active goal, project state, architecture, latest handoff.",
         "- Priority 2: active task, relevant decisions, relevant folder summaries.",
         "- Priority 3: broader summaries/docs/reports/design notes only for justified expansion.",
         "",
@@ -347,7 +348,7 @@ def main() -> int:
         "raw_logs_excluded": raw_logs_excluded and not ns.allow_raw_logs,
         "summaries_used": summaries_used,
         "context_hierarchy": {
-            "priority_1": ["state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"],
+            "priority_1": ["CONSTITUTION.md", "state/active_goal.md", "state/project_state.md", "state/architecture.md", "context/latest_handoff.md"],
             "priority_2": ["active task file", "relevant decision records", "relevant folder summaries"],
             "priority_3": ["broader documentation", "reports", "design notes", "roadmaps", "historical artifacts"],
         },

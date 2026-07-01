@@ -66,6 +66,7 @@ source_registry.yaml
 retrieval/problem_catalog.yaml
 retrieval/retrieval_index.yaml
 retrieval/recommendation_rules.yaml
+change_discovery/index.yaml
 ```
 
 ProjectForge root coherence validates that the active external provider path exists and exposes the required provider interface. When provider status is active, validation must resolve through `/home/mkkto/srv/EIP/projects/MetaHarvest` and must not silently fall back to an embedded ProjectForge copy.
@@ -77,7 +78,7 @@ ProjectForge tests should validate the interface contract, not assume ownership 
 Configured local source cache root:
 
 ```text
-/home/mkkto/srv/EIP/projects/ProjectForge/external_sources
+/home/mkkto/srv/ProjectForge/external_sources
 ```
 
 ProjectForge treats this as optional, replaceable storage. MetaHarvest's `source_registry.yaml` may contain absolute local paths to this cache root, but those paths are cache hints rather than canonical source identity. Normal ProjectForge/MetaHarvest consultation must not require the cache directory to exist.
